@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <title>{{ $param->title }}{{ empty($title) ? '' : ' - '.$title }}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="author" content="{{ $param->author }}" />
+        <meta name="keywords" content="{{ $param->keywords }}{{ empty($title) ? '' : ', '.$title }}" />
+        @if(isset($detail->keterangan_berita))
+        <meta name="description" content="{{ mb_strimwidth($detail->keterangan_berita, 0, 137, '.') }}" />
+        @elseif(!isset($detail->keterangan_berita))
+        <meta name="description" content="{{ $param->description }}" />
+        @else
+        <meta property="og:description" content="{{ isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','konsultasi','bimbingan')) ? (strtolower($kategori) == 'konsultasi' ? mb_strimwidth($detail->detail_konsultasi,0,137,'...') : mb_strimwidth($detail->{'keterangan_'.strtolower($kategori)},0,137,'.')) : (empty($title) ? '' : $title.' - ').$param->description }}" />
+        @endif
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="p:domain_verify" content="420a65ff1d90e8a916aab11bfb5b7612" />
+        <meta property="og:locale" content="id_ID" />
+        <meta property="og:url" content="{{ Request::url() }}" />
+        <meta property="og:type" content="{{ (isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','konsultasi','bimbingan'))) ? 'article' : 'website'}}" />
+        <meta
+            property="og:title"
+            content="{{ isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','konsultasi','bimbingan')) ? (strtolower($kategori) == 'konsultasi' ? $detail->judul_konsultasi : $detail->{'nama_'.strtolower($kategori)}) : $param->title.(empty($title) ? '' : ' - '.$title) }}"
+        />
+        <meta
+            property="og:image"
+            content="{{ asset('images/'.(isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','bimbingan')) ? strtolower($kategori).'/'.$detail->{'image_'.strtolower($kategori)} : 'favicon.ico')) }}"
+        />
+        @if(isset($detail->keterangan_berita))
+        <meta name="description" content="{{ mb_strimwidth($detail->keterangan_berita, 0, 137, '.') }}" />
+        @elseif(!isset($detail->keterangan_berita))
+        <meta name="description" content="{{ $param->description }}" />
+        @else
+        <meta
+            property="og:description"
+            content="{{ isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','konsultasi','bimbingan')) ? (strtolower($kategori) == 'konsultasi' ? mb_strimwidth($detail->detail_konsultasi,0,137,'...') : mb_strimwidth($detail->{'keterangan_'.strtolower($kategori)},0,137,'.')) : (empty($title) ? '' : $title.' - ').$param->description }}"
+        />
+        @endif
+        <meta property="og:site_name" content="{{ $param->title }}" />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="650" />
+        <meta property="og:image:height" content="366" />
+        <meta name="robots" content="all" />
+        <meta name="googlebot" content="index, follow" />
+        <meta name="googlebot-news" content="index, follow" />
+        <meta
+            content="{{ isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','konsultasi','bimbingan')) ? (strtolower($kategori) == 'konsultasi' ? substr($detail->detail_konsultasi,0,250).'...' : $detail->{'keterangan_'.strtolower($kategori)}) : (empty($title) ? '' : $title.' - ').$param->description }}"
+            itemprop="headline"
+        />
+        <meta name="keywords" content="berita hari ini, berita terkini, berita terbaru, info berita, keagamaan, moderat, beragama, kemenag" itemprop="keywords" />
+        <meta
+            name="thumbnailUrl"
+            content="{{ asset('images/'.(isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','bimbingan')) ? strtolower($kategori).'/'.$detail->{'image_'.strtolower($kategori)} : 'favicon.ico')) }}"
+            itemprop="thumbnailUrl"
+        />
+        <meta name="contenttype" content="wpkanal" />
+        <meta name="kanalid" content="2" />
+        <meta name="platform" content="desktop" />
+        <meta content="{{ Request::url() }}" itemprop="url" />
+        <meta name="google-site-verification" content="rtCXc3SCO9qnd4L3xxz6XaEUQKdrLMa_lMH5WvR1QSk" />
+        <link rel="canonical" href="{{ Request::url() }}" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@BimasIslam" />
+        <meta name="twitter:site:id" content="@BimasIslam" />
+        <meta name="twitter:creator" content="@BimasIslam" />
+        <meta name="twitter:description" content="berita hari ini, berita terkini, berita terbaru, info berita, keagamaan, moderat, beragama, kemenag" />
+        <meta
+            name="twitter:image"
+            content="{{ asset('images/'.(isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','bimbingan')) ? strtolower($kategori).'/'.$detail->{'image_'.strtolower($kategori)} : 'favicon.ico')) }}"
+        />
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" href="{{ asset('css/vendor/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/vendor/font-awesome.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/vendor/slick.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/vendor/slick-theme.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/vendor/base.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/plugins/plugins.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
+        {!! ReCaptcha::htmlScriptTagJsApi() !!}
+        <script>
+            var app_url = "{{ url('') }}";
+        </script>
+    </head>
+    <body>
+        <div class="main-wrapper">
+            <div class="mouse-cursor cursor-outer"></div>
+            <div class="mouse-cursor cursor-inner"></div>
+            <header class="header axil-header header-style-6 header-light header-sticky">
+                <div class="header-top">
+                    <div class="row align-items-center">
+                        <div class="col-lg-2">
+                            <div class="logo">
+                                <a href="{{ url('/') }}"> <img class="dark-logo" src="{{ asset('images/logo.png') }}" alt="Bimas Islam" /> </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">&nbsp;</div>
+                        <div class="col-lg-5">
+                            @if(isset($banner))
+                            <div class="banner-activation slick-layout-wrapper axil-slick-arrow arrow-between-side">
+                                @foreach($banner as $b)
+                                <div class="content-block post-grid post-grid-transparent">
+                                    <div class="post-thumbnail">
+                                        <div class="post-thumbnail-banner">
+                                            <a href="#"> <img src="{{ asset('images/banner').'/'.$b->image_banner }}" /> </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div id="nav" class="header-bottom">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-xl-7 col-12">
+                            <div class="mainmenu-wrapper d-none d-xl-block">
+                                <nav class="mainmenu-nav">
+                                    <ul class="mainmenu">
+                                        <li><a href="{{ url('/') }}">Beranda</a></li>
+                                        @foreach($menu[0] as $m) @if(isset($m->detail_content))
+                                        <li class="menu-item-has-children">
+                                            <a href="#">{{ $m->nama_content }}</a>
+                                            <ul class="axil-submenu">
+                                                @foreach($m->detail_content as $d) @if(isset($menu[$d->id]) && !$d->hide_content)
+                                                <li class="menu-item-has-sub-children">
+                                                    <a href="#"> {{ $d->nama_content }}</a>
+                                                    <ul class="axil-sub-submenu">
+                                                        @foreach($menu[$d->id] as $l)
+                                                        <li>
+                                                            <a class="hover-flip-item-wrapper" href="{{ url($l->target_content) }}" @if($l->
+                                                                redirect_content) target="_blank" @endif > <span data-text="{{ $l->nama_content }}">{{ $l->nama_content }}</span>
+                                                            </a>
+                                                        </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </li>
+                                                @else
+                                                <li>
+                                                    <a class="hover-flip-item-wrapper" href="{{ url($d->target_content) }}" @if($d->
+                                                        redirect_content) target="_blank" @endif > <span data-text="{{ $d->nama_content }}">{{ $d->nama_content }}</span>
+                                                    </a>
+                                                </li>
+                                                @endif @endforeach
+                                            </ul>
+                                        </li>
+                                        @else @if($m->is_hidden == 1)
+                                        <li><a href="{{ url($m->target_content) }}">{{ $m->nama_content }}</a></li>
+                                        @endif @endif @endforeach
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-12">
+                            <div class="header-search d-flex flex-wrap align-items-center justify-content-center justify-content-xl-end">
+                                <form class="header-search-form d-sm-block d-none" action="{{ url('/search') }}" method="post">
+                                    @csrf
+                                    <div class="axil-search form-group">
+                                        <button type="submit" class="search-button"><i class="fal fa-search"></i></button> <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Pencarian" minlength="3" />
+                                    </div>
+                                </form>
+                                <div class="mobile-search-wrapper d-sm-none d-block">
+                                    <button class="search-button-toggle"><i class="fal fa-search"></i></button>
+                                    <form class="header-search-form">
+                                        <div class="axil-search form-group">
+                                            <button type="submit" class="search-button"><i class="fal fa-search"></i></button> <input type="text" class="form-control" placeholder="Search" />
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="hamburger-menu d-block d-xl-none">
+                                    <div class="hamburger-inner">
+                                        <div class="icon"><i class="fal fa-bars"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="popup-mobilemenu-area">
+                <div class="inner">
+                    <div class="mobile-menu-top">
+                        <div class="logo">
+                            <a href="{{ url('/') }}"> <img class="dark-logo" src="{{ asset('images/logo-black.png') }}" alt="Bimas Islam" /> </a>
+                        </div>
+                        <div class="mobile-close">
+                            <div class="icon"><i class="fal fa-times"></i></div>
+                        </div>
+                    </div>
+                    <ul class="mainmenu">
+                        <li><a href="{{ url('/') }}">Beranda</a></li>
+                        @foreach($menu[0] as $m) @if(isset($m->detail_content))
+                        <li class="menu-item-has-children">
+                            <a href="#">{{ $m->nama_content }}</a>
+                            <ul class="axil-submenu">
+                                @foreach($m->detail_content as $d) @if(isset($menu[$d->id]) && !$d->hide_content)
+                                <li class="menu-item-has-sub-children">
+                                    <a href="#"> {{ $d->nama_content }}</a>
+                                    <ul class="axil-sub-submenu">
+                                        @foreach($menu[$d->id] as $l)
+                                        <li>
+                                            <a class="hover-flip-item-wrapper" href="{{ url($l->target_content) }}" @if($l->
+                                                redirect_content) target="_blank" @endif > <span data-text="{{ $l->nama_content }}">{{ $l->nama_content }}</span>
+                                            </a>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                @else
+                                <li>
+                                    <a class="hover-flip-item-wrapper" href="{{ url($d->target_content) }}" @if($d->redirect_content) target="_blank" @endif > <span data-text="{{ $d->nama_content }}">{{ $d->nama_content }}</span> </a>
+                                </li>
+                                @endif @endforeach
+                            </ul>
+                        </li>
+                        @else @if($m->is_hidden == 1)
+                        <li><a href="{{ url($m->target_content) }}">{{ $m->nama_content }}</a></li>
+                        @endif @endif @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

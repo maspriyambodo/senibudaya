@@ -1,0 +1,400 @@
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `app_akses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_akses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_group` int(11) NOT NULL,
+  `id_menu` int(11) NOT NULL,
+  `nama_akses` varchar(250) NOT NULL,
+  `status_akses` char(1) NOT NULL DEFAULT 'f',
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='~ hak akses group per menu';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `app_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_group` varchar(150) NOT NULL,
+  `keterangan_group` text NOT NULL,
+  `status_group` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 't',
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `nama_group` (`nama_group`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='~ data user group';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `app_menu`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_menu` (
+  `id` int(11) NOT NULL,
+  `induk_menu` int(11) NOT NULL,
+  `nama_menu` varchar(150) NOT NULL,
+  `keterangan_menu` varchar(150) DEFAULT NULL,
+  `folder_menu` varchar(50) NOT NULL,
+  `target_menu` varchar(50) DEFAULT NULL,
+  `icon_menu` varchar(30) DEFAULT NULL,
+  `akses_menu` int(11) NOT NULL DEFAULT 1000,
+  `urutan_menu` int(11) NOT NULL DEFAULT 1,
+  `status_menu` char(1) NOT NULL DEFAULT 't',
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `target_menu` (`target_menu`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='~ data menu aplikasi';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `app_parameter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_parameter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_parameter` varchar(150) NOT NULL,
+  `nilai_parameter` text DEFAULT NULL,
+  `status_parameter` char(1) NOT NULL DEFAULT 't',
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `nama_parameter` (`nama_parameter`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='~ data parameter aplikasi';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `app_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_android` varchar(30) DEFAULT NULL,
+  `id_token` mediumtext DEFAULT NULL,
+  `id_random` varchar(30) DEFAULT NULL,
+  `id_fcm` varchar(250) DEFAULT NULL,
+  `id_imei` varchar(30) DEFAULT NULL,
+  `id_group` int(11) NOT NULL,
+  `id_user` varchar(35) NOT NULL,
+  `password_user` varchar(100) NOT NULL,
+  `nama_user` varchar(150) NOT NULL,
+  `email_user` varchar(50) DEFAULT NULL,
+  `foto_user` varchar(50) DEFAULT NULL,
+  `status_user` char(1) NOT NULL DEFAULT 't',
+  `login_user` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `id_user` (`id_user`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='~ data user aplikasi';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_banner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_banner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_banner` varchar(250) NOT NULL,
+  `keterangan_banner` text DEFAULT NULL,
+  `image_banner` varchar(50) NOT NULL,
+  `status_banner` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_berita`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_berita` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_lama` int(11) DEFAULT NULL,
+  `slug_berita` varchar(250) NOT NULL,
+  `nama_berita` varchar(250) NOT NULL,
+  `keterangan_berita` text DEFAULT NULL,
+  `detail_berita` longtext DEFAULT NULL,
+  `sumber_berita` text DEFAULT NULL,
+  `editor_berita` int(11) DEFAULT NULL,
+  `fg_berita` int(11) DEFAULT NULL COMMENT 'fotografer berita',
+  `image_berita` varchar(255) DEFAULT NULL,
+  `status_berita` char(1) NOT NULL DEFAULT 't',
+  `hits` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_bimbingan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_bimbingan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `slug_bimbingan` varchar(250) NOT NULL,
+  `nama_bimbingan` varchar(250) NOT NULL,
+  `keterangan_bimbingan` text DEFAULT NULL,
+  `detail_bimbingan` mediumtext DEFAULT NULL,
+  `sumber_bimbingan` text DEFAULT NULL,
+  `image_bimbingan` varchar(50) DEFAULT NULL,
+  `status_bimbingan` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_content`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_content` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_kategori` int(11) NOT NULL,
+  `induk_content` int(11) NOT NULL,
+  `nama_content` varchar(150) NOT NULL,
+  `label_content` varchar(150) DEFAULT NULL,
+  `keterangan_content` text DEFAULT NULL,
+  `detail_content` mediumtext DEFAULT NULL,
+  `redirect_content` char(1) NOT NULL,
+  `link_content` char(1) NOT NULL,
+  `hide_content` char(1) NOT NULL,
+  `urutan_content` int(11) NOT NULL,
+  `level_content` int(11) NOT NULL,
+  `icon_content` varchar(50) NOT NULL,
+  `image_content` varchar(50) NOT NULL,
+  `status_content` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_direktorat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_direktorat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) DEFAULT 0,
+  `nama` varchar(255) DEFAULT NULL,
+  `status_kategori` varchar(1) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_dokumen`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_dokumen` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_content` int(11) NOT NULL,
+  `nama_dokumen` varchar(150) NOT NULL,
+  `keterangan_dokumen` text DEFAULT NULL,
+  `file_dokumen` varchar(50) DEFAULT NULL,
+  `status_dokumen` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_foto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_foto` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_content` int(11) NOT NULL,
+  `nama_foto` varchar(150) NOT NULL,
+  `keterangan_foto` text DEFAULT NULL,
+  `image_foto` varchar(50) DEFAULT NULL,
+  `status_foto` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_jenis`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_jenis` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_jenis` varchar(250) NOT NULL,
+  `keterangan_jenis` text DEFAULT NULL,
+  `urutan_jenis` int(11) NOT NULL,
+  `status_jenis` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_kategori`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_kategori` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_kategori` varchar(250) NOT NULL,
+  `keterangan_kategori` text DEFAULT NULL,
+  `status_kategori` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_konsultasi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_konsultasi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_jenis` int(11) NOT NULL,
+  `nama_konsultasi` varchar(150) NOT NULL,
+  `email_konsultasi` varchar(50) NOT NULL,
+  `kota_konsultasi` varchar(50) NOT NULL,
+  `kelamin_konsultasi` char(1) NOT NULL,
+  `usia_konsultasi` int(11) NOT NULL,
+  `judul_konsultasi` varchar(150) NOT NULL,
+  `detail_konsultasi` text NOT NULL,
+  `jawab_konsultasi` mediumtext DEFAULT NULL,
+  `status_konsultasi` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_kontak`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_kontak` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_kontak` varchar(150) NOT NULL,
+  `email_kontak` varchar(50) NOT NULL,
+  `detail_kontak` text NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_link`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_link` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_content` int(11) NOT NULL,
+  `nama_link` varchar(150) NOT NULL,
+  `keterangan_link` text DEFAULT NULL,
+  `url_link` text NOT NULL,
+  `image_link` varchar(50) DEFAULT NULL,
+  `status_link` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_opini`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_opini` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `slug_opini` varchar(250) NOT NULL,
+  `nama_opini` varchar(250) NOT NULL,
+  `keterangan_opini` text DEFAULT NULL,
+  `detail_opini` mediumtext DEFAULT NULL,
+  `sumber_opini` text DEFAULT NULL,
+  `image_opini` varchar(50) DEFAULT NULL,
+  `status_opini` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_pengaduan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_pengaduan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_pengaduan` varchar(150) NOT NULL,
+  `nik_pengaduan` varchar(50) NOT NULL,
+  `telepon_pengaduan` varchar(50) NOT NULL,
+  `email_pengaduan` varchar(50) NOT NULL,
+  `alamat_pengaduan` text NOT NULL,
+  `detail_pengaduan` text NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_tokoh`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_tokoh` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `slug_tokoh` varchar(250) NOT NULL,
+  `nama_tokoh` varchar(250) NOT NULL,
+  `keterangan_tokoh` text DEFAULT NULL,
+  `detail_tokoh` mediumtext DEFAULT NULL,
+  `image_tokoh` varchar(50) DEFAULT NULL,
+  `status_tokoh` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dta_video`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dta_video` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_content` int(11) NOT NULL,
+  `nama_video` varchar(150) NOT NULL,
+  `keterangan_video` text DEFAULT NULL,
+  `url_video` text DEFAULT NULL,
+  `status_video` char(1) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+

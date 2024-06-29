@@ -1,0 +1,116 @@
+<?php
+	namespace App\Http\Controllers\Cms\Schedule;
+	
+	use App\Http\Controllers\Cms\AuthController;
+	use App\Classes\ClassMenu;
+	use App\Models\Parameter;
+	use App\Models\Propinsi;
+	use App\Models\Kabupaten;
+	use App\Models\Jadwal;
+	use Illuminate\Http\Request;
+	use Illuminate\Http\Client\Pool;
+	use Illuminate\Support\Facades\Session;
+	use Illuminate\Support\Facades\Http;
+	use Carbon\Carbon;
+	use DataTables;
+	use Image;
+	
+	class ShalatController extends AuthController
+	{
+		private $api = null;
+		private $token = null;
+		private $target = 'cms.schedule.shalat';
+		
+		public function __construct(Request $request){
+			$parameter = Parameter::data();
+			$this->api = $parameter->api;
+			$this->token = $parameter->token;
+		}
+		
+		public function json(){
+			$data = Http::asForm()->post($this->api.'jadwal-shalat', [
+				'token' => $this->token,
+				'propinsi' => request('kategori'),
+				'kabupaten' => request('sub'),
+				'tahun' => request('year'),
+				'bulan' => request('month'),
+			])->getBody()->getContents();
+			$data = json_decode($data, false);
+			$data = $data->data;
+			
+			$jadwal = array();
+			$jadwal['draw'] = 0;
+			$jadwal['recordsTotal'] = count((array)$data->data);
+			$jadwal['recordsFiltered'] = count((array)$data->data);
+			$jadwal['data'] = array();
+			foreach ($data->data as $d){
+				$jadwal['data'][] = $d;
+			}
+			return json_decode(json_encode($jadwal), false);
+		}
+		
+		public function index(){
+			$data = array_merge(ClassMenu::view($this->target), array('filter' => array()));
+			
+			$column = array(
+			'id' => 'data',
+			'align' => array('center','left','center','center','center','center','center','center','center','center'),
+			'data' => array('tanggal', 'imsak', 'subuh', 'terbit', 'dhuha', 'dzuhur', 'ashar', 'maghrib', 'isya'),
+			'nosort' => array(0,1,2,3,4,5,6,7,8,9),
+			);
+			
+			//propinsi
+			$id_propinsi = 0;
+			$propinsi = Http::post($this->api.'propinsi', [
+				'token' => $this->token,
+			])->getBody()->getContents();
+			$propinsi = json_decode($propinsi, false);
+			$propinsi = $propinsi->data;
+			
+			if(isset($propinsi)){
+				foreach ($propinsi as $p){
+					if(strtolower(trim($p->name)) == 'dki jakarta')
+						$id_propinsi = $p->id;
+				}
+			}
+			
+			//kabupaten
+			$id_kabupaten = 0;
+			$kabupaten = Http::asForm()->post($this->api.'kabupaten', [
+				'token' => $this->token,
+				'propinsi' => $id_propinsi,
+			])->getBody()->getContents();
+			$kabupaten = json_decode($kabupaten, false);
+			$kabupaten = $kabupaten->data;
+			
+			//bulan
+			for($m = 1; $m<=12; $m++)
+				$bulan[$m] = getBulan($m);
+			
+			//tahun
+			$tahun = array();
+			for($y = date('Y')-5; $y<=date('Y')+5; $y++)
+				$tahun[] = $y;
+			
+			$data = array_merge(
+				$data, 
+				array('column' => $column),
+				array('propinsi' => $propinsi),
+				array('kabupaten' => $kabupaten),
+				array('bulan' => $bulan),
+				array('tahun' => $tahun),
+			);
+			return view($this->target, $data);
+		}
+		
+		public function show(Request $request){
+			if($request->id){
+				$kabupaten = Http::asForm()->post($this->api.'kabupaten', [
+					'token' => $this->token,
+					'propinsi' => $request->id,
+				])->getBody()->getContents();
+				$kabupaten = json_decode($kabupaten, false);
+				return json_encode($kabupaten->data);
+			}
+		}
+	}

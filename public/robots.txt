@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /search
+Disallow: ?search
+
+Sitemap: https://bimasislam.kemenag.go.id/sitemap.xml

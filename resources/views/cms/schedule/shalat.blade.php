@@ -1,0 +1,105 @@
+@include('cms.header')
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+	<div class="pcoded-content">
+		<!-- [ breadcrumb ] start -->
+		<div class="page-header">
+			<div class="page-block">
+				<div class="row align-items-center">
+					<div class="col-md-6">
+						<div class="page-header-title">
+							<h5 class="m-b-10">{{ $title }}</h5>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="page-header-title">
+						</div>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a href="{{ url('dashboard') }}"><i class="feather icon-home"></i></a></li>
+							<li class="breadcrumb-item"><a href="#!">Konten</a></li>
+							<li class="breadcrumb-item"><a href="{{ url($current) }}">{{ $title }}</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- [ breadcrumb ] end -->
+		<!-- [ Main Content ] start -->
+		
+		{{ alertInfo() }}
+		<div class="row">
+			<!-- [ sample-page ] start -->
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-header pb-0">
+						<div class="card-header pb-0">
+							<select id="kategori" name="kategori" class="form-control select2-single" style="width:250px;">
+								@foreach($propinsi as $p)
+									@if(strtolower(trim($p->name)) != 'pusat')
+										@if(strtolower(trim($p->name)) == 'dki jakarta')
+											<option value="{{ $p->id }}" selected> {{ $p->name }}</option>
+										@else
+											<option value="{{ $p->id }}"> {{ $p->name }}</option>
+										@endif
+									@endif
+								@endforeach
+							</select>
+							<select id="sub" name="sub" class="form-control select2-single" style="width:250px;">
+								@foreach($kabupaten as $k)
+									<option value="{{ $k->id }}"> {{ $k->name }}</option>
+								@endforeach
+							</select>
+							<div class="card-header-right">
+								<select id="month" name="month" class="form-control select2-single" style="width:125px;">
+									@foreach($bulan as $b => $name)
+										@if($b == date('m'))
+											<option value="{{ $b }}" selected>{{ $name }}</option>
+										@else
+											<option value="{{ $b }}">{{ $name }}</option>
+										@endif
+									@endforeach
+								</select>
+								<select id="year" name="year" class="form-control select2-single" style="width:75px;">
+									@foreach($tahun as $t)
+										@if($t == date('Y'))
+											<option value="{{ $t }}" selected>{{ $t }}</option>
+										@else
+											<option value="{{ $t }}">{{ $t }}</option>
+										@endif
+									@endforeach
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="card-body p-0">
+						<table width="100%" class="table table-striped table-responsive-xl" id="data">
+							<thead>
+								<tr>
+									<th style="min-width:30px">No</th>
+									<th style="min-width:150px">Tanggal</th>
+									<th style="min-width:75px">Imsak</th>
+									<th style="min-width:75px">Subuh</th>
+									<th style="min-width:75px">Terbit</th>
+									<th style="min-width:75px">Dhuha</th>
+									<th style="min-width:75px">Dzuhur</th>
+									<th style="min-width:75px">Ashar</th>
+									<th style="min-width:75px">Maghrib</th>
+									<th style="min-width:75px">Isya</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					{{ dataTable( $current.'/json', $column, true, 0, false) }}
+				</div>
+			</div>
+			<!-- [ sample-page ] end -->
+		</div>
+		<!-- [ Main Content ] end -->
+	</div>
+</div>
+<!-- [ Main Content ] end -->
+
+<script src="{{asset('cms/js/schedule/'.$current.'.js')}}"></script>
+
+@include('cms.footer')
