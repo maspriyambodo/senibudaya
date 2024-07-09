@@ -22,6 +22,6 @@ Homestead.json
 /.vagrant
 .phpunit.result.cache
 composer.lock
-./access_log
-./error_log
-./storage/logs-*
+access_log
+error_log
+storage/logs-*
