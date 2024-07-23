@@ -97,7 +97,11 @@ class NewsController extends AuthController
 
     public function form(Request $request)
  {
-        $id_berita = dekrip($request->id);
+        if($request->id == 0 ){
+            $id_berita = 0;
+        } else {
+            $id_berita = dekrip($request->id);
+        }
         $berita = Berita::where('id', $id_berita)->first();
         $direktorat = Direktorat::select('id', 'nama')
                 ->where('status', 't')
