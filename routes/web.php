@@ -39,7 +39,7 @@ Route::get('/direktorat/{id}', [ContentController::class, 'show']);
 Route::get('/jurnalis/{id}', [ContentController::class, 'show']);
 Route::get('/editor/{id}', [ContentController::class, 'show']);
 Route::get('/fotografer/{id}', [ContentController::class, 'show']);
-//Route::get('/generate-password/{id}', function ($request) {
+//Route::get('/generate-password/{tulispassword}', function ($request) {
 //    return Hash::make(md5($request));
 //});
 //old url 
