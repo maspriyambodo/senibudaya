@@ -28,7 +28,7 @@ class ContentController extends Controller {
 
     public function __construct() {
         $this->banner = Banner::where('status_banner', 't')->orderBy('created_at', 'desc')->get();
-
+        
         $this->direktorat = array();
         foreach (Direktorat::where('status', 't')->get() as $d) {
             $this->direktorat[$d->id] = $d->nama;
