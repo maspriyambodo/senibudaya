@@ -88,31 +88,6 @@
             <div class="mouse-cursor cursor-outer"></div>
             <div class="mouse-cursor cursor-inner"></div>
             <header class="header axil-header header-style-6 header-light header-sticky">
-                <div class="header-top">
-                    <div class="row align-items-center">
-                        <div class="col-lg-2">
-                            <div class="logo">
-                                <a href="{{ url('/') }}"> <img class="dark-logo" src="{{ asset('images/logo.png') }}" alt="Bimas Islam" /> </a>
-                            </div>
-                        </div>
-                        <div class="col-lg-5">&nbsp;</div>
-                        <div class="col-lg-5">
-                            @if(isset($banner))
-                            <div class="banner-activation slick-layout-wrapper axil-slick-arrow arrow-between-side">
-                                @foreach($banner as $b)
-                                <div class="content-block post-grid post-grid-transparent">
-                                    <div class="post-thumbnail">
-                                        <div class="post-thumbnail-banner">
-                                            <a href="#"> <img src="{{ asset('images/banner').'/'.$b->image_banner }}" /> </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
                 <div id="nav" class="header-bottom">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-xl-7 col-12">
