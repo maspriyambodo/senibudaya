@@ -1,5 +1,26 @@
 @include('cms.header')
-
+<style>
+    .dataTables_wrapper .dataTables_pager .dataTables_length {
+	margin: 0.5rem 0;
+	margin-right: 1rem;
+	display: inline-block;
+}
+.dataTables_wrapper .dataTables_pager .dataTables_length label {
+	
+	margin: 0;
+}
+.dataTables_wrapper .dataTables_pager {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
+	justify-content: flex-end;
+}
+</style>
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
 	<div class="pcoded-content">
@@ -28,24 +49,25 @@
 		<!-- [ Main Content ] start -->
 		
 		{{ alertInfo() }}
-		<div class="row">
-			<!-- [ sample-page ] start -->
-			<div class="col-sm-12">
-				<div class="card">
-					<div class="card-header pb-0">
-						@if(isset($filter))
+                <div class="bg-white p-2 m-4">
+                    <div class="row">
+                    <div class="col-md-6 text-left">
+                        @if(isset($filter))
 						{{ searchFilter($filter) }}
 						@endisset
-						<div class="card-header-right">
-							@if($input)
+                    </div>
+                    <div class="col-md-6 text-right">
+                        @if($input)
 							<button id="input" type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#form" data-backdrop="static"><i class="feather icon-plus"></i> Tambah Data</button>
 							@else
 							&nbsp;
 							@endif
-						</div>
-					</div>
-					<div class="card-body p-0">
-						<table width="100%" class="table table-striped table-responsive-xl" id="data">
+                    </div>
+                </div>
+		
+						
+                                                        <div class="clear mt-4"></div>
+                                                        <table class="table table-hover table-bordered" id="data" style="width: 100%;">
 							<thead>
 								<tr>
 									<th style="min-width:30px">No</th>
@@ -56,12 +78,8 @@
 								</tr>
 							</thead>
 						</table>
-					</div>
 					{{ dataTable( $current.'/json', $column ) }}
-				</div>
-			</div>
-			<!-- [ sample-page ] end -->
-		</div>
+                </div>
 		<!-- [ Main Content ] end -->
 	</div>
 </div>
@@ -71,7 +89,7 @@
 <!-- ModalFade -->
 {{ deleteModal($current) }}
 <div class="modal fade" id="form" tabindex="-1" role="dialog">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<form action="{{ $current }}/store" method="post" class="needs-validation" novalidate="">
 				<div class="modal-header">

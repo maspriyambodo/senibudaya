@@ -56,6 +56,10 @@ function dataTable($url, $column = array(), $scrollx = false, $fixed = 0, $pagin
     echo "var dTable = $('#" . $id . "').DataTable({";
     echo "processing: true,";
     echo "serverSide: true,";
+    echo "paging: true,";
+    echo "ordering: true,";
+    echo "deferRender: true,";
+    echo "info: true,";
     echo "ajax: {";
     echo "url: '" . $url . "',";
     echo "data: function (d) {";
@@ -67,7 +71,7 @@ function dataTable($url, $column = array(), $scrollx = false, $fixed = 0, $pagin
     echo "d.month = $('#month').val();";
     echo "}";
     echo "},";
-    echo "order: [" . implode(",", $order) . "],";
+    echo "order: [[0, 'asc']],";
     echo "columnDefs: [";
     echo "{ className: 'text-center text-nowrap', targets: [" . implode(",", $center) . "] },";
     echo "{ className: 'text-right text-nowrap', targets: [" . implode(",", $right) . "] },";
@@ -144,24 +148,10 @@ function dataTable($url, $column = array(), $scrollx = false, $fixed = 0, $pagin
     echo "$.fn.start_length(0,0,'','');";
     echo "},";
 
-    echo "language: {";
-    echo "lengthMenu: '_MENU_ entries',";
-    echo "info: '_START_ to _END_ of _TOTAL_',";
-    echo "infoEmpty: '',";
-    echo "infoFiltered: '',";
-    echo "paginate: {";
-    echo "first: 'First',";
-    echo "last: 'Last',";
-    echo "next: '<i class=\"fas fa-chevron-right\"></i>',";
-    echo "previous: '<i class=\"fas fa-chevron-left\"></i>'";
-    echo "},";
-    echo "},";
-    if (!$paging) {
-        echo "paging: false,";
-        echo "info: false,";
-    }
-    echo "pagingType: 'simple_numbers',";
-    echo "dom: '<\"wrapper\"rtlip>',";
+    
+    echo "dom: `<'row'<'col-sm-6 text-left'><'col-sm-6 text-right'B>>
+                <'row'<'col-sm-12'tr>>
+                <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,";
     if ($scrollx)
         echo "scrollX: true,";
     if ($fixed > 0) {
