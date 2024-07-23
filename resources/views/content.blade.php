@@ -47,6 +47,7 @@
             <div class="col-xl-4 col-lg-4 col-md-12 col-12 mt_md--30 mt_sm--30">
                 <div class="post-medium-block"> @foreach($head as $h)
                     <div class="content-block post-medium mb--20">
+                        @if(file_exists(asset('images/berita').'/'.$h->image_berita))
                         <div class="post-thumbnail">
                             <div class="post-thumbnail-image">
                                 <a href="{{ url('berita').'/'.$h->slug_berita }}">
@@ -54,6 +55,15 @@
                                 </a>
                             </div>
                         </div>
+                        @else
+                        <div class="post-thumbnail">
+                            <div class="post-thumbnail-image">
+                                <a href="{{ url('berita').'/'.$h->slug_berita }}">
+                                    <img src="{{ asset('images/image_not_available.png') }}" alt="{{ $h->nama_berita }}">
+                                </a>
+                            </div>
+                        </div>
+                        @endif
                         <div class="post-content"> @isset($direktorat[$h->kategori_direktorat])
                             <div class="post-cat">
                                 <div class="post-cat-list">
@@ -258,7 +268,7 @@
                                 <div class="post-thumbnail">
                                     <div class="post-thumbnail-image">
                                         <a href="{{ url('berita').'/'.$m->slug_berita }}">
-                                            @if($m->image_berita)
+                                            @if(file_exists(asset('images/berita').'/'.$m->image_berita))
                                             <img class="img-fluid" src="{{ asset('images/berita').'/'.$m->image_berita }}" alt="{{ $m->nama_berita }}">
                                             @else
                                             <img class="img-fluid" src="{{ asset('images/empty.png') }}" alt="{{ $m->nama_berita }}">
@@ -266,6 +276,7 @@
                                         </a>
                                     </div>
                                 </div>
+                                
                                 <div class="post-content">
                                     @isset($direktorat[$m->kategori_direktorat])
                                     <div class="post-cat">
@@ -299,7 +310,11 @@
                                     <div class="post-thumbnail">
                                         <div class="post-thumbnail-image">
                                             <a href="{{ url('opini').'/'.$o->slug_opini }}">
+                                                @if(file_exists(asset('images/opini').'/'.$o->image_opini))
                                                 <img class="img-fluid" src="{{ asset('images/opini').'/'.$o->image_opini }}" alt="{{ $o->nama_opini }}">
+                                                @else
+                                                <img class="img-fluid" src="{{ asset('images/image_not_available.png') }}" alt="{{ $o->nama_opini }}">
+                                                @endif
                                             </a>
                                         </div>
                                     </div>
@@ -326,25 +341,10 @@
         <div class="row">
             <div class="col-xl-8 col-lg-8 col-md-12 col-12">
                 <div class="row mb--20">
-                    <div class="col-lg-12">
-                        <div class="section-title">
-                            <h4 class="title">Info Publik</h4>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="row mb--50">
-                    <div class="col-lg-12">
-                        <div class="list-categories categories-activation axil-slick-arrow arrow-between-side"> @foreach($icon as $i)
-                            <div class="single-cat">
-                                <a href="{{ url($i->target_content) }}" @if($i->redirect_content) target="_blank" @endif > <div class="inner">
-                                        <div class="thumbnail">
-                                            <img class="img-fluid" src="{{ asset('images/content').'/'.$i->icon_content }}" alt="{{ $i->nama_content }}">
-                                        </div>
-                                        <span class="title" style="font-size:15px;color:#436850">{{ $i->nama_content }}</span>
-                                    </div>
-                                </a>
-                            </div> @endforeach </div>
-                    </div>
+                    
                 </div>
                 <div class="row mb--20">
                     <div class="col-lg-12">
@@ -407,11 +407,19 @@
                             <div class="post-medium-block"> @foreach($tokoh as $t)
                                 <div class="content-block post-medium mb--20">
                                     <div class="post-thumbnail">
+                                        @if(file_exists(asset('images/tokoh').'/'.$t->image_tokoh))
                                         <div class="post-thumbnail-image">
                                             <a href="{{ url('tokoh').'/'.$t->slug_tokoh }}">
                                                 <img class="img-fluid" src="{{ asset('images/tokoh').'/'.$t->image_tokoh }}" alt="{{ $t->nama_tokoh }}">
                                             </a>
                                         </div>
+                                        @else
+                                        <div class="post-thumbnail-image">
+                                            <a href="{{ url('tokoh').'/'.$t->slug_tokoh }}">
+                                                <img class="img-fluid" src="{{ asset('images/image_not_available.png') }}" alt="{{ $t->nama_tokoh }}">
+                                            </a>
+                                        </div>
+                                        @endif
                                     </div>
                                     <div class="post-content">
                                         <h6 class="title">
@@ -422,26 +430,6 @@
                                                 <li>{{ date('d M Y H:i', strtotime($t->created_at)); }}</li>
                                             </ul>
                                         </div>
-                                    </div>
-                                </div> @endforeach </div>
-                        </div>
-                    </div>
-                    <div class="sidebar-inner">
-                        <div class="axil-single-widget widget widget_postlist mb--30">
-                            <h5 class="widget-title">Konsultasi Syariah</h5>
-                            <div class="post-medium-block"> @foreach($konsultasi as $k)
-                                <div class="content-block post-medium mb--20">
-                                    <div class="post-content">
-                                        <h6 class="title">
-                                            <a href="{{ url('konsultasi-syariah').'/'.getLink($k->judul_konsultasi.' '.$k->nama_konsultasi.' '.$k->kota_konsultasi) }}">{{ $k->judul_konsultasi }}</a>
-                                        </h6>
-                                        <div class="post-meta">
-                                            <ul class="post-meta-list">
-                                                <li>{{ $k->nama_konsultasi }}</li>
-                                                <li>{{ $k->kota_konsultasi }}</li>
-                                            </ul>
-                                        </div>
-                                        <small>{{ substr($k->detail_konsultasi,0,75).(strlen($k->detail_konsultasi) > 75 ? '...' : '') }}</small>
                                     </div>
                                 </div> @endforeach </div>
                         </div>
