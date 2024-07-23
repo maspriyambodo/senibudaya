@@ -25,4 +25,4 @@ composer.lock
 access_log
 error_log
 storage/logs-*
-nbproject/*
+/nbproject/*
