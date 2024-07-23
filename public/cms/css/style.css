@@ -29382,7 +29382,7 @@ strong {
 /* ================================    Dropdown End  ===================== */
 @media (min-width: 1600px) {
     .container {
-        max-width: 1580px;
+        max-width: 95%;
     }
 }
 
@@ -34678,7 +34678,7 @@ pre[class*=language-]:before {
 /* ====== [Header Fixed  end ] ======== */
 @media (min-width: 1440px) {
     .container {
-        max-width: 1400px;
+        max-width: 95%;
     }
 }
 
@@ -40641,3 +40641,23 @@ new-task label input[type=checkbox] {
 }
 
 /**====== user card css end ======**/
+.dataTables_wrapper .dataTables_pager .dataTables_length {
+    margin: 0.5rem 0;
+    margin-right: 1rem;
+    display: inline-block;
+}
+.dataTables_wrapper .dataTables_pager .dataTables_length label {
+
+    margin: 0;
+}
+.dataTables_wrapper .dataTables_pager {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}

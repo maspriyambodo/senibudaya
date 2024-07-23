@@ -1,26 +1,4 @@
 @include('cms.header')
-<style>
-    .dataTables_wrapper .dataTables_pager .dataTables_length {
-	margin: 0.5rem 0;
-	margin-right: 1rem;
-	display: inline-block;
-}
-.dataTables_wrapper .dataTables_pager .dataTables_length label {
-	
-	margin: 0;
-}
-.dataTables_wrapper .dataTables_pager {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	-webkit-box-pack: end;
-	-ms-flex-pack: end;
-	justify-content: flex-end;
-}
-</style>
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
 	<div class="pcoded-content">
