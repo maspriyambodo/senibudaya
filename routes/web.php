@@ -28,6 +28,7 @@ use App\Http\Controllers\Cms\Contact\ContactController;
 use App\Http\Controllers\Cms\Contact\ComplaintController;
 use App\Http\Controllers\Cms\Setting\UserController;
 use App\Http\Controllers\Cms\Setting\GroupController;
+use Illuminate\Support\Facades\Hash;
 
 //front
 Route::get('/', [ContentController::class, 'index']);
@@ -38,7 +39,9 @@ Route::get('/direktorat/{id}', [ContentController::class, 'show']);
 Route::get('/jurnalis/{id}', [ContentController::class, 'show']);
 Route::get('/editor/{id}', [ContentController::class, 'show']);
 Route::get('/fotografer/{id}', [ContentController::class, 'show']);
-
+//Route::get('/generate-password/{id}', function ($request) {
+//    return Hash::make(md5($request));
+//});
 //old url 
 Route::get('/jadwalshalat', function () {
     return redirect('/jadwal-shalat');
