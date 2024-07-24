@@ -67,7 +67,7 @@
         <style>
             .hero-section {
                 height: 100vh;
-                background: url('{{ asset("images/bg2.jpg") }}') no-repeat center center;
+                background: url('{{ asset("images/bg-fix.png") }}') no-repeat center center;
                 background-size: cover;
                 color: white;
                 display: flex;
