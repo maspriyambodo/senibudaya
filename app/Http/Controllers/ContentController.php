@@ -96,68 +96,6 @@ class ContentController extends Controller {
 
         $foto = Foto::where('status_foto', 't')->orderBy('created_at', 'desc')->paginate(10);
 
-        $propinsi = Http::post(env('APP_API') . 'apiv1/ajax/getApiProv')->getBody()->getContents();
-        $propinsi = str_replace('provKode', 'id', $propinsi);
-        $propinsi = str_replace('provNama', 'name', $propinsi);
-        $propinsi = json_decode($propinsi, false);
-
-        $id_propinsi = 0;
-        if (isset($propinsi)) {
-            foreach ($propinsi as $p) {
-                if (strtolower(trim($p->name)) == 'dki jakarta')
-                    $id_propinsi = $p->id;
-            }
-        }
-
-        $kabupaten = Http::asForm()->post(env('APP_API') . 'apiv1/ajax/getApiKabko', [
-                    'x' => $id_propinsi,
-                ])->getBody()->getContents();
-        $kabupaten = str_replace('kabkoKode', 'id', $kabupaten);
-        $kabupaten = str_replace('kabkoNama', 'name', $kabupaten);
-        $kabupaten = json_decode($kabupaten, false);
-
-        $id_kabupaten = 0;
-        if (isset($kabupaten)) {
-            foreach ($kabupaten as $k) {
-                if (empty($id_kabupaten))
-                    $id_kabupaten = $k->id;
-            }
-        }
-
-        for ($m = 1; $m <= 12; $m++)
-            $bulan[$m] = getBulan($m);
-
-        $tahun = array();
-        for ($y = date('Y') - 5; $y <= date('Y') + 5; $y++)
-            $tahun[] = $y;
-
-        $hijriah = Http::post(env('APP_API') . 'apiv1/ajax/getTahunimsak')->getBody()->getContents();
-        $hijriah = explode("</option><option value='", $hijriah);
-        $dta = array();
-        foreach ($hijriah as $val) {
-            list($t, $y) = explode("' >", $val);
-            $dta[preg_replace("/[^0-9]/", "", $t)] = strip_tags($y);
-        }
-        $hijriah = json_decode(json_encode($dta), false);
-
-        $shalat = Http::asForm()->post(env('APP_API') . 'apiv1/ajax/getApiSholatbln', [
-                    'prov' => $id_propinsi,
-                    'kabko' => $id_kabupaten,
-                    'thn' => date('Y'),
-                    'bln' => date('m'),
-                ])->getBody()->getContents();
-        $shalat = str_replace('prov', 'propinsi', $shalat);
-        $shalat = str_replace('kabko', 'kabupaten', $shalat);
-        $shalat = json_decode($shalat, false);
-
-        $jadwal = array();
-        if (isset($shalat->data)) {
-            foreach ($shalat->data as $d => $j) {
-                if (date('Y-m-d') == $d)
-                    $jadwal = $j;
-            }
-        }
-        
         $data = array_merge(
                 $content,
                 array('menu' => $menu),
@@ -176,12 +114,6 @@ class ContentController extends Controller {
                 array('video' => $video),
                 array('foto' => $foto),
                 array('konsultasi' => $konsultasi),
-                array('propinsi' => $propinsi),
-                array('kabupaten' => $kabupaten),
-                array('bulan' => $bulan),
-                array('tahun' => $tahun),
-                array('hijriah' => $hijriah),
-                array('jadwal' => $jadwal),
         );
         return view('content', $data);
     }
