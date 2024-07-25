@@ -7,7 +7,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta http-equiv="x-ua-compatible" content-type="ie=edge" />
         <title>{{ $param->title }}{{ empty($title) ? '' : ' - '.$title }}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="author" content="{{ $param->author }}" />
@@ -19,7 +19,7 @@
         @else
         <meta property="og:description" content="{{ isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','konsultasi','bimbingan')) ? (strtolower($kategori) == 'konsultasi' ? mb_strimwidth($detail->detail_konsultasi,0,137,'...') : mb_strimwidth($detail->{'keterangan_'.strtolower($kategori)},0,137,'.')) : (empty($title) ? '' : $title.' - ').$param->description }}" />
         @endif
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-type" content-type="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="p:domain_verify" content="420a65ff1d90e8a916aab11bfb5b7612" />
         <meta property="og:locale" content="id_ID" />
@@ -86,7 +86,7 @@
         <div class="main-wrapper">
             <div class="mouse-cursor cursor-outer"></div>
             <div class="mouse-cursor cursor-inner"></div>
-            <header class="header axil-header header-style-6 header-light header-sticky">
+            <header class="header axil-header header-style-6 header-light header-sticky ">
                 <div id="nav" class="header-bottom">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-xl-7 col-12">
@@ -193,4 +193,4 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        

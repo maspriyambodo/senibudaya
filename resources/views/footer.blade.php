@@ -93,8 +93,8 @@
     <script src="{{ asset('js/vendor/tweenmax.min.js') }}"></script>
     <script src="{{ asset('js/vendor/js.cookie.js') }}"></script>
     <script src="{{ asset('js/vendor/jquery.style.switcher.js') }}"></script>
-	<script src="{{ asset('js/vendor/lightgallery.js') }}"></script>
-	<script src="{{ asset('js/vendor/niceselect.js') }}"></script>
+    <script src="{{ asset('js/vendor/lightgallery.js') }}"></script>
+    <script src="{{ asset('js/vendor/niceselect.js') }}"></script>
 	
     <!-- Main JS -->
     <script src="{{ asset('js/main.js') }}"></script>
