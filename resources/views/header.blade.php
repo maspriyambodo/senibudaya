@@ -69,6 +69,9 @@
         <link href="{{ asset('fonts/poppins.css') }}" rel="stylesheet" type="text/css"/>
         @if (request()->is('/'))
         <style>
+            .main-banner{
+                margin-top: -15%;
+            }
             .hero-section {
                 height: 100vh;
                 background: url('{{ asset("images/bg-fix.jpg") }}') no-repeat center center;
@@ -167,7 +170,7 @@
                 <div class="inner">
                     <div class="mobile-menu-top">
                         <div class="logo">
-                            <a href="{{ url('/') }}"> <img class="dark-logo" src="{{ asset('images/logo.png') }}" alt="Bimas Islam" /> </a>
+                            <a href="{{ url('/') }}"> <img class="dark-logo" src="{{ asset('images/logo-black.png') }}" alt="Bimas Islam" /> </a>
                         </div>
                         <div class="mobile-close">
                             <div class="icon"><i class="fal fa-times"></i></div>
@@ -200,6 +203,7 @@
                         @else @if($m->is_hidden == 1)
                         <li><a href="{{ url($m->target_content) }}">{{ $m->nama_content }}</a></li>
                         @endif @endif @endforeach
+                        <li><a href="{{ url('/login') }}">Sign in</a></li>
                     </ul>
                 </div>
             </div>

@@ -4,7 +4,7 @@
     <div class="main-banner">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6 rounded-2 transparent-card mx-1">
+                <div class="col-md-4 rounded-2 transparent-card mx-1">
                     <div class="form-group text-left">
                         <h1 class="title-color1 mb-1 poppins-medium">Eksplor</h1>
                         <h1 class="mb-1 poppins-medium">Seni Budaya Islam di Indonesia</h1>
