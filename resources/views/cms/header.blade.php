@@ -13,7 +13,7 @@
 <meta name="keywords" content="" />
 <meta name="author" content="" />
 <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" />
-<link href="https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-1.13.5/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css" rel="stylesheet">
+<link href="{{ asset('datatables/datatables.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('cms/css/plugins/select2.css') }}" />
 <link rel="stylesheet" href="{{ asset('cms/css/plugins/lightbox.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('cms/css/plugins/ekko-lightbox.css') }}" />
@@ -22,7 +22,7 @@
 <script async src="{{ asset('cms/js/plugins/bootstrap.min.js') }}"></script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-1.13.5/b-2.4.1/b-colvis-2.4.1/b-html5-2.4.1/b-print-2.4.1/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.5.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
+<script src="{{ asset('datatables/datatables.min.js') }}"></script>
 <script async>var app_url="{{ url('') }}";</script>
 <script async>var app_page="{{ url($current) }}";</script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
