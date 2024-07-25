@@ -2,10 +2,19 @@
 
 <section class="hero-section">
     <div class="main-banner">
-        <div class="content container">
-            <h1>Eksplor Seni Budaya Islam Di Indonesia</h1>
-            <h2>Kementerian Agama Republik Indonesia</h2>
-            <p>Indonesia merupakan negara yang sangat kaya akan ragam seni Budaya Islam. Mulai dari seni ukir, seni tari, tradisi, ritual, instrumen, bangunan, lukisan, pakaian, tulisan dan lain sebagainya.</p>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 rounded-2 transparent-card mx-1">
+                    <div class="form-group text-left">
+                        <h1 class="title-color1 mb-1 poppins-medium">Eksplor</h1>
+                        <h1 class="mb-1 poppins-medium">Seni Budaya Islam di Indonesia</h1>
+                        <p class="poppins-regular">Indonesia merupakan negara yang sangat kaya akan ragam seni Budaya Islam. Mulai dari seni ukir, seni tari, tradisi, ritual, instrumen, bangunan, lukisan, pakaian, tulisan dan lain sebagainya.</p>  
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
         </div>
     </div>
 </section>

@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 @if (request()->is('/'))
-  <html style="overflow: hidden;">
+  <html lang="id, in" style="overflow: hidden;">
       @else
-      <html>
+      <html lang="id, in">
 @endif
-
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="x-ua-compatible" content-type="ie=edge" />
         <title>{{ $param->title }}{{ empty($title) ? '' : ' - '.$title }}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="author" content="{{ $param->author }}" />
         <meta name="keywords" content="{{ $param->keywords }}{{ empty($title) ? '' : ', '.$title }}" />
@@ -57,6 +58,7 @@
         <meta name="twitter:description" content="berita hari ini, berita terkini, berita terbaru, info berita, keagamaan, moderat, beragama, kemenag" />
         <meta name="twitter:image" content="{{ asset('images/'.(isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','bimbingan')) ? strtolower($kategori).'/'.$detail->{'image_'.strtolower($kategori)} : 'favicon.ico')) }}" />
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('css/vendor/bootstrap.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/vendor/font-awesome.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/vendor/slick.css') }}" />
@@ -64,19 +66,27 @@
         <link rel="stylesheet" href="{{ asset('css/vendor/base.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/plugins/plugins.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
+        <link href="{{ asset('fonts/poppins.css') }}" rel="stylesheet" type="text/css"/>
+        @if (request()->is('/'))
         <style>
             .hero-section {
                 height: 100vh;
-                background: url('{{ asset("images/bg-fix.png") }}') no-repeat center center;
+                background: url('{{ asset("images/bg-fix.jpg") }}') no-repeat center center;
                 background-size: cover;
                 color: white;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                text-align: center;
-                overflow: hidden;
+            }
+            .transparent-card {
+                background: rgba(255, 255, 255, 0.7);
+                border: none;
+            }
+            .title-color1{
+                color: #f6b600;
             }
         </style>
+        @endif
         {!! ReCaptcha::htmlScriptTagJsApi() !!}
         <script>
             var app_url = "{{ url('') }}";
@@ -157,7 +167,7 @@
                 <div class="inner">
                     <div class="mobile-menu-top">
                         <div class="logo">
-                            <a href="{{ url('/') }}"> <img class="dark-logo" src="{{ asset('images/logo-black.png') }}" alt="Bimas Islam" /> </a>
+                            <a href="{{ url('/') }}"> <img class="dark-logo" src="{{ asset('images/logo.png') }}" alt="Bimas Islam" /> </a>
                         </div>
                         <div class="mobile-close">
                             <div class="icon"><i class="fal fa-times"></i></div>
