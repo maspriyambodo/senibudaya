@@ -48,7 +48,7 @@
 <li>
 <div class="dropdown drp-user">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-<span>{{ Session::get('nama_user') }}</span>
+    <span class="mr-2">{{ Session::get('nama_user') }}</span>
 <img src="{{ asset('cms/images/user/'.Session::get('foto_user')) }}" class="img-radius lazy" alt="{{ Session::get('nama_user') }}" />
 </a>
 <div class="dropdown-menu dropdown-menu-right profile-notification">
