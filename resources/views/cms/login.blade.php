@@ -49,12 +49,7 @@
                                 <div class="form-group">
                                     {!! htmlFormSnippet() !!}
                                 </div>
-                                <div class="form-group text-right">
-                                    <a href="">Forgot Password?</a>
-                                </div>
-                                <button type="submit" class="btn btn-block btn-primary rounded-pill">Login</button>
-                                
-                                <button type="button" class="btn btn-block btn-success rounded-pill">Sign up</button>
+                                <button type="submit" class="btn btn-block btn-primary mb-4 rounded-pill">Login</button>
                             </form>
                         </div>
                     </div>

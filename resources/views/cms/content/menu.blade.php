@@ -28,38 +28,33 @@
 		<!-- [ Main Content ] start -->
 		
 		{{ alertInfo() }}
-		<div class="row">
-			<!-- [ sample-page ] start -->
-			<div class="col-sm-12">
-				<div class="card">
-					<div class="card-header pb-0">
-						@if(isset($filter))
-						{{ searchFilter($filter) }}
-						@endisset
-						<div class="card-header-right">
-							@if($input)
-							<a href="{{ url($current.'/add/0') }}" class="btn btn-sm btn-warning"><i class="feather icon-plus"></i> Tambah Data</a>
-							@else&nbsp;@endif
-						</div>
-					</div>
-					<div class="card-body p-0">
-						<table width="100%" class="table table-striped table-responsive-xl" id="data">
-							<thead>
-								<tr>
-									<th style="min-width:30px">No</th>
-									@if($edit || $delete)<th style="min-width:25px">#</th>@endisset
-									<th style="min-width:300px">Menu</th>
-									<th style="min-width:50px">Order</th>
-									<th style="min-width:50px">Status</th>
-								</tr>
-							</thead>
-						</table>
-					</div>
-					{{ dataTable( $current.'/json', $column ) }}
-				</div>
-			</div>
-			<!-- [ sample-page ] end -->
-		</div>
+                <div class="bg-white  p-2 m-4">
+                    <div class="row">
+                        <div class="col-md-6 text-left">
+                            @if(isset($filter))
+                            {{ searchFilter($filter) }}
+                            @endisset
+                        </div>
+                        <div class="col-md-6 text-right">
+                            @if($input)
+                            <a href="{{ url($current.'/add/0') }}" class="btn btn-sm btn-warning"><i class="feather icon-plus"></i> Tambah Data</a>
+                            @else&nbsp;@endif
+                        </div>
+                    </div>
+                    <div class="clear mt-4"></div>
+                    <table class="table table-bordered table-hover" id="data" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                @if($edit || $delete)<th>#</th>@endif
+                                <th>Menu</th>
+                                <th>Order</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    {{ dataTable( $current.'/json', $column ) }}
+                </div>
 		<!-- [ Main Content ] end -->
 	</div>
 </div>

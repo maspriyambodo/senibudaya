@@ -1,4 +1,5 @@
 @include('cms.header')
+
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
 	<div class="pcoded-content">
@@ -27,25 +28,24 @@
 		<!-- [ Main Content ] start -->
 		
 		{{ alertInfo() }}
-                <div class="bg-white p-2 m-4">
-                    <div class="row">
-                    <div class="col-md-6 text-left">
-                        @if(isset($filter))
+		<div class="row">
+			<!-- [ sample-page ] start -->
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-header pb-0">
+						@if(isset($filter))
 						{{ searchFilter($filter) }}
 						@endisset
-                    </div>
-                    <div class="col-md-6 text-right">
-                        @if($input)
+						<div class="card-header-right">
+							@if($input)
 							<button id="input" type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#form" data-backdrop="static"><i class="feather icon-plus"></i> Tambah Data</button>
 							@else
 							&nbsp;
 							@endif
-                    </div>
-                </div>
-		
-						
-                                                        <div class="clear mt-4"></div>
-                                                        <table class="table table-hover table-bordered" id="data" style="width: 100%;">
+						</div>
+					</div>
+					<div class="card-body p-0">
+						<table width="100%" class="table table-striped table-responsive-xl" id="data">
 							<thead>
 								<tr>
 									<th style="min-width:30px">No</th>
@@ -56,8 +56,12 @@
 								</tr>
 							</thead>
 						</table>
+					</div>
 					{{ dataTable( $current.'/json', $column ) }}
-                </div>
+				</div>
+			</div>
+			<!-- [ sample-page ] end -->
+		</div>
 		<!-- [ Main Content ] end -->
 	</div>
 </div>
@@ -67,7 +71,7 @@
 <!-- ModalFade -->
 {{ deleteModal($current) }}
 <div class="modal fade" id="form" tabindex="-1" role="dialog">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<form action="{{ $current }}/store" method="post" class="needs-validation" novalidate="">
 				<div class="modal-header">
