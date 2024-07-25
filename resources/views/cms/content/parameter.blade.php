@@ -28,7 +28,7 @@
         <!-- [ Main Content ] start -->
 
         {{ alertInfo() }}
-        <div class="bg-white  p-2 m-4">
+        <div class="bg-white p-2">
             <div class="row">
                 <div class="col-md-6 text-left">
                     @if(isset($filter))
@@ -44,7 +44,8 @@
                 </div>
             </div>
             <div class="clear mt-4"></div>
-            <table class="table table-bordered table-hover" id="data" style="width:100%;">
+            <div class="dt-responsive table-responsive">
+                <table class="table table-bordered table-hover" id="data">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -55,6 +56,7 @@
                 </thead>
             </table>
             {{ dataTable( $current.'/json', $column ) }}
+            </div>
         </div>
         <!-- [ Main Content ] end -->
     </div>
