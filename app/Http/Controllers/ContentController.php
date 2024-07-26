@@ -604,16 +604,4 @@ class ContentController extends Controller {
         return redirect($segment);
     }
 
-    public function kabupaten(Request $request) {
-        $parameter = Parameter::data();
-        if ($request->id) {
-            $kabupaten = Http::asForm()->post(env('APP_API') . 'apiv1/ajax/getApiKabko', [
-                        'x' => $request->id,
-                    ])->getBody()->getContents();
-            $kabupaten = str_replace('kabkoKode', 'id', $kabupaten);
-            $kabupaten = str_replace('kabkoNama', 'name', $kabupaten);
-            $kabupaten = json_decode($kabupaten, false);
-            return json_encode($kabupaten);
-        }
-    }
 }
