@@ -11,7 +11,7 @@
 @if(strtolower($kategori) == 'berita')
 <div class="row">
 <div class="col-lg-5">
-<p class="has-medium-font-size">{{ $title }}</p>
+<h1 class="poppins-medium">{{ $title }}</h1>
 </div>
 <div class="col-lg-7 text-end">
 @if($tags == 'jurnalis')
@@ -49,7 +49,7 @@
 </select>
 @else
 <select id="direktorat" name="direktorat" class="style-select tags-select">
-<option value="0" @if(!$kategori_direktorat) selected @endif>Semua Direktorat</option>
+<option value="0" @if(!$kategori_direktorat) selected @endif>Semua Kategori</option>
 @foreach($direktorat as $id => $nama)
 @if($id == $kategori_direktorat)
 <option value="{{ $id }}" selected> {{ $nama }}</option>
