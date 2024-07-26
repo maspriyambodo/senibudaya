@@ -19,7 +19,8 @@ class LoginController extends Controller
         if ($ses_login) {
             $result = redirect('dashboard');
         } else {
-            $result = view('cms.login', array('param' => Parameter::data()));
+//            $result = view('cms.login', array('param' => Parameter::data()));
+            $result = view('cms.login2', array('param' => Parameter::data()));
         }
         return $result;
     }
