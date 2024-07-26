@@ -11,7 +11,7 @@
 @if(strtolower($kategori) == 'berita')
 <div class="row">
 <div class="col-lg-5">
-<h1 class="poppins-medium">{{ $title }}</h1>
+<h1 class="exo-2-medium">{{ $title }}</h1>
 </div>
 <div class="col-lg-7 text-end">
 @if($tags == 'jurnalis')
@@ -62,7 +62,7 @@
 </div>
 </div>
 @else
-<p class="has-medium-font-size">{{ strtolower($kategori) == 'konsultasi' ? $jenis[$default] : $title }}</p>
+<h1 class="exo-2-medium">{{ strtolower($kategori) == 'konsultasi' ? $jenis[$default] : $title }}</h1>
 @endif
 @if(strtolower($kategori) != 'kontak')
 {!! $detail !!}

@@ -108,33 +108,10 @@
                             <div class="mainmenu-wrapper d-none d-xl-block">
                                 <nav class="mainmenu-nav">
                                     <ul class="mainmenu">
-                                        <li><a href="{{ url('/') }}">Beranda</a></li>
-                                        @foreach($menu[0] as $m) @if(isset($m->detail_content))
-                                        <li class="menu-item-has-children">
-                                            <a href="#">{{ $m->nama_content }}</a>
-                                            <ul class="axil-submenu">
-                                                @foreach($m->detail_content as $d) @if(isset($menu[$d->id]) && !$d->hide_content)
-                                                <li class="menu-item-has-sub-children">
-                                                    <a href="#"> {{ $d->nama_content }}</a>
-                                                    <ul class="axil-sub-submenu">
-                                                        @foreach($menu[$d->id] as $l)
-                                                        <li>
-                                                            <a class="hover-flip-item-wrapper" href="{{ url($l->target_content) }}" @if($l->redirect_content) target="_blank" @endif > <span data-text="{{ $l->nama_content }}">{{ $l->nama_content }}</span></a>
-                                                        </li>
-                                                        @endforeach
-                                                    </ul>
-                                                </li>
-                                                @else
-                                                <li>
-                                                    <a class="hover-flip-item-wrapper" href="{{ url($d->target_content) }}" @if($d->redirect_content) target="_blank" @endif > <span data-text="{{ $d->nama_content }}">{{ $d->nama_content }}</span></a>
-                                                </li>
-                                                @endif @endforeach
-                                            </ul>
-                                        </li>
-                                        @else @if($m->is_hidden == 1)
-                                        <li><a href="{{ url($m->target_content) }}">{{ $m->nama_content }}</a></li>
-                                        @endif @endif @endforeach
-                                        <li><a href="{{ url('/login') }}">Signin</a></li>
+                                        <li><a href="{{ url('/') }}">HOME</a></li>
+                                        <li><a href="{{ url('tentang-kami') }}">ABOUT US</a></li>
+                                        <li><a href="{{ url('our-collection') }}">OUR COLLECTION</a></li>
+                                        <li><a href="//senibudaya.test/login">SIGN IN</a></li>
                                     </ul>
                                 </nav>
                             </div>

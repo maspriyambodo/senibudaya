@@ -37,7 +37,7 @@ class ContentController extends Controller {
 
     public function index() {
         $content = ClassContent::view('home');
-        $parameter = $content['param'];
+        
 
         $menu = $icon = array();
         foreach ($content['content'] as $c) {
@@ -116,6 +116,48 @@ class ContentController extends Controller {
                 array('konsultasi' => $konsultasi),
         );
         return view('content', $data);
+    }
+    
+    public function our_collection() {
+        $content = ClassContent::view('home');
+        $menu = $icon = array();
+        foreach ($content['content'] as $c) {
+            $menu[$c->induk_content][] = $c;
+            if (!empty($c->icon_content)) {
+                $icon[$c->id] = $c;
+            }
+
+            if (isset($c->detail_content)) {
+                foreach ($c->detail_content as $d) {
+                    $menu[$d->induk_content][] = $d;
+                    if (!empty($d->icon_content)) {
+                        $icon[$d->id] = $d;
+                    }
+                }
+            }
+        }
+        $berita = $top = $slide = $head = $main = $middle = $swipe = $bottom = array();
+        $temp = array_merge($slide, $head);
+        if (count($temp) > 4) {
+            foreach (array_rand($temp, 5) as $t) {
+                $top[] = $temp[$t];
+            }
+        }
+        $data = array_merge(
+                $content,
+                array('menu' => $menu),
+                array('icon' => $icon),
+                array('direktorat' => $this->direktorat),
+                array('banner' => $this->banner),
+                array('top' => $top),
+                array('slide' => $slide),
+                array('head' => $head),
+                array('main' => $main),
+                array('middle' => $middle),
+                array('swipe' => $swipe),
+                array('bottom' => $bottom)
+        );
+        return view('our_collection', $data);
     }
 
     public function show(Request $request) {
