@@ -11,7 +11,7 @@
 @if(strtolower($kategori) == 'berita')
 <div class="row">
 <div class="col-lg-5">
-<p class="has-medium-font-size">{{ $title }}</p>
+<h1 class="poppins-medium">{{ $title }}</h1>
 </div>
 <div class="col-lg-7 text-end">
 @if($tags == 'jurnalis')
@@ -49,7 +49,7 @@
 </select>
 @else
 <select id="direktorat" name="direktorat" class="style-select tags-select">
-<option value="0" @if(!$kategori_direktorat) selected @endif>Semua Direktorat</option>
+<option value="0" @if(!$kategori_direktorat) selected @endif>Semua Kategori</option>
 @foreach($direktorat as $id => $nama)
 @if($id == $kategori_direktorat)
 <option value="{{ $id }}" selected> {{ $nama }}</option>
@@ -68,7 +68,7 @@
 {!! $detail !!}
 @endif
 </div>
-@if(in_array(strtolower($kategori), array('kontak', 'pengaduan', 'pertanyaan', 'jadwal')))
+@if(in_array(strtolower($kategori), array('kontak', 'pengaduan', 'pertanyaan')))
 {{ alertContent() }}
 @endif
 @if(strtolower($kategori) == 'dokumen')
@@ -324,227 +324,6 @@
 {{ $konsultasi->links("pagination::bootstrap-4") }}
 @else
 <small>belum ada data</small>
-@endif
-@endif
-@if(strtolower($kategori) == 'jadwal')
-<small>Masukkan data sesuai lokasi anda, berdasarkan bulan dan tahun pada form dibawah ini.</small>
-<form class="custom-form mt--10 mb--40" id="form" action="{{ url($current).'/search' }}#search" method="post" />
-@csrf
-<select id="propinsi" name="propinsi" class="style-select mb-3">
-@foreach($propinsi as $p)
-@if(strtolower(trim($p->name)) != 'pusat')
-@if($p->id == $request->propinsi)
-<option value="{{ $p->id }}" selected> {{ $p->name }}</option>
-@else
-<option value="{{ $p->id }}"> {{ $p->name }}</option>
-@endif
-@endif
-@endforeach
-</select>
-<select id="kabupaten" name="kabupaten" class="style-select mb-3">
-@foreach($kabupaten as $k)
-@if($k->id == $request->kabupaten)
-<option value="{{ $k->id }}" selected> {{ $k->name }}</option>
-@else
-<option value="{{ $k->id }}"> {{ $k->name }}</option>
-@endif
-@endforeach
-</select>
-@if(preg_match('/imsakiyah/i', $current))
-<select id="tahun" name="tahun" class="style-select mb-3">
-@foreach($tahun as $t => $y)
-@if($t == $request->tahun)
-<option value="{{ $t }}" selected>{{ $y }}</option>
-@else
-<option value="{{ $t }}">{{ $y }}</option>
-@endif
-@endforeach
-</select>
-@else
-<div class="row">
-<div class="col-md-6">
-<select id="bulan" name="bulan" class="style-select mb-3">
-@foreach($bulan as $b => $name)
-@if($b == $request->bulan)
-<option value="{{ $b }}" selected>{{ $name }}</option>
-@else
-<option value="{{ $b }}">{{ $name }}</option>
-@endif
-@endforeach
-</select>
-</div>
-<div class="col-md-6">
-<select id="tahun" name="tahun" class="style-select mb-3">
-@foreach($tahun as $t)
-@if($t == $request->tahun)
-<option value="{{ $t }}" selected>{{ $t }}</option>
-@else
-<option value="{{ $t }}">{{ $t }}</option>
-@endif
-@endforeach
-</select>
-</div>
-</div>
-@endif
-<div class="row mb--10">
-<div class="col-md-6">
-{!! htmlFormSnippet() !!}
-</div>
-<div class="col-md-6">
-<span class="text-validate"><span>
-</div>
-</div>
-<button id="search" name="search" type="submit" id="submit" class="axil-button button-rounded">Cari Data</button>
-</form>
-@if(isset($jadwal->data))
-<div class="row">
-@foreach($jadwal->data as $j)
-<div class="col-md-6 col-xs-12 mb--20">
-<div class="content-block post-list-view mt--30">
-<div class="post-content">
-<h6 class="title mb--10">
-<a href="#">
-{{ $j->tanggal }}
-@if(preg_match('/imsakiyah/i', $current))
-Ramadhan {{ $jadwal->hijriah }} H
-@endif
-</a>
-</h6>
-<div class="row">
-<div class="col-3">
-<div class="post-meta-wrapper">
-<div class="post-meta">
-<div class="content">
-<ul class="post-meta-list">
-<li>IMSAK</li>
-</ul>
-<h6 class="post-author-name">
-<a class="hover-flip-item-wrapper" href="#">
-<span data-text="IMSAK">{{ $j->imsak }}</span>
-</a>
-</h6>
-</div>
-</div>
-</div>
-</div>
-<div class="col-3">
-<div class="post-meta-wrapper">
-<div class="post-meta">
-<div class="content">
-<ul class="post-meta-list">
-<li>SUBUH</li>
-</ul>
-<h6 class="post-author-name">
-<a class="hover-flip-item-wrapper" href="#">
-<span data-text="SUBUH">{{ $j->subuh }}</span>
-</a>
-</h6>
-</div>
-</div>
-</div>
-</div>
-<div class="col-3">
-<div class="post-meta-wrapper">
-<div class="post-meta">
-<div class="content">
-<ul class="post-meta-list">
-<li>TERBIT</li>
-</ul>
-<h6 class="post-author-name">
-<a class="hover-flip-item-wrapper" href="#">
-<span data-text="TERBIT">{{ $j->terbit }}</span>
-</a>
-</h6>
-</div>
-</div>
-</div>
-</div>
-<div class="col-3">
-<div class="post-meta-wrapper">
-<div class="post-meta">
-<div class="content">
-<ul class="post-meta-list">
-<li>DHUHA</li>
-</ul>
-<h6 class="post-author-name">
-<a class="hover-flip-item-wrapper" href="#">
-<span data-text="DHUHA">{{ $j->dhuha }}</span>
-</a>
-</h6>
-</div>
-</div>
-</div>
-</div>
-<div class="col-3">
-<div class="post-meta-wrapper">
-<div class="post-meta">
-<div class="content">
-<ul class="post-meta-list">
-<li>DZUHUR</li>
-</ul>
-<h6 class="post-author-name">
-<a class="hover-flip-item-wrapper" href="#">
-<span data-text="DZUHUR">{{ $j->dzuhur }}</span>
-</a>
-</h6>
-</div>
-</div>
-</div>
-</div>
-<div class="col-3">
-<div class="post-meta-wrapper">
-<div class="post-meta">
-<div class="content">
-<ul class="post-meta-list">
-<li>ASHAR</li>
-</ul>
-<h6 class="post-author-name">
-<a class="hover-flip-item-wrapper" href="#">
-<span data-text="ASHAR">{{ $j->ashar }}</span>
-</a>
-</h6>
-</div>
-</div>
-</div>
-</div>
-<div class="col-3">
-<div class="post-meta-wrapper">
-<div class="post-meta">
-<div class="content">
-<ul class="post-meta-list">
-<li>MAGHRIB</li>
-</ul>
-<h6 class="post-author-name">
-<a class="hover-flip-item-wrapper" href="#">
-<span data-text="MAGHRIB">{{ $j->maghrib }}</span>
-</a>
-</h6>
-</div>
-</div>
-</div>
-</div>
-<div class="col-3">
-<div class="post-meta-wrapper">
-<div class="post-meta">
-<div class="content">
-<ul class="post-meta-list">
-<li>ISYA</li>
-</ul>
-<h6 class="post-author-name">
-<a class="hover-flip-item-wrapper" href="#">
-<span data-text="ISYA">{{ $j->isya }}</span>
-</a>
-</h6>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-@endforeach
-</div>
 @endif
 @endif
 @if(strtolower($kategori) == 'kontak')

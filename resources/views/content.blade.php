@@ -6,9 +6,10 @@
             <div class="row">
                 <div class="col-md-4 rounded-2 transparent-card mx-1">
                     <div class="form-group text-left">
-                        <h1 class="title-color1 mb-1 poppins-medium">Eksplor</h1>
-                        <h1 class="mb-1 poppins-medium">Seni Budaya Islam di Indonesia</h1>
-                        <p class="poppins-regular">Indonesia merupakan negara yang sangat kaya akan ragam seni Budaya Islam. Mulai dari seni ukir, seni tari, tradisi, ritual, instrumen, bangunan, lukisan, pakaian, tulisan dan lain sebagainya.</p>  
+                        <h1 class="title-color1 mb-1 exo-2-medium">Eksplor</h1>
+                        <h1 class="mb-1 exo-2-medium">Seni Budaya Islam di Indonesia</h1>
+                        <p class="exo-2-regular">Indonesia merupakan negara yang sangat kaya akan ragam seni Budaya Islam. Mulai dari seni ukir, seni tari, tradisi, ritual, instrumen, bangunan, lukisan, pakaian, tulisan dan lain sebagainya.</p>  
+                        <b class="text-dark">Kementerian Agama RI</b>
                     </div>
                 </div>
                 <div class="col-md-6">
