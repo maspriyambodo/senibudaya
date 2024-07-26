@@ -282,77 +282,6 @@ class ContentController extends Controller {
             }
         }
 
-        $propinsi = $kabupaten = $tahun = $bulan = $jadwal = array();
-        if (strtolower($kategori) == 'jadwal') {
-            if (isset($request->kabupaten)) {
-                if (isset($request->bulan)) {
-                    $jadwal = Http::asForm()->post(env('APP_API') . 'apiv1/ajax/getApiSholatbln', [
-                                'prov' => $request->propinsi,
-                                'kabko' => $request->kabupaten,
-                                'thn' => $request->tahun,
-                                'bln' => $request->bulan,
-                            ])->getBody()->getContents();
-                } else {
-                    $jadwal = Http::asForm()->post(env('APP_API') . 'apiv1/ajax/getApiimsakiyah', [
-                                'prov' => $request->propinsi,
-                                'kabko' => $request->kabupaten,
-                                'thn' => $request->tahun,
-                            ])->getBody()->getContents();
-                }
-                $jadwal = str_replace('prov', 'propinsi', $jadwal);
-                $jadwal = str_replace('kabko', 'kabupaten', $jadwal);
-                $jadwal = json_decode($jadwal, false);
-            }
-
-            $propinsi = Http::post(env('APP_API') . 'apiv1/ajax/getApiProv')->getBody()->getContents();
-            $propinsi = str_replace('provKode', 'id', $propinsi);
-            $propinsi = str_replace('provNama', 'name', $propinsi);
-            $propinsi = json_decode($propinsi, false);
-
-            if (isset($propinsi) && !isset($request->propinsi)) {
-                foreach ($propinsi as $p) {
-                    if (strtolower(trim($p->name)) == 'dki jakarta') {
-                        $request->propinsi = $p->id;
-                    }
-                }
-            }
-
-            $kabupaten = Http::asForm()->post(env('APP_API') . 'apiv1/ajax/getApiKabko', [
-                        'x' => $request->propinsi,
-                    ])->getBody()->getContents();
-            $kabupaten = str_replace('kabkoKode', 'id', $kabupaten);
-            $kabupaten = str_replace('kabkoNama', 'name', $kabupaten);
-            $kabupaten = json_decode($kabupaten, false);
-
-            for ($m = 1; $m <= 12; $m++) {
-                $bulan[$m] = getBulan($m);
-            }
-
-            $tahun = array();
-            for ($y = date('Y') - 5; $y <= date('Y') + 5; $y++) {
-                $tahun[] = $y;
-            }
-
-            if (preg_match('/imsakiyah/i', $content['current'])) {
-                $tahun = Http::post(env('APP_API') . 'apiv1/ajax/getTahunimsak')->getBody()->getContents();
-                $tahun = explode("</option><option value='", $tahun);
-                $dta = array();
-                foreach ($tahun as $val) {
-                    list($t, $y) = explode("' >", $val);
-                    $dta[preg_replace("/[^0-9]/", "", $t)] = strip_tags($y);
-                }
-                $tahun = json_decode(json_encode($dta), false);
-            } else {
-                if (!isset($request->tahun)) {
-                    $request->tahun = date('Y');
-                }
-
-                if (!isset($request->bulan)) {
-                    $request->bulan = date('m');
-                }
-            }
-        }
-
         $data = array_merge(
                 $content,
                 ['banner' => $this->banner],
@@ -383,11 +312,6 @@ class ContentController extends Controller {
                 array('foto' => $foto),
                 array('video' => $video),
                 array('thumb' => $thumb),
-                array('propinsi' => $propinsi),
-                array('kabupaten' => $kabupaten),
-                array('bulan' => $bulan),
-                array('tahun' => $tahun),
-                array('jadwal' => $jadwal),
                 array('request' => $request),
         );
 		
