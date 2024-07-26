@@ -58,7 +58,7 @@
         <meta name="twitter:description" content="berita hari ini, berita terkini, berita terbaru, info berita, keagamaan, moderat, beragama, kemenag" />
         <meta name="twitter:image" content="{{ asset('images/'.(isset($detail) && in_array(strtolower($kategori), array('berita','opini','tokoh','bimbingan')) ? strtolower($kategori).'/'.$detail->{'image_'.strtolower($kategori)} : 'favicon.ico')) }}" />
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('css/vendor/bootstrap.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/vendor/font-awesome.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/vendor/slick.css') }}" />
@@ -82,8 +82,10 @@
                 align-items: center;
             }
             .transparent-card {
+                border: 1px solid #979797;
+                box-shadow: 0 5px 3px 0 rgba(90, 90, 90,0.6);
                 background: rgba(255, 255, 255, 0.7);
-                border: none;
+                border-radius: 24px;
             }
             .title-color1{
                 color: #f6b600;
