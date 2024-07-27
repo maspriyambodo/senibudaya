@@ -21,7 +21,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-4">
-                    <div class="logo"><a href="//senibudaya.test"><img class="light-logo" src="//senibudaya.test/images/logo.png"></a></div>
+                    <div class="logo">
+                        <a href="//senibudaya.test"><img class="light-logo" src="//senibudaya.test/images/logo.png"></a>
+                    </div>
                 </div>
                 <div class="col-lg-8 col-md-8">
                     <div class="d-flex justify-content-start mt_sm--15 justify-content-md-end align-items-center flex-wrap">

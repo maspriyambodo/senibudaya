@@ -19,7 +19,7 @@ class MyCustomPolicy extends Basic {
                 ->addDirective(Directive::FONT, 'self data: *.googleapis.com *.gstatic.com')
                 ->addDirective(Directive::SCRIPT, 'self report-sample *.googletagmanager.com *.google.com *.gstatic.com www.facebook.com twitter.com www.instagram.com www.youtube.com *.cloudflare.com cdn-cookieyes.com *.datatables.net scentivaid.com unsafe-inline blob: data: unsafe-eval')
                 ->addDirective(Directive::STYLE, 'self report-sample *.cloudflare.com *.googleapis.com *.datatables.net unsafe-inline')
-                ->addDirective(Directive::IMG, 'self data: blob: *.cloudflare.com cdn-cookieyes.com scentivaid.com img.youtube.com dev.alfabet.io android-webview-video-poster: data:')
+                ->addDirective(Directive::IMG, 'self data: blob: *.cloudflare.com cdn-cookieyes.com scentivaid.com img.youtube.com dev.alfabet.io kemenag.go.id android-webview-video-poster: data:')
                 ->addDirective(Directive::MEDIA, 'self data: blob:')
                 ->addDirective(Directive::OBJECT, 'unsafe-eval *.kemenag.dev *.kemenag.go.id data: localhost')
                 ->addDirective(Directive::FORM_ACTION, 'senibudaya.test scentivaid.com *.kemenag.go.id *.kemenag.dev localhost')
