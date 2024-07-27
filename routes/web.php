@@ -29,9 +29,15 @@ use App\Http\Controllers\Cms\Contact\ComplaintController;
 use App\Http\Controllers\Cms\Setting\UserController;
 use App\Http\Controllers\Cms\Setting\GroupController;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\LandingController;
 
 //front
-Route::get('/', [ContentController::class, 'index']);
+Route::get('/', [LandingController::class, 'index'])->name('landing.home');
+Route::get('/about-us', [LandingController::class, 'about_us'])->name('landing.about-us');
+Route::get('/our-collections', [LandingController::class, 'our_collections'])->name('landing.our-collections');
+Route::get('/show-collections/{type}', [LandingController::class, 'show_collections'])->name('landing.show-collections');
+Route::get('/show-collection-detail/{slug}', [LandingController::class, 'show_collection_detail'])->name('landing.show-collection-detail');
+// Route::get('/', [ContentController::class, 'index']);
 Route::post('/search', [ContentController::class, 'search']);
 Route::get('/search', [ContentController::class, 'search']);
 Route::get('/kabupaten/{id}', [ContentController::class, 'kabupaten']);
@@ -43,7 +49,7 @@ Route::get('/our-collection', [ContentController::class, 'our_collection']);
 //Route::get('/generate-password/{tulispassword}', function ($request) {
 //    return Hash::make(md5($request));
 //});
-//old url 
+//old url
 Route::get('/jadwalshalat', function () {
     return redirect('/jadwal-shalat');
 });
