@@ -100,7 +100,7 @@
                 </div>
             </div>
         </div>
-        <script>var hostUrl = "";</script>
+        <script>var hostUrl = "{{ url('/') }}";</script>
         <script src="{{ asset('metronic/plugins.bundle.js') }}"></script>
         <script src="{{ asset('metronic/scripts.bundle.js') }}"></script>
         <script src="{{ asset('metronic/general.js') }}"></script>

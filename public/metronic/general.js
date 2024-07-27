@@ -66,7 +66,7 @@ var KTSigninGeneral = (function () {
                                                     var form = document.getElementById('kt_sign_in_form');
                                                     var formData = new FormData(form);
                                                     $.ajax({
-                                                        url: "/auth",
+                                                        url: hostUrl + "/auth",
                                                         type: "POST",
                                                         data: formData,
                                                         cache: false,
