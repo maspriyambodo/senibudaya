@@ -109,9 +109,9 @@
                                 <nav class="mainmenu-nav">
                                     <ul class="mainmenu">
                                         <li><a href="{{ url('/') }}">HOME</a></li>
-                                        <li><a href="{{ url('tentang-kami') }}">ABOUT US</a></li>
-                                        <li><a href="{{ url('our-collection') }}">OUR COLLECTION</a></li>
-                                        <li><a href="//senibudaya.test/login">SIGN IN</a></li>
+                                        <li><a href="{{ url('tentang-kami/') }}">ABOUT US</a></li>
+                                        <li><a href="{{ url('our-collection/') }}">OUR COLLECTION</a></li>
+                                        <li><a href="{{ url('login/') }}">SIGN IN</a></li>
                                     </ul>
                                 </nav>
                             </div>
