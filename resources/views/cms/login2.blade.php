@@ -100,7 +100,8 @@
                 </div>
             </div>
         </div>
-        <script>var hostUrl = "{{ url('/') }}";</script>
+        <input type="hidden" name="hostUrl" value="{{ url('/') }}" readonly=""/>
+        <script>var hostUrl = window.location.pathname;</script>
         <script src="{{ asset('metronic/plugins.bundle.js') }}"></script>
         <script src="{{ asset('metronic/scripts.bundle.js') }}"></script>
         <script src="{{ asset('metronic/general.js') }}"></script>
