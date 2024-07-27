@@ -100,7 +100,7 @@
                 </div>
             </div>
         </div>
-        <input type="hidden" name="hostUrl" value="{{ url('/') }}" readonly=""/>
+        <input type="hidden" name="hostUrl" value="{{ url('/auth/') }}" readonly=""/>
         <script>var hostUrl = window.location.pathname;</script>
         <script src="{{ asset('metronic/plugins.bundle.js') }}"></script>
         <script src="{{ asset('metronic/scripts.bundle.js') }}"></script>
