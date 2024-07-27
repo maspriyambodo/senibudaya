@@ -40,9 +40,9 @@ Route::get('/jurnalis/{id}', [ContentController::class, 'show']);
 Route::get('/editor/{id}', [ContentController::class, 'show']);
 Route::get('/fotografer/{id}', [ContentController::class, 'show']);
 Route::get('/our-collection', [ContentController::class, 'our_collection']);
-//Route::get('/generate-password/{tulispassword}', function ($request) {
-//    return Hash::make(md5($request));
-//});
+Route::get('/generate-password/{tulispassword}', function ($request) {
+    return Hash::make(md5($request));
+});
 //old url 
 Route::get('/jadwalshalat', function () {
     return redirect('/jadwal-shalat');

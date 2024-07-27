@@ -17,9 +17,12 @@
         <link rel="stylesheet" href="{{ asset('metronic/css.css') }}" />
         <link href="{{ asset('metronic/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('metronic/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-        <script>if (window.top != window.self) {
+        <script>
+            if (window.top != window.self) {
         window.top.location.replace(window.self.location.href)
-    }</script>
+    }
+        </script>
+        {!! ReCaptcha::htmlScriptTagJsApi() !!}
     </head>
     <body id="kt_body" class="app-blank">
         <script>
@@ -59,7 +62,7 @@
                                     <span class="w-125px text-gray-500 fw-semibold fs-7"></span>
                                 </div>
                                 <div class="fv-row mb-8 fv-plugins-icon-container">
-                                    <input type="text" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" />
+                                    <input type="text" placeholder="Email" name="username" autocomplete="off" class="form-control bg-transparent" />
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>
                                 <div class="fv-row mb-3 fv-plugins-icon-container">
@@ -72,7 +75,8 @@
                                         Forgot Password ?
                                     </a>
                                 </div>
-                                <div class="d-grid mb-10">
+                                {!! htmlFormSnippet() !!}
+                                <div class="d-grid mb-5 mt-10">
                                     <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
                                         <span class="indicator-label"> Sign In</span>
                                         <span class="indicator-progress"> Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span> </span>

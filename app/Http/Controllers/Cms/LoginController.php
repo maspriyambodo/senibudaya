@@ -48,10 +48,17 @@ class LoginController extends Controller
 
             $foto_user = public_path('cms/images/user/' . $user->foto_user);
             Session::put('foto_user', (File::exists($foto_user) && !empty($user->foto_user)) ? $user->foto_user : "default.png");
-            return redirect('dashboard');
+            $output = [
+                'stat' => true,
+                'url_direct' => url('/dashboard')
+            ];
         } else {
-            return redirect('login')->with('message', "Username password tidak sesuai.");
+            $output = [
+                'stat' => false,
+                'msgtxt' => 'Username password tidak sesuai.'
+            ];
         }
+        return response()->json($output);
     }
 
     public function logout(Request $request)
