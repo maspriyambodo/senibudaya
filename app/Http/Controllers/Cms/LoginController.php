@@ -20,9 +20,13 @@ class LoginController extends Controller
             $result = redirect('dashboard');
         } else {
 //            $result = view('cms.login', array('param' => Parameter::data()));
-            $result = view('cms.login2', array('param' => Parameter::data()));
+            $result = view('cms.login2', array('param' => Parameter::data(), 'page' => 'Sign In'));
         }
         return $result;
+    }
+    
+    public function forgot_password() {
+        
     }
 
     public function auth(Request $request)

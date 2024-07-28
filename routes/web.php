@@ -86,6 +86,7 @@ Route::post('/apiv1/getImsakJadwal', [Apiv1Controller::class, 'imsak']);
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::post('/auth', [LoginController::class, 'auth']);
+Route::get('/forgot-password', [ContentController::class, 'forgot_password']);
 
 Route::group(['middleware' => ['auth']], function () {
     //dashboard
