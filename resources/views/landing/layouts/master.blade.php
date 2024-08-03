@@ -1,41 +1,65 @@
-<!doctype html>
-<html class="no-js" lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Repositori Seni Budaya Islam - Kementerian Agama RI</title>
-    <meta name="robots" content="noindex, follow" />
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link rel="stylesheet" href="{{ asset('landing/css/vendor/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('landing/css/vendor/font-awesome.css') }}">
-    <link rel="stylesheet" href="{{ asset('landing/css/vendor/slick.css') }}">
-    <link rel="stylesheet" href="{{ asset('landing/css/vendor/slick-theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('landing/css/vendor/base.css') }}">
-    <link rel="stylesheet" href="{{ asset('landing/css/plugins/plugins.css') }}">
-    <link rel="stylesheet" href="{{ asset('landing/css/style.css') }}">
-</head>
-<body>
-    <div class="main-wrapper">
-        @include('landing.layouts.partials.header')
-        @yield('content')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+	<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Eksplor Seni Budaya Islam Di Indonesia: Indonesia merupakan negara yang sangat kaya akan ragam seni Budaya Islam. Mulai dari seni suara, seni tari, tradisi, ritual, instrumen, gambar, lukisan, pahatan, tulisan dan lain sebagainya." />
+        <meta name="keywords" content="Kemenag, Kementerian Agama, Kementerian Agama Republik Indonesia, Repositori Seni Budaya Islam" />
+        <meta name="author" content="Kementerian Agama Republik Indonesia" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <title>@yield('title') &mdash; {{ config('app.name') }}</title>
+        <link rel="icon" href="https://kemenag.go.id/assets/imgs/theme/favicon.png">
+        <link rel="stylesheet" href="{{ asset('landing/css/plugins.css') }}">
+        <link rel="stylesheet" href="{{ asset('landing/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('landing/custom/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('landing/css/colors/green.css') }}">
+        <link rel="preload" href="{{ asset('landing/css/fonts/urbanist.css') }}" as="style" onload="this.rel='stylesheet'">
+        <link rel="stylesheet" href="{{ asset('landing/plugins/toastr/toastr.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('landing/plugins/sweetalert2/sweetalert2.min.css') }}">
+        @yield('stylesheet')
+	</head>
+	<body>
+        <div class="content-wrapper">
+            @include('landing.layouts.partials.head')
+			@yield('content')
+		</div>
         @include('landing.layouts.partials.footer')
-        @include('landing.layouts.partials.backto-top')
-    </div>
 
-    <script src="{{ asset('landing/js/vendor/modernizr.min.js') }}"></script>
-    <script src="{{ asset('landing/js/vendor/jquery.js') }}"></script>
-    <script src="{{ asset('landing/js/vendor/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('landing/js/vendor/slick.min.js') }}"></script>
-    <script src="{{ asset('landing/js/vendor/tweenmax.min.js') }}"></script>
-    <script src="{{ asset('landing/js/vendor/js.cookie.js') }}"></script>
-    <script src="{{ asset('landing/js/vendor/jquery.style.switcher.js') }}"></script>
-    <script src="{{ asset('landing/js/main.js') }}"></script>
-</body>
+        <script src="{{ asset('landing/js/plugins.js') }}"></script>
+        <script src="{{ asset('landing/js/theme.js') }}"></script>
+        <script src="{{ asset('landing/plugins/jquery/jquery-3.6.4.min.js') }}"></script>
+        <script src="{{ asset('landing/plugins/toastr/toastr.min.js') }}"></script>
+        <script src="{{ asset('landing/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
+        @if (session('info'))
+            <script>
+                $(document).ready(function() {
+                    $('#modal-signin').modal('show');
+                    toastr.warning(@json(session('info')));
+                });
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+                $(document).ready(function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: '{{ session('error') }}',
+                    })
+                });
+            </script>
+        @endif
+
+        @if (session('success'))
+            <script>
+                $(document).ready(function() {
+                    toastr.success('{{ session('success') }}')
+                });
+            </script>
+        @endif
+
+        @stack('scripts')
+	</body>
 </html>
