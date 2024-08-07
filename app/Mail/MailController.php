@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Mail;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Http\Request;
+
+class MailController extends Mailable
+{
+    use Queueable, SerializesModels;
+
+    public function __construct()
+    {
+        //
+    }
+    
+    public function build(Request $request)
+    {
+        $data = [
+            'user_email' => $request->user_email,
+            'pass_reset_link' => $request->pass_reset_link
+        ];
+        return $this->from('info@scentivaid.com')
+                ->subject('Reset Password')
+                ->view('emails.reset_password', $data);
+    }
+}
