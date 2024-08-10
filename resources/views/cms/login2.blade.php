@@ -25,7 +25,7 @@
     </div>
     <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
         <div></div>
-        <a href="https://preview.keenthemes.com/metronic8/demo1/authentication/layouts/corporate/reset-password.html" class="link-primary">
+        <a href="{{ url('forgot-password') }}" class="link-primary">
             Forgot Password ?
         </a>
     </div>
@@ -38,7 +38,7 @@
     </div>
     <div class="text-gray-500 text-center fw-semibold fs-6">
         Not a Member yet?
-        <a href="https://preview.keenthemes.com/metronic8/demo1/authentication/layouts/corporate/sign-up.html" class="link-primary">
+        <a href="{{ url('signup') }}" class="link-primary">
             Sign up
         </a>
     </div>

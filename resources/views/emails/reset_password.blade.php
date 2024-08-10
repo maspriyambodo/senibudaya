@@ -111,12 +111,12 @@
                       </tr>
                       <tr>
                         <td style="padding: 0 0 10px 0; font-size: 14px; line-height: 150%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                          The password reset link is only valid for the next 24 hours.
+                          The password reset link is only valid for the next 10 minutes.
                         </td>
                       </tr>
                       <tr>
                         <td style="padding: 0 0 60px 0; font-size: 14px; line-height: 150%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                          If you didn’t request the password reset, please ignore this message or contact our support at <a href="mailto:support_email">support_email</a>.
+                          If you didn’t request the password reset, please ignore this message or contact our support at <a href="mailto:bimasislam@kemenag.go.id">bimasislam@kemenag.go.id</a>.
                         </td>
                       </tr>
                       <tr>
@@ -126,7 +126,7 @@
                       </tr>
                       <tr>
                         <td style="font-size: 14px; line-height: 170%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                          Best regards, <br><strong>Company Name</strong>
+                          Best regards, <br><strong>Bimas Islam Kementerian Agama RI</strong>
                         </td>
                       </tr>
                     </tbody>
@@ -137,7 +137,10 @@
                 <td style="padding: 24px 0 48px; font-size: 0px;">
                   <!--[if mso | IE]>      <table role="presentation" border="0" cellpadding="0" cellspacing="0">        <tr>          <td style="vertical-align:top;width:300px;">      <![endif]-->
                   <div class="outlook-group-fix" style="padding: 0 0 20px 0; vertical-align: top; display: inline-block; text-align: center; width:100%;">
-                    <span style="padding: 0; font-size: 11px; line-height: 15px; font-weight: normal; color: #8B949F;">Company Legal Name<br/>Company Physical Address</span>
+                    <span style="padding: 0; font-size: 11px; line-height: 15px; font-weight: normal; color: #8B949F;">Bimas Islam<br/>GEDUNG KEMENTRIAN AGAMA RI
+Jl. M. H. Thamrin No.6 lantai 6
+Jakarta Pusat 10340
+PO.BOX. 3733 JKP 10037</span>
                   </div>
                   <!--[if mso | IE]>      </td></tr></table>      <![endif]-->
                 </td>

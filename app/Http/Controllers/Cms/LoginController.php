@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MailController;
+use Illuminate\Support\Facades\Hash;
 
-class LoginController extends Controller
-{
-    public function index(Request $request)
-    {
+class LoginController extends Controller {
+
+    public function index(Request $request) {
         $ses_login = $request->session()->has('user');
         if ($ses_login) {
             $result = redirect('dashboard');
@@ -24,13 +26,72 @@ class LoginController extends Controller
         }
         return $result;
     }
-    
-    public function forgot_password() {
-        
+
+    public function forgot_password(Request $request) {
+        $ses_login = $request->session()->has('user');
+        if ($ses_login) {
+            $result = redirect('dashboard');
+        } else {
+            $result = view('cms.vresetpass', array('param' => Parameter::data(), 'page' => 'Forgot Password'));
+        }
+        return $result;
     }
 
-    public function auth(Request $request)
-    {
+    public function req_password(Request $request) {
+        $user = User::where('id_user', $request->email)->first();
+        if (!is_null($user)) {
+            $response = [
+                'stat' => true
+            ];
+            $pass_reset_link = url('reset-password/' . enkrip($user->id_user . ',' . strtotime(date('Y-m-d H:i:s'))));
+            $data = [
+                'id' => $user->id,
+                'user_email' => $user->id_user,
+                'pass_reset_link' => $pass_reset_link
+            ];
+            Mail::to($user->id_user)->send(new MailController($data));
+        } else {
+            $response = [
+                'stat' => false,
+                'msgtxt' => 'user tidak ditemukan!'
+            ];
+        }
+        return response()->json($response);
+    }
+
+    public function reset_password(Request $request) {
+        $decrypted = dekrip($request->param);
+        $param = explode(',', $decrypted);
+        $user_email = $param[0];
+        if (count($param) <> 2) {
+            $result = redirect('/');
+        } else {
+            $start_timestamp = (int) strtotime(date('Y-m-d H:i:s'));
+            $end_timestamp = (int) $param[1];
+            $valid_time = (abs($end_timestamp - $start_timestamp) / 60);
+            if ($valid_time > 10) {
+                $result = view('cms.setup_password', array('param' => Parameter::data(), 'page' => ' Setup New Password', 'valid_time' => false, 'user_email' => $user_email)); //ganti jadi false
+            } else {
+                $result = view('cms.setup_password', array('param' => Parameter::data(), 'page' => ' Setup New Password', 'valid_time' => true, 'user_email' => $user_email));
+            }
+        }
+        return $result;
+    }
+
+    public function setup_password(Request $request) {
+        $user_mail = $request->user_email;
+        $new_password = $request->password;
+        $exec = User::where('id_user', $user_mail)
+                ->update(['password_user' => Hash::make(md5($new_password))]);
+        if($exec){
+            $response = ['stat' => true];
+        } else {
+            $response = ['stat' => false, 'msgtxt' => 'Error system, errcode 15470808'];
+        }
+        return response()->json($response);
+    }
+
+    public function auth(Request $request) {
         $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -65,8 +126,7 @@ class LoginController extends Controller
         return response()->json($output);
     }
 
-    public function logout(Request $request)
-    {
+    public function logout(Request $request) {
         Session::flush();
         Auth::logout();
 
