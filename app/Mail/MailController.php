@@ -23,6 +23,6 @@ class MailController extends Mailable
         ];
         return $this->from('info@scentivaid.com')
                 ->subject($this->param['subject_title'])
-                ->view('emails.reset_password', $data);
+                ->view($this->param['views_file'], $data);
     }
 }
