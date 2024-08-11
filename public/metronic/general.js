@@ -65,9 +65,9 @@ var KTSigninGeneral = (function () {
                                                 } else {
                                                     var form = document.getElementById('kt_sign_in_form');
                                                     var formData = new FormData(form);
-                                                    var hostUrl = $('input[name="hostUrl"]').val();
+                                                    var r = t.getAttribute("data-kt-redirect-url");
                                                     $.ajax({
-                                                        url: hostUrl,
+                                                        url: r,
                                                         type: "POST",
                                                         data: formData,
                                                         cache: false,
