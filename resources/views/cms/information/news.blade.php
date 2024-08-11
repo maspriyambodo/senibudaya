@@ -46,6 +46,7 @@
                 <th>Tanggal</th>
                 <th>Pemilik</th>
                 <th>Status</th>
+                <th>Persetujuan</th>
             </tr>
         </thead>
     </table>

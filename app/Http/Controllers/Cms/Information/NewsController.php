@@ -18,11 +18,11 @@ class NewsController extends AuthController {
 
     public function json() {
         if (Session::get('group') == 2 || Session::get('group') == 1) {
-            $berita = Berita::select('dta_berita.id', 'dta_berita.nama_berita', 'app_user.nama_user', 'dta_berita.keterangan_berita', 'dta_berita.status_berita', 'dta_berita.created_at')
+            $berita = Berita::select('dta_berita.id', 'dta_berita.nama_berita', 'app_user.nama_user', 'dta_berita.keterangan_berita', 'dta_berita.status_berita', 'dta_berita.created_at', 'dta_berita.status_approval')
                     ->join('app_user', 'dta_berita.created_by', '=', 'app_user.id')
                     ->orderBy('id', 'desc');
         } else {
-            $berita = Berita::select('dta_berita.id', 'dta_berita.nama_berita', 'app_user.nama_user', 'dta_berita.keterangan_berita', 'dta_berita.status_berita', 'dta_berita.created_at')
+            $berita = Berita::select('dta_berita.id', 'dta_berita.nama_berita', 'app_user.nama_user', 'dta_berita.keterangan_berita', 'dta_berita.status_berita', 'dta_berita.created_at', 'dta_berita.status_approval')
                     ->join('app_user', 'dta_berita.created_by', '=', 'app_user.id')
                     ->where('dta_berita.created_by', Session::get('uid'))
                     ->orderBy('id', 'desc');
@@ -34,8 +34,22 @@ class NewsController extends AuthController {
                         })
                         ->addColumn('display', function ($row) {
                             return $row->status_berita == "t" ?
-                            "<span class=\"badge badge-success w-100\">Aktif</span>" :
-                            "<span class=\"badge badge-light-dark  w-100\">Tidak Aktif</span>";
+                            "<span class=\"badge badge-success w-100\">Publik</span>" :
+                            "<span class=\"badge badge-light-dark  w-100\">Draft</span>";
+                        })
+                        ->addColumn('status_approval', function ($row) {
+                            $status_approval = $row->status_approval;
+                            $stat_ = '';
+                            if($status_approval == 0) {
+                                $stat_ = "<span class=\"badge badge-error w-100\">ditolak</span>";
+                            } elseif ($status_approval == 1) {
+                                $stat_ = "<span class=\"badge badge-secondary w-100\">dalam review</span>";
+                            } elseif ($status_approval == 2) {
+                                $stat_ = "<span class=\"badge badge-success w-100\">disetujui</span>";
+                            } else {
+                                $stat_ = '';
+                            }
+                            return $stat_;
                         })
                         ->addColumn('button', function ($row) {
                             $button = "";
@@ -51,6 +65,9 @@ class NewsController extends AuthController {
                                 if ($this->delete) {
                                     $button .= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\"><i class=\"fas fa-trash\"></i> Hapus Data</a>";
                                 }
+                                if (Session::get('group') == 2 || Session::get('group') == 1) {
+                                    $button .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
+                                }
                                 $button .= "</div>
 				</div>";
                             }
@@ -64,7 +81,7 @@ class NewsController extends AuthController {
                         ->order(function ($query) {
                             $query->orderBy('created_at', 'desc');
                         })
-                        ->rawColumns(['display', 'button', 'image'])
+                        ->rawColumns(['display', 'button', 'image', 'status_approval'])
                         ->toJson();
     }
 
@@ -74,14 +91,14 @@ class NewsController extends AuthController {
         $column = array(
             'id' => 'data',
             'align' => array('center', 'center', 'left', 'left', 'center', 'center'),
-            'data' => array('button', 'nama_berita', 'keterangan_berita', 'created_at', 'nama_user', 'display'),
+            'data' => array('button', 'nama_berita', 'keterangan_berita', 'created_at', 'nama_user', 'display', 'status_approval'),
             'nosort' => array(0, 1, 2, 3, 4),
         );
         if (!$data['edit'] && !$data['delete']) {
             $column = array(
                 'id' => 'data',
                 'align' => array('center', 'left', 'left', 'center', 'center'),
-                'data' => array('nama_berita', 'keterangan_berita', 'created_at', 'nama_user', 'display'),
+                'data' => array('nama_berita', 'keterangan_berita', 'created_at', 'nama_user', 'display', 'status_approval'),
                 'nosort' => array(0, 1, 2, 3),
             );
         }
