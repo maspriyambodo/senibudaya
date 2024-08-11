@@ -303,11 +303,6 @@ class ContentController extends Controller {
             $konsultasi = Konsultasi::where('status_konsultasi', 't')->where('id_jenis', $default)->orderBy('created_at', 'desc')->paginate(5);
         }
 
-        $bimbingan = array();
-        if (strtolower($kategori) == 'bimbingan') {
-            $bimbingan = Bimbingan::where('status_bimbingan', 't')->orderBy('created_at', 'desc')->paginate(6);
-        }
-
         $foto = array();
         if (strtolower($kategori) == 'foto') {
             $foto = Foto::where('status_foto', 't')->where('id_content', $content['id'])->orderBy('created_at', 'desc')->paginate(9);
@@ -350,7 +345,6 @@ class ContentController extends Controller {
                 array('tokoh' => $tokoh),
                 array('link' => $link),
                 array('konsultasi' => $konsultasi),
-                array('bimbingan' => $bimbingan),
                 array('foto' => $foto),
                 array('video' => $video),
                 array('thumb' => $thumb),
