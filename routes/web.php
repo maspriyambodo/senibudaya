@@ -82,7 +82,7 @@ Route::post('/apiv1/getImsakJadwal', [Apiv1Controller::class, 'imsak']);
 
 //login
 Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::get('/logout', [LoginController::class, 'logout']);
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/auth', [LoginController::class, 'auth']);
 Route::get('/forgot-password', [LoginController::class, 'forgot_password']);
 Route::post('/req-password', [LoginController::class, 'req_password']);
@@ -97,8 +97,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/cmsadmin', function () {
         return redirect('dashboard');
     });
-    Route::get('/dashboard', [CmsController::class, 'index']);
-
+    Route::get('/dashboard', [CmsController::class, 'index'])->name('dashboard');
+    
     //background
     Route::get('/background', [BackgroundController::class, 'index']);
     Route::get('/background/table/{val}', [BackgroundController::class, 'table']);

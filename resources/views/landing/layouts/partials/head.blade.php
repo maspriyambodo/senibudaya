@@ -34,17 +34,14 @@
                 <ul class="navbar-nav flex-row align-items-center ms-auto">
                     @auth
                         <li class="nav-item dropdown d-none d-md-block">
-                            <a class="nav-link dropdown-toggle" href="#" style="text-transform:uppercase" data-bs-toggle="dropdown">{{ Auth::user()->name }}</a>
+                            <a class="nav-link dropdown-toggle" href="#" style="text-transform:uppercase" data-bs-toggle="dropdown">{{ Auth::user()->nama_user }}</a>
                             <ul class="dropdown-menu">
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-
-                                    <li class="nav-item">
-                                        <button type="submit" class="dropdown-item">
-                                            {{ __('Log Out') }}
-                                        </button>
-                                    </li>
-                                </form>
+                                <li class="nav-item">
+                                    <a href="{{ route('logout') }}" class="dropdown-item">Logout</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard') }}" class="dropdown-item">Dashboard</a>
+                                </li>
                             </ul>
                         </li>
                     @else

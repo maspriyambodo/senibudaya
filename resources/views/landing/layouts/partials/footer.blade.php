@@ -28,8 +28,8 @@
                         <li><a class="nav-link scroll" href="#about-us">About Us</a></li>
                         <li><a class="nav-link scroll" href="#our-collections">Our Collections</a></li>
                         @auth
-                            @if (Auth::user()->hasRole('super_admin') || Auth::user()->hasRole('telemarketing') || Auth::user()->hasRole('Admin'))
-                                <li><a href="{{ route('filament.admin.pages.dashboard') }}">Dashboard</a></li>
+                            @if (Auth::user()->nama_user)
+                                <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             @endif
                         @endauth
                     </ul>
