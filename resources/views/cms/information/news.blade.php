@@ -42,8 +42,9 @@
                 <th>No</th>
                 @if($edit || $delete)<th>#</th>@endif
                 <th>Judul</th>
-                <th>Direktorat</th>
+                <th>Deskripsi Singkat</th>
                 <th>Tanggal</th>
+                <th>Pemilik</th>
                 <th>Status</th>
             </tr>
         </thead>
