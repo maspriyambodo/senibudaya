@@ -47,7 +47,8 @@ class LoginController extends Controller {
             $data = [
                 'id' => $user->id,
                 'user_email' => $user->id_user,
-                'pass_reset_link' => $pass_reset_link
+                'pass_reset_link' => $pass_reset_link,
+                'subject_title' => 'Reset Password'
             ];
             Mail::to($user->id_user)->send(new MailController($data));
         } else {
