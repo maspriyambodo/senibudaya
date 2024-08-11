@@ -19,7 +19,8 @@ class MailController extends Mailable
     {
         $data = [
             'user_email' => $this->param['user_email'],
-            'pass_reset_link' => $this->param['pass_reset_link']
+            'pass_reset_link' => $this->param['pass_reset_link'],
+            'nama' => $this->param['nama']
         ];
         return $this->from('info@scentivaid.com')
                 ->subject($this->param['subject_title'])
