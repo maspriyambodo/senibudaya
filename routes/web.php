@@ -2,9 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Apiv1Controller;
-use App\Http\Controllers\ContentController;
 use App\Http\Controllers\Cms\LoginController;
 use App\Http\Controllers\Cms\BackgroundController;
 use App\Http\Controllers\Cms\ProfilController;
@@ -25,15 +22,7 @@ use App\Http\Controllers\LandingController;
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/show-collections/{type}', [LandingController::class, 'show_collections'])->name('landing.show-collections');
 Route::get('/show-collection-detail/{slug}', [LandingController::class, 'show_collection_detail'])->name('landing.show-collection-detail');
-// Route::get('/', [ContentController::class, 'index']);
-Route::post('/search', [ContentController::class, 'search']);
-Route::get('/search', [ContentController::class, 'search']);
-Route::get('/kabupaten/{id}', [ContentController::class, 'kabupaten']);
-Route::get('/direktorat/{id}', [ContentController::class, 'show']);
-Route::get('/jurnalis/{id}', [ContentController::class, 'show']);
-Route::get('/editor/{id}', [ContentController::class, 'show']);
-Route::get('/fotografer/{id}', [ContentController::class, 'show']);
-Route::get('/our-collection', [ContentController::class, 'our_collection']);
+
 //Route::get('/generate-password/{tulispassword}', function ($request) {
 //    return Hash::make(md5($request));
 //});
@@ -143,9 +132,3 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/group/store', [GroupController::class, 'store']);
     Route::post('/group/destroy', [GroupController::class, 'destroy']);
 });
-
-Route::get('/{slug}', [ContentController::class, 'show']);
-Route::get('/{slug}/{id}', [ContentController::class, 'detail']);
-Route::post('/{slug}/store', [ContentController::class, 'store']);
-Route::post('/{slug}/search', [ContentController::class, 'show']);
-Route::get('/{slug}/default/{id}', [ContentController::class, 'update']);
