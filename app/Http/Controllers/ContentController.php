@@ -7,7 +7,6 @@ use App\Models\Parameter;
 use App\Models\User;
 use App\Models\Kategori;
 use App\Models\Jenis;
-use App\Models\Direktorat;
 use App\Models\Banner;
 use App\Models\Berita;
 use App\Models\Foto;
@@ -23,10 +22,6 @@ class ContentController extends Controller {
     public function __construct() {
         $this->banner = Banner::where('status_banner', 't')->orderBy('created_at', 'desc')->get();
         
-        $this->direktorat = array();
-        foreach (Direktorat::where('status', 't')->get() as $d) {
-            $this->direktorat[$d->id] = $d->nama;
-        }
     }
 
     public function index() {
@@ -94,7 +89,6 @@ class ContentController extends Controller {
                 $content,
                 array('menu' => $menu),
                 array('icon' => $icon),
-                array('direktorat' => $this->direktorat),
                 array('banner' => $this->banner),
                 array('top' => $top),
                 array('slide' => $slide),
@@ -141,7 +135,6 @@ class ContentController extends Controller {
                 $content,
                 array('menu' => $menu),
                 array('icon' => $icon),
-                array('direktorat' => $this->direktorat),
                 array('banner' => $this->banner),
                 array('top' => $top),
                 array('slide' => $slide),
@@ -157,7 +150,7 @@ class ContentController extends Controller {
     public function show(Request $request) {
         $segment = request()->segments()[0];
         $tags = $segment;
-        if (in_array($segment, array('direktorat', 'jurnalis', 'editor', 'fotografer')))
+        if (in_array($segment, array('jurnalis', 'editor', 'fotografer')))
             $segment = 'berita';
 
         $search = isset($request->search) ? $request->search : '';
@@ -178,11 +171,6 @@ class ContentController extends Controller {
                 ->join('app_group', 'app_group.id', '=', 'app_user.id_group')
                 ->whereRaw("lower(trim(app_group.nama_group)) = 'fotografer'")
                 ->get();
-
-        $direktorat = array();
-        foreach (Direktorat::where('status', 't')->get() as $d) {
-            $direktorat[$d->id] = $d->nama;
-        }
 
         $menu = $icon = $temp = array();
         $temp[0] = $hide[0] = "";
@@ -231,7 +219,7 @@ class ContentController extends Controller {
         }
 
         $berita = array();
-        $sumber_berita = $editor_berita = $fotografer_berita = $kategori_direktorat = 0;
+        $sumber_berita = $editor_berita = $fotografer_berita = 0;
         if (strtolower($kategori) == 'berita') {
             if ($request->id) {
                 if ($tags == 'jurnalis')
@@ -243,8 +231,6 @@ class ContentController extends Controller {
                 if ($tags == 'fotografer')
                     $fotografer_berita = User::whereRaw("replace(lower(trim(nama_user)),' ','-') = '" . $request->id . "'")->pluck('id')->first();
 
-                if ($tags == 'direktorat')
-                    $kategori_direktorat = Direktorat::whereRaw("replace(lower(trim(nama)),' ','-') = '" . $request->id . "'")->pluck('id')->first();
             }
 
             if ($sumber_berita)
@@ -253,8 +239,6 @@ class ContentController extends Controller {
                 $berita = Berita::where('editor_berita', $editor_berita)->where('status_berita', 't')->orderBy('created_at', 'desc')->paginate(6);
             else if ($fotografer_berita)
                 $berita = Berita::where('fg_berita', $fotografer_berita)->where('status_berita', 't')->orderBy('created_at', 'desc')->paginate(6);
-            else if ($kategori_direktorat)
-                $berita = Berita::where('kategori_direktorat', $kategori_direktorat)->where('status_berita', 't')->orderBy('created_at', 'desc')->paginate(6);
             else
                 $berita = Berita::where('status_berita', 't')->orderBy('created_at', 'desc')->paginate(6);
         }
@@ -319,11 +303,9 @@ class ContentController extends Controller {
                 array('tags' => $tags),
                 array('penulis' => $penulis),
                 array('fotografer' => $fotografer),
-                array('direktorat' => $direktorat),
                 array('sumber_berita' => $sumber_berita),
                 array('editor_berita' => $editor_berita),
                 array('fotografer_berita' => $fotografer_berita),
-                array('kategori_direktorat' => $kategori_direktorat),
                 array('icon' => $icon),
                 array('top' => $top),
                 array('left' => $left),
@@ -384,12 +366,11 @@ class ContentController extends Controller {
         if (in_array(strtolower($kategori), array('berita'))) {
             $detail = Berita::find($request->id);
             if (!isset($detail)) {
-                $detail = Berita::select('dta_berita.*', 't_sumber.nama_user AS nama_sumber', 't_editor.nama_user AS nama_editor', 't_fg.nama_user AS nama_fg', 'dta_direktorat.nama AS nama_direktorat')
+                $detail = Berita::select('dta_berita.*', 't_sumber.nama_user AS nama_sumber', 't_editor.nama_user AS nama_editor', 't_fg.nama_user AS nama_fg')
                                 ->where('slug_berita', $request->id)
                                 ->leftJoin('app_user AS t_sumber', 'dta_berita.sumber_berita', '=', 't_sumber.id')
                                 ->leftJoin('app_user AS t_editor', 'dta_berita.editor_berita', '=', 't_editor.id')
                                 ->leftJoin('app_user AS t_fg', 'dta_berita.fg_berita', '=', 't_fg.id')
-                                ->leftJoin('dta_direktorat', 'dta_berita.kategori_direktorat', '=', 'dta_direktorat.id')
                                 ->orderBy('id', 'desc')->get()->first();
             }
             if (!isset($detail)) {
