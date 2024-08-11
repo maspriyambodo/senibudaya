@@ -25,7 +25,7 @@ class MailController extends Mailable
             'pass_reset_link' => $this->param['pass_reset_link']
         ];
         return $this->from('info@scentivaid.com')
-                ->subject('Reset Password')
+                ->subject($this->param['subject_title'])
                 ->view('emails.reset_password', $data);
     }
 }
