@@ -17,7 +17,7 @@ class NewsController extends AuthController {
     private $target = 'cms.information.news';
 
     public function json() {
-        if (Session::get('group') == 2) {
+        if (Session::get('group') == 2 || Session::get('group') == 1) {
             $berita = Berita::select('dta_berita.id', 'dta_berita.nama_berita', 'app_user.nama_user', 'dta_berita.keterangan_berita', 'dta_berita.status_berita', 'dta_berita.created_at')
                     ->join('app_user', 'dta_berita.created_by', '=', 'app_user.id')
                     ->orderBy('id', 'desc');
