@@ -11,16 +11,6 @@ class LandingController extends Controller
         return view('landing.pages.home');
     }
 
-    public function about_us()
-    {
-        return view('landing.pages.about-us');
-    }
-
-    public function our_collections()
-    {
-        return view('landing.pages.our-collections.index');
-    }
-
     public function show_collections($type)
     {
         return view('landing.pages.our-collections.lists', compact('type'));

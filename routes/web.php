@@ -33,8 +33,6 @@ use App\Http\Controllers\LandingController;
 
 //front
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
-Route::get('/about-us', [LandingController::class, 'about_us'])->name('landing.about-us');
-Route::get('/our-collections', [LandingController::class, 'our_collections'])->name('landing.our-collections');
 Route::get('/show-collections/{type}', [LandingController::class, 'show_collections'])->name('landing.show-collections');
 Route::get('/show-collection-detail/{slug}', [LandingController::class, 'show_collection_detail'])->name('landing.show-collection-detail');
 // Route::get('/', [ContentController::class, 'index']);
@@ -86,7 +84,13 @@ Route::post('/apiv1/getImsakJadwal', [Apiv1Controller::class, 'imsak']);
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::post('/auth', [LoginController::class, 'auth']);
-Route::get('/forgot-password', [ContentController::class, 'forgot_password']);
+Route::get('/forgot-password', [LoginController::class, 'forgot_password']);
+Route::post('/req-password', [LoginController::class, 'req_password']);
+Route::post('/setup-password', [LoginController::class, 'setup_password']);
+Route::get('/reset-password/{param}', [LoginController::class, 'reset_password']);
+Route::get('/signup', [LoginController::class, 'signup']);
+Route::post('/register', [LoginController::class, 'auth_register']);
+Route::get('/user-activate/{param}', [LoginController::class, 'user_activate']);
 
 Route::group(['middleware' => ['auth']], function () {
     //dashboard

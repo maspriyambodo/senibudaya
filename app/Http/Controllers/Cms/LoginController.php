@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MailController;
+use Illuminate\Support\Facades\Hash;
 
-class LoginController extends Controller
-{
-    public function index(Request $request)
-    {
+class LoginController extends Controller {
+
+    public function index(Request $request) {
         $ses_login = $request->session()->has('user');
         if ($ses_login) {
             $result = redirect('dashboard');
@@ -24,13 +26,123 @@ class LoginController extends Controller
         }
         return $result;
     }
+
+    public function user_activate(Request $request) {
+        return view('cms.user_activate', ['param' => Parameter::data(), 'page' => ' Account Activation']);
+    }
     
-    public function forgot_password() {
-        
+    public function auth_register(Request $request) {
+        $cek_email = User::where('id_user', $request->username)->first();
+        if(!is_null($cek_email)){
+            $response = ['stat' => false, 'msgtxt' => 'Your email has been registered, please login.'];
+        } else {
+            $data = [
+                'id_group' => 5,
+                'id_user' => $request->username,
+                'password_user' => Hash::make(md5($request->password)),
+                'nama_user' => $request->namatxt,
+                'email_user' => $request->username,
+                'status_user' => 'f',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            $exec = User::insertGetId($data);
+            if (!is_null($exec)) {
+                $url_link = url('user-activate/' . enkrip($exec . ',' . strtotime(date('Y-m-d H:i:s'))));
+                $mail_data = [
+                    'id' => $exec,
+                    'user_email' => $request->username,
+                    'pass_reset_link' => $url_link,
+                    'nama' => $request->namatxt,
+                    'subject_title' => 'E-mail verification',
+                    'views_file' => 'emails.mail_activate'
+                ];
+                Mail::to($request->username)->send(new MailController($mail_data));
+                $response = ['stat' => true, 'msgtxt' => 'We have sent an email to activate your account.'];
+            } else {
+                $response = ['stat' => false, 'msgtxt' => 'System error while saving data.'];
+            }
+        }
+        return response()->json($response);
+    }
+    
+    public function signup(Request $request) {
+        $ses_login = $request->session()->has('user');
+        if ($ses_login) {
+            $result = redirect('dashboard');
+        } else {
+            $result = view('cms.signup', array('param' => Parameter::data(), 'page' => 'Sign Up'));
+        }
+        return $result;
     }
 
-    public function auth(Request $request)
-    {
+    public function forgot_password(Request $request) {
+        $ses_login = $request->session()->has('user');
+        if ($ses_login) {
+            $result = redirect('dashboard');
+        } else {
+            $result = view('cms.vresetpass', array('param' => Parameter::data(), 'page' => 'Forgot Password'));
+        }
+        return $result;
+    }
+
+    public function req_password(Request $request) {
+        $user = User::where('id_user', $request->email)->first();
+        if (!is_null($user)) {
+            $response = [
+                'stat' => true
+            ];
+            $pass_reset_link = url('reset-password/' . enkrip($user->id_user . ',' . strtotime(date('Y-m-d H:i:s'))));
+            $data = [
+                'id' => $user->id,
+                'user_email' => $user->id_user,
+                'pass_reset_link' => $pass_reset_link,
+                'subject_title' => 'Reset Password',
+                'views_file' => 'emails.reset_password'
+            ];
+            Mail::to($user->id_user)->send(new MailController($data));
+        } else {
+            $response = [
+                'stat' => false,
+                'msgtxt' => 'user tidak ditemukan!'
+            ];
+        }
+        return response()->json($response);
+    }
+
+    public function reset_password(Request $request) {
+        $decrypted = dekrip($request->param);
+        $param = explode(',', $decrypted);
+        $user_email = $param[0];
+        if (count($param) <> 2) {
+            $result = redirect('/');
+        } else {
+            $start_timestamp = (int) strtotime(date('Y-m-d H:i:s'));
+            $end_timestamp = (int) $param[1];
+            $valid_time = (abs($end_timestamp - $start_timestamp) / 60);
+            if ($valid_time > 10) {
+                $result = view('cms.setup_password', array('param' => Parameter::data(), 'page' => ' Setup New Password', 'valid_time' => false, 'user_email' => $user_email)); //ganti jadi false
+            } else {
+                $result = view('cms.setup_password', array('param' => Parameter::data(), 'page' => ' Setup New Password', 'valid_time' => true, 'user_email' => $user_email));
+            }
+        }
+        return $result;
+    }
+
+    public function setup_password(Request $request) {
+        $user_mail = $request->user_email;
+        $new_password = $request->password;
+        $exec = User::where('id_user', $user_mail)
+                ->update(['password_user' => Hash::make(md5($new_password))]);
+        if($exec){
+            $response = ['stat' => true];
+        } else {
+            $response = ['stat' => false, 'msgtxt' => 'Error system, errcode 15470808'];
+        }
+        return response()->json($response);
+    }
+
+    public function auth(Request $request) {
         $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -65,8 +177,7 @@ class LoginController extends Controller
         return response()->json($output);
     }
 
-    public function logout(Request $request)
-    {
+    public function logout(Request $request) {
         Session::flush();
         Auth::logout();
 
