@@ -9,14 +9,12 @@ use App\Models\Kategori;
 use App\Models\Jenis;
 use App\Models\Direktorat;
 use App\Models\Banner;
-use App\Models\Dokumen;
 use App\Models\Berita;
 use App\Models\Opini;
 use App\Models\Tokoh;
 use App\Models\Foto;
 use App\Models\Video;
 use App\Models\Links;
-use App\Models\Bimbingan;
 use App\Models\Kontak;
 use App\Models\Pengaduan;
 use App\Models\Konsultasi;
@@ -236,11 +234,6 @@ class ContentController extends Controller {
             $right = Opini::where('status_opini', 't')->orderBy('created_at', 'desc')->paginate(5);
         }
 
-        $dokumen = array();
-        if (strtolower($kategori) == 'dokumen') {
-            $dokumen = Dokumen::where('status_dokumen', 't')->where('id_content', $content['id'])->orderBy('created_at', 'desc')->paginate(12);
-        }
-
         $berita = array();
         $sumber_berita = $editor_berita = $fotografer_berita = $kategori_direktorat = 0;
         if (strtolower($kategori) == 'berita') {
@@ -339,7 +332,6 @@ class ContentController extends Controller {
                 array('top' => $top),
                 array('left' => $left),
                 array('right' => $right),
-                array('dokumen' => $dokumen),
                 array('berita' => $berita),
                 array('opini' => $opini),
                 array('tokoh' => $tokoh),
@@ -457,19 +449,6 @@ class ContentController extends Controller {
             $prev = Konsultasi::where('status_konsultasi', 't')->where('id', '<', $detail->id)->where('id_jenis', $default)->orderBy('id', 'desc')->first();
             $left = $top;
             $right = Opini::where('status_opini', 't')->orderBy('created_at', 'desc')->paginate(5);
-        } elseif (in_array(strtolower($kategori), array('bimbingan'))) {
-            $detail = Bimbingan::find($request->id);
-            if (!isset($detail)) {
-                $detail = Bimbingan::where('slug_bimbingan', $request->id)->orderBy('id', 'desc')->first();
-            }
-            if (!isset($detail)) {
-                return redirect('/');
-            }
-
-            $next = Bimbingan::where('status_bimbingan', 't')->where('id', '>', $detail->id)->orderBy('id', 'asc')->first();
-            $prev = Bimbingan::where('status_bimbingan', 't')->where('id', '<', $detail->id)->orderBy('id', 'desc')->first();
-            $left = $top;
-            $right = Opini::where('status_opini', 't')->orderBy('created_at', 'desc')->paginate(5);
         } else {
             return redirect('/');
         }
@@ -541,12 +520,6 @@ class ContentController extends Controller {
 				lower(detail_tokoh) like '%" . strtolower(trim($request->keyword)) . "%'
 			")->orderBy('created_at', 'desc')->paginate(5);
 
-        $bimbingan = Bimbingan::where('status_bimbingan', 't')->whereRaw("
-				lower(nama_bimbingan) like '%" . strtolower(trim($request->keyword)) . "%' or
-				lower(keterangan_bimbingan) like '%" . strtolower(trim($request->keyword)) . "%' or
-				lower(detail_bimbingan) like '%" . strtolower(trim($request->keyword)) . "%'
-			")->orderBy('created_at', 'desc')->paginate(5);
-        
         $data = array_merge(
                 $content,
                 ['banner' => $this->banner],
@@ -559,7 +532,6 @@ class ContentController extends Controller {
                 array('berita' => $berita),
                 array('opini' => $opini),
                 array('tokoh' => $tokoh),
-                array('bimbingan' => $bimbingan),
         );
 
         return view('content-search', $data);
