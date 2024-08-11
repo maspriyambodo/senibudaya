@@ -27,6 +27,55 @@ class LoginController extends Controller {
         return $result;
     }
 
+    public function user_activate(Request $request) {
+        return view('cms.user_activate', ['param' => Parameter::data(), 'page' => ' Account Activation']);
+    }
+    
+    public function auth_register(Request $request) {
+        $cek_email = User::where('id_user', $request->username)->first();
+        if(!is_null($cek_email)){
+            $response = ['stat' => false, 'msgtxt' => 'Your email has been registered, please login.'];
+        } else {
+            $data = [
+                'id_group' => 5,
+                'id_user' => $request->username,
+                'password_user' => Hash::make(md5($request->password)),
+                'nama_user' => $request->namatxt,
+                'email_user' => $request->username,
+                'status_user' => 'f',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            $exec = User::insertGetId($data);
+            if (!is_null($exec)) {
+                $url_link = url('user-activate/' . enkrip($exec . ',' . strtotime(date('Y-m-d H:i:s'))));
+                $mail_data = [
+                    'id' => $exec,
+                    'user_email' => $request->username,
+                    'pass_reset_link' => $url_link,
+                    'nama' => $request->namatxt,
+                    'subject_title' => 'E-mail verification',
+                    'views_file' => 'emails.mail_activate'
+                ];
+                Mail::to($request->username)->send(new MailController($mail_data));
+                $response = ['stat' => true, 'msgtxt' => 'We have sent an email to activate your account.'];
+            } else {
+                $response = ['stat' => false, 'msgtxt' => 'System error while saving data.'];
+            }
+        }
+        return response()->json($response);
+    }
+    
+    public function signup(Request $request) {
+        $ses_login = $request->session()->has('user');
+        if ($ses_login) {
+            $result = redirect('dashboard');
+        } else {
+            $result = view('cms.signup', array('param' => Parameter::data(), 'page' => 'Sign Up'));
+        }
+        return $result;
+    }
+
     public function forgot_password(Request $request) {
         $ses_login = $request->session()->has('user');
         if ($ses_login) {
