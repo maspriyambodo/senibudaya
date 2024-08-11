@@ -90,7 +90,7 @@ Route::post('/setup-password', [LoginController::class, 'setup_password']);
 Route::get('/reset-password/{param}', [LoginController::class, 'reset_password']);
 Route::get('/signup', [LoginController::class, 'signup']);
 Route::post('/register', [LoginController::class, 'auth_register']);
-Route::post('/user-activate', [LoginController::class, 'user_activate']);
+Route::post('/user-activate/{param}', [LoginController::class, 'user_activate']);
 
 Route::group(['middleware' => ['auth']], function () {
     //dashboard
