@@ -3,7 +3,7 @@ $(document).ready(function () {
     $.fn.del = function (id) {
         $('#dt').val(id);
     };
-
+    
     $('#nama_berita').keyup(function () {
         var value = $(this).val();
         value = value.toLowerCase();
@@ -26,3 +26,7 @@ $(document).ready(function () {
     });
 	
 });
+function Approval(id, judul){
+    $('input[name="judultxt"]').val(judul);
+    $('input[name="id_jurnal"]').val(id);
+}

@@ -94,6 +94,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/news/json', [NewsController::class, 'json']);
     Route::get('/news/form/{id}', [NewsController::class, 'form']);
     Route::post('/news/store', [NewsController::class, 'store']);
+    Route::post('/news/news-approval', [NewsController::class, 'news_approval']);
     Route::post('/news/destroy', [NewsController::class, 'destroy']);
 
     //photos

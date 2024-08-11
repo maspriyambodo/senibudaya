@@ -41,7 +41,7 @@ class NewsController extends AuthController {
                             $status_approval = $row->status_approval;
                             $stat_ = '';
                             if($status_approval == 0) {
-                                $stat_ = "<span class=\"badge badge-error w-100\">ditolak</span>";
+                                $stat_ = "<span class=\"badge badge-danger w-100\">ditolak</span>";
                             } elseif ($status_approval == 1) {
                                 $stat_ = "<span class=\"badge badge-secondary w-100\">dalam review</span>";
                             } elseif ($status_approval == 2) {
@@ -66,7 +66,7 @@ class NewsController extends AuthController {
                                     $button .= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\"><i class=\"fas fa-trash\"></i> Hapus Data</a>";
                                 }
                                 if (Session::get('group') == 2 || Session::get('group') == 1) {
-                                    $button .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
+                                    $button .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" onclick=\"Approval('" . enkrip($row->id) . "','" . $row->nama_berita . "');\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
                                 }
                                 $button .= "</div>
 				</div>";
@@ -84,6 +84,22 @@ class NewsController extends AuthController {
                         ->rawColumns(['display', 'button', 'image', 'status_approval'])
                         ->toJson();
     }
+    
+    public function news_approval(Request $request) {
+        $id = dekrip($request->id_jurnal);
+        $exec = Berita::where('id', $id)
+                ->update([
+            'status_approval' => $request->approvtxt,
+            'user_approval' => Session::get('uid'),
+            'date_approval' => date('Y-m-d H:i:s')
+        ]);
+        if ($exec) {
+            $response = redirect($this->page)->with('message', "Berhasil menyimpan data approval!");
+        } else {
+            $response = redirect($this->page)->with('message', "Gagal menyimpan data approval!");
+        }
+        return $response;
+    }
 
     public function index() {
         $data = array_merge(ClassMenu::view($this->target), array('filter' => array()));
@@ -94,15 +110,6 @@ class NewsController extends AuthController {
             'data' => array('button', 'nama_berita', 'keterangan_berita', 'created_at', 'nama_user', 'display', 'status_approval'),
             'nosort' => array(0, 1, 2, 3, 4),
         );
-        if (!$data['edit'] && !$data['delete']) {
-            $column = array(
-                'id' => 'data',
-                'align' => array('center', 'left', 'left', 'center', 'center'),
-                'data' => array('nama_berita', 'keterangan_berita', 'created_at', 'nama_user', 'display', 'status_approval'),
-                'nosort' => array(0, 1, 2, 3),
-            );
-        }
-
         $data = array_merge($data, array('column' => $column));
         return view($this->target, $data);
     }

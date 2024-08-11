@@ -55,5 +55,41 @@
 </div>
 </div>
 {{ deleteModal($current) }}
+<div class="modal fade" id="approvalModal" role="dialog" data-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form id="approval_form" action="{{ url('news/news-approval') }}" method="post">
+                @csrf
+                <input type="hidden" name="id_jurnal" readonly="" required=""/>
+                <div class="modal-header">
+                    <h5 class="modal-title">Persetujuan Jurnal</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2">Judul</span>
+                        </div>
+                        <input id="judultxt" name="judultxt" type="text" class="form-control" readonly=""/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon2">Pilih</span>
+                        </div>
+                        <select name="approvtxt" class="custom-select" id="inputGroupSelect03" aria-label="Approval Jurnal" required="">
+                            <option value="">-- status approval --</option>
+                            <option value="0">Tolak</option>
+                            <option value="1">Review</option>
+                            <option value="2">Terima</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-light w-25" data-dismiss="modal">Batal</button>
+                    <button id="sub_btn" type="submit" class="btn btn-success w-25 ml-1">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script async src="{{asset('cms/js/information/'.$current.'.js')}}"></script>
 @include('cms.footer')
