@@ -89,6 +89,8 @@ Route::post('/req-password', [LoginController::class, 'req_password']);
 Route::post('/setup-password', [LoginController::class, 'setup_password']);
 Route::get('/reset-password/{param}', [LoginController::class, 'reset_password']);
 Route::get('/signup', [LoginController::class, 'signup']);
+Route::post('/register', [LoginController::class, 'auth_register']);
+Route::post('/user-activate', [LoginController::class, 'auth_register']);
 
 Route::group(['middleware' => ['auth']], function () {
     //dashboard
