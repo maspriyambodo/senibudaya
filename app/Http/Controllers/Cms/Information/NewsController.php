@@ -24,7 +24,7 @@ class NewsController extends AuthController {
         } else {
             $berita = Berita::select('dta_berita.id', 'dta_berita.nama_berita', 'app_user.nama_user', 'dta_berita.keterangan_berita', 'dta_berita.status_berita', 'dta_berita.created_at')
                     ->join('app_user', 'dta_berita.created_by', '=', 'app_user.id')
-                    ->where('created_by', Session::get('group'))
+                    ->where('dta_berita.created_by', Session::get('uid'))
                     ->orderBy('id', 'desc');
         }
 
@@ -97,15 +97,6 @@ class NewsController extends AuthController {
             $id_berita = dekrip($request->id);
         }
         $berita = Berita::where('id', $id_berita)->first();
-        $penulis = User::select('app_user.id', 'app_user.nama_user')
-                ->join('app_group', 'app_group.id', '=', 'app_user.id_group')
-                ->whereRaw("lower(trim(app_group.nama_group)) = 'penulis'")
-                ->get();
-        $fotografer = User::select('app_user.id', 'app_user.nama_user')
-                ->join('app_group', 'app_group.id', '=', 'app_user.id_group')
-                ->whereRaw("lower(trim(app_group.nama_group)) = 'fotografer'")
-                ->get();
-
         if (!isset($berita)) {
             $berita = new Berita();
             $berita->id = 0;
@@ -119,9 +110,6 @@ class NewsController extends AuthController {
                 ClassMenu::view($this->target),
                 array(
                     'data' => $berita,
-                    'sumber' => $penulis,
-                    'editor' => $penulis,
-                    'fotografer' => $fotografer
                 ),
         );
         return view($this->target . '-form', $data);

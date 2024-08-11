@@ -50,7 +50,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Ringkasan</label>
                                 <div class="col-sm-8">
-                                    <textarea id="keterangan_berita" name="keterangan_berita" rows="2" class="form-control">{{ $data->keterangan_berita }}</textarea>
+                                    <textarea id="keterangan_berita" name="keterangan_berita" rows="2" class="form-control" maxlength="160">{{ $data->keterangan_berita }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
