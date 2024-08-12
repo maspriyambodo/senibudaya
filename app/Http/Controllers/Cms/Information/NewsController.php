@@ -181,6 +181,11 @@ class NewsController extends AuthController {
         $berita->detail_berita = $request->detail_berita;
         $berita->image_berita = $image_berita;
         $berita->status_berita = $request->status_berita == "on" ? "t" : "f";
+        if (Session::get('group') == 2 || Session::get('group') == 1) {
+            $berita->status_approval = 2;
+        } else {
+            $berita->status_approval = 1;
+        }
         if ($new) {
             $berita->created_by = Session::get('uid');
         }
