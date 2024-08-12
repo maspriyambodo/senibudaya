@@ -55,9 +55,10 @@ class LoginController extends Controller {
                     'pass_reset_link' => $url_link,
                     'nama' => $request->namatxt,
                     'subject_title' => 'E-mail verification',
-                    'views_file' => 'emails.mail_activate'
+                    'views_file' => 'emails.mail_activate',
+                    'nama' => null
                 ];
-                Mail::to($request->username)->send(new MailController($mail_data));
+                Mail::to($request->username, $request->namatxt)->send(new MailController($mail_data));
                 $response = ['stat' => true, 'msgtxt' => 'We have sent an email to activate your account.'];
             } else {
                 $response = ['stat' => false, 'msgtxt' => 'System error while saving data.'];
@@ -98,9 +99,10 @@ class LoginController extends Controller {
                 'user_email' => $user->id_user,
                 'pass_reset_link' => $pass_reset_link,
                 'subject_title' => 'Reset Password',
-                'views_file' => 'emails.reset_password'
+                'views_file' => 'emails.reset_password',
+                'nama' => $user->nama_user
             ];
-            Mail::to($user->id_user)->send(new MailController($data));
+            Mail::to($user->id_user, $user->nama_user)->send(new MailController($data));
         } else {
             $response = [
                 'stat' => false,
