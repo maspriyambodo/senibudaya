@@ -10,7 +10,7 @@
         <title>@yield('title') &mdash; {{ config('app.name') }}</title>
         <link rel="icon" href="https://kemenag.go.id/assets/imgs/theme/favicon.png">
         <link rel="stylesheet" href="{{ asset('landing/css/plugins.css') }}">
-        <link rel="stylesheet" href="{{ asset('landing/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('landing/css/style.min.css') }}">
         <link rel="stylesheet" href="{{ asset('landing/css/colors/green.css') }}">
         <link rel="preload" href="{{ asset('landing/css/fonts/urbanist.css') }}" as="style" onload="this.rel='stylesheet'">
         <link rel="stylesheet" href="{{ asset('landing/plugins/toastr/toastr.min.css') }}">
