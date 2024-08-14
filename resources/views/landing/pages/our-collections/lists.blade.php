@@ -48,7 +48,7 @@
                         <a href="{{ route('landing.show-collection-detail', 'test-slug-here') }}">
                             <div class="card">
                                 <figure class="card-img-top">
-                                    <img class="img-fluid" src="/landing/img/avatars/t1.jpg" srcset="/landing/img/avatars/t1@2x.jpg 2x" alt="" />
+                                    <img class="img-fluid" src="{{ asset('landing/img/avatars/t1.jpg'); }}" srcset="{{ asset('landing/img/avatars/t1@2x.jpg'); }} 2x" alt="" />
                                 </figure>
                                 <div class="card-body px-6 py-5">
                                     <h4 class="mb-1">Coriss Ambady</h4>
@@ -62,7 +62,7 @@
                         <a href="{{ route('landing.show-collection-detail', 'test-slug-here') }}">
                             <div class="card">
                                 <figure class="card-img-top">
-                                    <img class="img-fluid" src="/landing/img/avatars/t1.jpg" srcset="/landing/img/avatars/t1@2x.jpg 2x" alt="" />
+                                    <img class="img-fluid" src="{{ asset('landing/img/avatars/t1.jpg'); }}" srcset="{{ asset('landing/img/avatars/t1@2x.jpg'); }} 2x" alt="" />
                                 </figure>
                                 <div class="card-body px-6 py-5">
                                     <h4 class="mb-1">Coriss Ambady</h4>
@@ -76,7 +76,7 @@
                         <a href="{{ route('landing.show-collection-detail', 'test-slug-here') }}">
                             <div class="card">
                                 <figure class="card-img-top">
-                                    <img class="img-fluid" src="/landing/img/avatars/t1.jpg" srcset="/landing/img/avatars/t1@2x.jpg 2x" alt="" />
+                                    <img class="img-fluid" src="{{ asset('landing/img/avatars/t1.jpg'); }}" srcset="{{ asset('landing/img/avatars/t1@2x.jpg'); }} 2x" alt="" />
                                 </figure>
                                 <div class="card-body px-6 py-5">
                                     <h4 class="mb-1">Coriss Ambady</h4>
@@ -90,7 +90,7 @@
                         <a href="{{ route('landing.show-collection-detail', 'test-slug-here') }}">
                             <div class="card">
                                 <figure class="card-img-top">
-                                    <img class="img-fluid" src="/landing/img/avatars/t1.jpg" srcset="/landing/img/avatars/t1@2x.jpg 2x" alt="" />
+                                    <img class="img-fluid" src="{{ asset('landing/img/avatars/t1.jpg'); }}" srcset="{{ asset('landing/img/avatars/t1@2x.jpg'); }} 2x" alt="" />
                                 </figure>
                                 <div class="card-body px-6 py-5">
                                     <h4 class="mb-1">Coriss Ambady</h4>
@@ -104,7 +104,7 @@
                         <a href="{{ route('landing.show-collection-detail', 'test-slug-here') }}">
                             <div class="card">
                                 <figure class="card-img-top">
-                                    <img class="img-fluid" src="/landing/img/avatars/t1.jpg" srcset="/landing/img/avatars/t1@2x.jpg 2x" alt="" />
+                                    <img class="img-fluid" src="{{ asset('landing/img/avatars/t1.jpg'); }}" srcset="{{ asset('landing/img/avatars/t1@2x.jpg'); }} 2x" alt="" />
                                 </figure>
                                 <div class="card-body px-6 py-5">
                                     <h4 class="mb-1">Coriss Ambady</h4>
@@ -118,7 +118,7 @@
                         <a href="{{ route('landing.show-collection-detail', 'test-slug-here') }}">
                             <div class="card">
                                 <figure class="card-img-top">
-                                    <img class="img-fluid" src="/landing/img/avatars/t1.jpg" srcset="/landing/img/avatars/t1@2x.jpg 2x" alt="" />
+                                    <img class="img-fluid" src="{{ asset('landing/img/avatars/t1.jpg'); }}" srcset="{{ asset('landing/img/avatars/t1@2x.jpg'); }} 2x" alt="" />
                                 </figure>
                                 <div class="card-body px-6 py-5">
                                     <h4 class="mb-1">Coriss Ambady</h4>
@@ -132,7 +132,7 @@
                         <a href="{{ route('landing.show-collection-detail', 'test-slug-here') }}">
                             <div class="card">
                                 <figure class="card-img-top">
-                                    <img class="img-fluid" src="/landing/img/avatars/t1.jpg" srcset="/landing/img/avatars/t1@2x.jpg 2x" alt="" />
+                                    <img class="img-fluid" src="{{ asset('landing/img/avatars/t1.jpg'); }}" srcset="{{ asset('landing/img/avatars/t1@2x.jpg'); }} 2x" alt="" />
                                 </figure>
                                 <div class="card-body px-6 py-5">
                                     <h4 class="mb-1">Coriss Ambady</h4>
@@ -146,7 +146,7 @@
                         <a href="{{ route('landing.show-collection-detail', 'test-slug-here') }}">
                             <div class="card">
                                 <figure class="card-img-top">
-                                    <img class="img-fluid" src="/landing/img/avatars/t1.jpg" srcset="/landing/img/avatars/t1@2x.jpg 2x" alt="" />
+                                    <img class="img-fluid" src="{{ asset('landing/img/avatars/t1.jpg'); }}" srcset="{{ asset('landing/img/avatars/t1@2x.jpg'); }} 2x" alt="" />
                                 </figure>
                                 <div class="card-body px-6 py-5">
                                     <h4 class="mb-1">Coriss Ambady</h4>

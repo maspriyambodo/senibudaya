@@ -23,7 +23,7 @@
                     <div class="blog single mt-n17">
                         <div class="card">
                             <figure class="card-img-top">
-                                <img src="/landing/img/photos/b1.jpg" alt="" />
+                                <img src="{{ asset('landing/img/photos/b1.jpg'); }}" alt="" />
                             </figure>
                             <div class="card-body">
                                 <div class="classic-view">
@@ -47,7 +47,7 @@
                                                         <a href="/landing/img/photos/b8-full.jpg"
                                                             data-glightbox="title: Heading; description: Purus Vulputate Sem Tellus Quam"
                                                             data-gallery="post">
-                                                            <img src="/landing/img/photos/b8.jpg" alt="" />
+                                                            <img src="{{ asset('landing/img/photos/b8.jpg'); }}" alt="" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -55,7 +55,7 @@
                                                     <figure class="hover-scale rounded cursor-dark">
                                                         <a href="/landing/img/photos/b9-full.jpg" data-glightbox
                                                             data-gallery="post">
-                                                            <img src="/landing/img/photos/b9.jpg" alt="" />
+                                                            <img src="{{ asset('landing/img/photos/b9.jpg'); }}" alt="" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -63,7 +63,7 @@
                                                     <figure class="hover-scale rounded cursor-dark">
                                                         <a href="/landing/img/photos/b10-full.jpg" data-glightbox
                                                             data-gallery="post">
-                                                            <img src="/landing/img/photos/b10.jpg" alt="" />
+                                                            <img src="{{ asset('landing/img/photos/b10.jpg'); }}" alt="" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -71,7 +71,7 @@
                                                     <figure class="hover-scale rounded cursor-dark">
                                                         <a href="/landing/img/photos/b11-full.jpg" data-glightbox
                                                             data-gallery="post">
-                                                            <img src="/landing/img/photos/b11.jpg" alt="" />
+                                                            <img src="{{ asset('landing/img/photos/b11.jpg'); }}" alt="" />
                                                         </a>
                                                     </figure>
                                                 </div>
