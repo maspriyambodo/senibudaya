@@ -1,25 +1,21 @@
 @extends('landing.layouts.master')
 @section('title', 'Home')
 @section('content')
-    <section class="wrapper bg-soft-primary" id="home">
-        <div class="container pt-10 pt-lg-12 pt-xl-12 pt-xxl-10 pb-lg-10 pb-xl-10 pb-xxl-0">
+</style>
+<section class="background-div" id="home">
+    <div class="container pt-10 pt-lg-12 pt-xl-12 pt-xxl-10 pb-lg-10 pb-xl-10 pb-xxl-0">
             <div class="row gx-md-8 gx-xl-12 gy-10 align-items-center text-center text-lg-start">
-                <div class="col-lg-6" data-cues="slideInDown" data-group="page-title" data-delay="900">
-                    <h1 class="display-1 mb-4 me-xl-5 mt-lg-n10">
-                        <span class="text-primary">Eksplor</span>
-                        <br class="" />
-                        Seni Budaya Islam Di Indonesia
+                <div class="col-lg-6 transparent-div" data-cues="slideInDown" data-group="page-title" data-delay="900">
+                    <h1 class="display-1 my-4 me-xl-5">
+                        <span class="text-primary clearfix">Eksplor</span>
+                        Seni Budaya Islam di Indonesia
                     </h1>
                     <p class="lead fs-24 lh-sm mb-7 pe-xxl-15">Indonesia merupakan negara yang sangat kaya akan ragam seni Budaya Islam. Mulai dari seni suara, seni tari, tradisi, ritual, instrumen, gambar, lukisan, pahatan, tulisan dan lain sebagainya.</p>
                 </div>
-                <div class="col-10 col-md-7 mx-auto col-lg-6 col-xl-5 ms-xl-5">
-                    <img class="img-fluid mb-n12 mb-md-n14 mb-lg-n19" src="{{ asset('landing/img/illustrations/3d11.png') }}" srcset="{{ asset('landing/img/illustrations/3d11@2x.png') }} 2x" data-cue="fadeIn" data-delay="300" alt="" />
-                </div>
+                <div class="col-10 col-md-7 mx-auto col-lg-6 col-xl-5 ms-xl-5"></div>
             </div>
         </div>
-        <figure><img src="{{ asset('landing/img/photos/clouds.png') }}" alt=""></figure>
-    </section>
-
+</section>
     <section class="wrapper bg-white" id="about-us">
         <div class="container pt-15 pb-15">
             <div class="row gx-3 gy-10 align-items-center">

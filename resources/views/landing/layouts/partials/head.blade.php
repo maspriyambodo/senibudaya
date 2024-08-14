@@ -16,6 +16,12 @@
                         <li class="nav-item"><a class="nav-link scroll" href="#home">Home</a></li>
                         <li class="nav-item"><a class="nav-link scroll" href="#about-us">About Us</a></li>
                         <li class="nav-item"><a class="nav-link scroll" href="#our-collections">Our Collections</a></li>
+                        @auth
+                        <li class="nav-item d-lg-none"><a class="nav-link" href="{{ route('dashboard') }}">Login</a></li>
+                        <li class="nav-item d-lg-none"><a class="nav-link" href="{{ route('logout') }}">Login</a></li>
+                        @else
+                        <li class="nav-itemv d-lg-none"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                        @endauth
                     </ul>
                     <div class="offcanvas-footer d-lg-none">
                         <div>
