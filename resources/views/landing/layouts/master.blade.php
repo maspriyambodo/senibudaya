@@ -11,7 +11,6 @@
         <link rel="icon" href="https://kemenag.go.id/assets/imgs/theme/favicon.png">
         <link rel="stylesheet" href="{{ asset('landing/css/plugins.css') }}">
         <link rel="stylesheet" href="{{ asset('landing/css/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('landing/custom/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('landing/css/colors/green.css') }}">
         <link rel="preload" href="{{ asset('landing/css/fonts/urbanist.css') }}" as="style" onload="this.rel='stylesheet'">
         <link rel="stylesheet" href="{{ asset('landing/plugins/toastr/toastr.min.css') }}">
