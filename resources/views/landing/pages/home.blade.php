@@ -25,7 +25,7 @@
             <div class="row gx-3 gy-10 align-items-center">
                 <div class="col-lg-6">
                     <figure>
-                        <img class="w-auto" src="/landing/img/illustrations/3d8.png" srcset="/landing/img/illustrations/3d8@2x.png 2x" alt="" />
+                        <img class="w-auto" src="{{ asset('landing/img/illustrations/3d8.png'); }}" srcset="{{ asset('landing/img/illustrations/3d8@2x.png'); }} 2x" alt="" />
                     </figure>
                 </div>
                 <div class="col-lg-5 ms-auto">
@@ -35,7 +35,7 @@
                         <div class="col-md-6">
                             <div class="d-flex flex-row">
                                 <div>
-                                    <img src="/landing/img/icons/solid/lamp.svg" class="svg-inject icon-svg icon-svg-xs solid-mono text-grape me-4" alt="" />
+                                    <img src="{{ asset('landing/img/icons/solid/lamp.svg'); }}" class="svg-inject icon-svg icon-svg-xs solid-mono text-grape me-4" alt="Penyelamatan Kandungan Informasi" />
                                 </div>
                                 <div>
                                     <h4 class="mb-1">Penyelamatan Kandungan Informasi</h4>
@@ -46,7 +46,7 @@
                         <div class="col-md-6">
                             <div class="d-flex flex-row">
                                 <div>
-                                    <img src="/landing/img/icons/solid/bulb.svg" class="svg-inject icon-svg icon-svg-xs solid-mono text-grape me-4" alt="" />
+                                    <img src="{{ asset('landing/img/icons/solid/bulb.svg'); }}" class="svg-inject icon-svg icon-svg-xs solid-mono text-grape me-4" alt="Membuka Akses Masyarakat" />
                                 </div>
                                 <div>
                                     <h4 class="mb-1">Membuka Akses Masyarakat</h4>
@@ -57,7 +57,7 @@
                         <div class="col-md-6">
                             <div class="d-flex flex-row">
                                 <div>
-                                    <img src="/landing/img/icons/solid/puzzle.svg" class="svg-inject icon-svg icon-svg-xs solid-mono text-grape me-4" alt="" />
+                                    <img src="{{ asset('landing/img/icons/solid/puzzle.svg'); }}" class="svg-inject icon-svg icon-svg-xs solid-mono text-grape me-4" alt="Referensi Pengembangan Ilmu" />
                                 </div>
                                 <div>
                                     <h4 class="mb-1">Referensi Pengembangan Ilmu</h4>
@@ -68,7 +68,7 @@
                         <div class="col-md-6">
                             <div class="d-flex flex-row">
                                 <div>
-                                    <img src="/landing/img/icons/solid/headphone.svg" class="svg-inject icon-svg icon-svg-xs solid-mono text-grape me-4" alt="" />
+                                    <img src="{{ asset('landing/img/icons/solid/headphone.svg'); }}" class="svg-inject icon-svg icon-svg-xs solid-mono text-grape me-4" alt="Nilai-Nilai Seni Budaya Islam" />
                                 </div>
                                 <div>
                                     <h4 class="mb-1">Nilai-Nilai Seni Budaya Islam</h4>
@@ -95,7 +95,7 @@
                     <div class="card shadow-lg">
                         <figure class="card-img-top">
                             <a href="{{ route('landing.show-collections', 'audio') }}">
-                                <img src="/landing/img/icons/lineal/headphone.svg" class="svg-inject icon-svg icon-svg-lg text-primary" alt="" />
+                                <img src="{{ asset('landing/img/icons/lineal/headphone.svg'); }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="Audio" />
                             </a>
                         </figure>
                         <div class="card-body p-6">
@@ -107,7 +107,7 @@
                     <div class="card shadow-lg">
                         <figure class="card-img-top">
                             <a href="{{ route('landing.show-collections', 'video') }}">
-                                <img src="/landing/img/icons/lineal/video.svg" class="svg-inject icon-svg icon-svg-lg text-primary" alt="" />
+                                <img src="{{ asset('landing/img/icons/lineal/video.svg'); }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="Video" />
                             </a>
                         </figure>
                         <div class="card-body p-6">
@@ -119,7 +119,7 @@
                     <div class="card shadow-lg">
                         <figure class="card-img-top">
                             <a href="{{ route('landing.show-collections', 'gambar') }}">
-                                <img src="/landing/img/icons/lineal/pictures.svg" class="svg-inject icon-svg icon-svg-lg text-primary" alt="" />
+                                <img src="{{ asset('landing/img/icons/lineal/pictures.svg'); }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="Gambar" />
                             </a>
                         </figure>
                         <div class="card-body p-6">
@@ -131,7 +131,7 @@
                     <div class="card shadow-lg">
                         <figure class="card-img-top">
                             <a href="{{ route('landing.show-collections', 'tulisan') }}">
-                                <img src="/landing/img/icons/lineal/files.svg" class="svg-inject icon-svg icon-svg-lg text-primary" alt="" />
+                                <img src="{{ asset('landing/img/icons/lineal/files.svg'); }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="Tulisan" />
                             </a>
                         </figure>
                         <div class="card-body p-6">
