@@ -59,6 +59,24 @@
             </script>
         @endif
 
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              const scrollLinks = document.querySelectorAll('a[data-scroll-to]');
+
+              scrollLinks.forEach(link => {
+                  link.addEventListener('click', function(e) {
+                      const targetId = this.getAttribute('data-scroll-to');
+                      const targetElement = document.querySelector(targetId);
+
+                      if (targetElement) {
+                          e.preventDefault();
+                          targetElement.scrollIntoView({ behavior: 'smooth' });
+                      }
+                  });
+              });
+          });
+        </script>
+
         @stack('scripts')
 	</body>
 </html>

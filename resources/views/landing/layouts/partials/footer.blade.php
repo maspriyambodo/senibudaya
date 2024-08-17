@@ -24,9 +24,9 @@
                 <div class="widget">
                     <h4 class="widget-title text-white mb-3">Links</h4>
                     <ul class="list-unstyled  mb-0">
-                        <li><a class="nav-link scroll" href="#home">Home</a></li>
-                        <li><a class="nav-link scroll" href="#about-us">About Us</a></li>
-                        <li><a class="nav-link scroll" href="#our-collections">Our Collections</a></li>
+                        <li><a class="nav-link" href="{{ route('landing.home') }}#home" data-scroll-to="#home">Home</a></li>
+                        <li><a class="nav-link" href="{{ route('landing.home') }}#about-us" data-scroll-to="#about-us">About Us</a></li>
+                        <li><a class="nav-link" href="{{ route('landing.home') }}#our-collections" data-scroll-to="#our-collections">Our Collections</a></li>
                         @auth
                             @if (Auth::user()->nama_user)
                                 <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
