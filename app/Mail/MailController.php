@@ -5,7 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-//password google aplikasi untuk repositori: wcjc rnae eicx wfvz
+//password google maspriyambodo@gmail.com aplikasi untuk repositori: wcjc rnae eicx wfvz
 class MailController extends Mailable
 {
     use Queueable, SerializesModels;

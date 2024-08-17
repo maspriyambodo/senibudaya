@@ -15,6 +15,7 @@ use App\Http\Controllers\Cms\Information\BannerController;
 use App\Http\Controllers\Cms\Contact\ContactController;
 use App\Http\Controllers\Cms\Setting\UserController;
 use App\Http\Controllers\Cms\Setting\GroupController;
+use App\Http\Controllers\PHPMailerController;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\LandingController;
 
@@ -22,7 +23,8 @@ use App\Http\Controllers\LandingController;
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/show-collections/{slug}', [LandingController::class, 'show_collections'])->name('landing.show-collections');
 Route::get('/show-collection-detail/{slug}', [LandingController::class, 'show_collection_detail'])->name('landing.show-collection-detail');
-
+Route::get("email", [PHPMailerController::class, "email"])->name("email");
+Route::post("send-email", [PHPMailerController::class, "composeEmail"])->name("send-email");
 //Route::get('/generate-password/{tulispassword}', function ($request) {
 //    return Hash::make(md5($request));
 //});
