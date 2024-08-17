@@ -20,7 +20,7 @@ use App\Http\Controllers\LandingController;
 
 //front
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
-Route::get('/show-collections/{type}', [LandingController::class, 'show_collections'])->name('landing.show-collections');
+Route::get('/show-collections/{slug}', [LandingController::class, 'show_collections'])->name('landing.show-collections');
 Route::get('/show-collection-detail/{slug}', [LandingController::class, 'show_collection_detail'])->name('landing.show-collection-detail');
 
 //Route::get('/generate-password/{tulispassword}', function ($request) {
@@ -48,13 +48,13 @@ Route::get('/signup', [LoginController::class, 'signup']);
 Route::post('/register', [LoginController::class, 'auth_register']);
 Route::get('/user-activate/{param}', [LoginController::class, 'user_activate']);
 
-Route::group(['middleware' => ['auth']], function () {
+// Route::group(['middleware' => ['auth']], function () {
     //dashboard
     Route::get('/cmsadmin', function () {
         return redirect('dashboard');
     });
     Route::get('/dashboard', [CmsController::class, 'index'])->name('dashboard');
-    
+
     //background
     Route::get('/background', [BackgroundController::class, 'index']);
     Route::get('/background/table/{val}', [BackgroundController::class, 'table']);
@@ -132,4 +132,4 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/group/show/{id}', [GroupController::class, 'show']);
     Route::post('/group/store', [GroupController::class, 'store']);
     Route::post('/group/destroy', [GroupController::class, 'destroy']);
-});
+// });

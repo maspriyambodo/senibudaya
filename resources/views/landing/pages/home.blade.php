@@ -1,9 +1,8 @@
 @extends('landing.layouts.master')
 @section('title', 'Home')
 @section('content')
-</style>
-<section class="background-div" id="home">
-    <div class="container pt-10 pt-lg-12 pt-xl-12 pt-xxl-10 pb-lg-10 pb-xl-10 pb-xxl-0">
+    <section class="background-div" id="home">
+        <div class="container pt-10 pt-lg-12 pt-xl-12 pt-xxl-10 pb-lg-10 pb-xl-10 pb-xxl-0">
             <div class="row gx-md-8 gx-xl-12 gy-10 align-items-center text-center text-lg-start">
                 <div class="col-lg-6 transparent-div" data-cues="slideInDown" data-group="page-title" data-delay="900">
                     <h1 class="display-1 my-4 me-xl-5">
@@ -15,7 +14,8 @@
                 <div class="col-10 col-md-7 mx-auto col-lg-6 col-xl-5 ms-xl-5"></div>
             </div>
         </div>
-</section>
+    </section>
+
     <section class="wrapper bg-white" id="about-us">
         <div class="container pt-15 pb-15">
             <div class="row gx-3 gy-10 align-items-center">
@@ -87,54 +87,20 @@
                 </div>
             </div>
             <div class="row grid-view gx-md-8 gx-xl-10 gy-8 gy-lg-0 text-center">
-                <div class="col-sm-6 col-md-4 col-lg-3 mx-auto">
-                    <div class="card shadow-lg">
-                        <figure class="card-img-top">
-                            <a href="{{ route('landing.show-collections', 'audio') }}">
-                                <img src="{{ asset('landing/img/icons/lineal/headphone.svg'); }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="Audio" />
-                            </a>
-                        </figure>
-                        <div class="card-body p-6">
-                            <h3 class="fs-21 mb-0">Audio</h3>
+                @foreach($categories_our_collection as $category)
+                    <div class="col-sm-6 col-md-4 col-lg-3 mx-auto">
+                        <div class="card shadow-lg">
+                            <figure class="card-img-top">
+                                <a href="{{ route('landing.show-collections', $category->slug) }}">
+                                  <img src="{{ asset($category->icon_path) }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="{{ $category->nama }}" />
+                                </a>
+                            </figure>
+                            <div class="card-body p-6">
+                                <h3 class="fs-21 mb-0">{{ $category->nama }}</h3>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3 mx-auto">
-                    <div class="card shadow-lg">
-                        <figure class="card-img-top">
-                            <a href="{{ route('landing.show-collections', 'video') }}">
-                                <img src="{{ asset('landing/img/icons/lineal/video.svg'); }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="Video" />
-                            </a>
-                        </figure>
-                        <div class="card-body p-6">
-                            <h3 class="fs-21 mb-0">Video</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3 mx-auto">
-                    <div class="card shadow-lg">
-                        <figure class="card-img-top">
-                            <a href="{{ route('landing.show-collections', 'gambar') }}">
-                                <img src="{{ asset('landing/img/icons/lineal/pictures.svg'); }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="Gambar" />
-                            </a>
-                        </figure>
-                        <div class="card-body p-6">
-                            <h3 class="fs-21 mb-0">Gambar</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3 mx-auto">
-                    <div class="card shadow-lg">
-                        <figure class="card-img-top">
-                            <a href="{{ route('landing.show-collections', 'tulisan') }}">
-                                <img src="{{ asset('landing/img/icons/lineal/files.svg'); }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="Tulisan" />
-                            </a>
-                        </figure>
-                        <div class="card-body p-6">
-                            <h3 class="fs-21 mb-0">Tulisan</h3>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             </div>
         </div>
