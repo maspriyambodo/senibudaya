@@ -15,9 +15,11 @@ use App\Http\Controllers\Cms\Information\BannerController;
 use App\Http\Controllers\Cms\Contact\ContactController;
 use App\Http\Controllers\Cms\Setting\UserController;
 use App\Http\Controllers\Cms\Setting\GroupController;
+use App\Http\Controllers\FormPengajuanController;
 use App\Http\Controllers\PHPMailerController;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\ProfileController;
 
 //front
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
@@ -46,7 +48,17 @@ Route::get('/signup', [LoginController::class, 'signup']);
 Route::post('/register', [LoginController::class, 'auth_register']);
 Route::get('/user-activate/{param}', [LoginController::class, 'user_activate']);
 
-// Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    Route::get('my-pengajuan', [FormPengajuanController::class, 'index'])->name('form-pengajuan.index');
+    Route::get('form-pengajuan/create', [FormPengajuanController::class, 'create'])->name('form-pengajuan.create');
+    Route::post('form-pengajuan/store', [FormPengajuanController::class, 'store'])->name('form-pengajuan.store');
+    Route::get('/get-kabkota/{id}', [FormPengajuanController::class, 'getKabKota'])->name('get.kabkota');
+
     //dashboard
     Route::get('/cmsadmin', function () {
         return redirect('dashboard');
@@ -130,4 +142,4 @@ Route::get('/user-activate/{param}', [LoginController::class, 'user_activate']);
     Route::get('/group/show/{id}', [GroupController::class, 'show']);
     Route::post('/group/store', [GroupController::class, 'store']);
     Route::post('/group/destroy', [GroupController::class, 'destroy']);
-// });
+});
