@@ -116,7 +116,7 @@
                       </tr>
                       <tr>
                         <td style="padding: 0 0 60px 0; font-size: 14px; line-height: 150%; font-weight: 400; color: #000000; letter-spacing: 0.01em;">
-                          If you didn’t request the password reset, please ignore this message or contact our support at <a href="mailto:bimasislam@kemenag.go.id">bimasislam@kemenag.go.id</a>.
+                          If you did not request a password reset, please ignore this message or contact our support. at <a href="mailto:bimasislam@kemenag.go.id">bimasislam@kemenag.go.id</a>.
                         </td>
                       </tr>
                       <tr>
