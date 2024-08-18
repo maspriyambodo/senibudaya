@@ -28,11 +28,7 @@ Route::post("send-email", [PHPMailerController::class, "composeEmail"])->name("s
 //Route::get('/generate-password/{tulispassword}', function ($request) {
 //    return Hash::make(md5($request));
 //});
-//old url
 
-Route::get('/profil/sejarah', function () {
-    return redirect('/sejarah');
-});
 //sitemap
 Route::get('/sitemap.xml', [App\Http\Controllers\SitemapController::class, 'index']);
 Route::get('/sitemap/{id}', [App\Http\Controllers\SitemapController::class, 'posts']);
