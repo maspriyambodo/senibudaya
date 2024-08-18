@@ -54,7 +54,7 @@ return [
      * IP/CIDR netmask eg. 127.0.0.0/24, also 127.0.0.1 is accepted and /32 assumed
      *
      */
-    'skip_ip'                      => env('RECAPTCHA_SKIP_IP', []),
+    'skip_ip'                      => env('RECAPTCHA_SKIP_IP', ['36.71.219.57', ' 103.7.12.0/22', '127.0.0.1']),
 
     /**
      *
@@ -80,7 +80,7 @@ return [
      * @since v3.6.0
      *
      */
-    'default_language'             => null,
+    'default_language'             => 'id',
 
     /**
      *
@@ -99,7 +99,7 @@ return [
      * Supported true, false
      *
      */
-    'explicit'                     => false,
+    'explicit'                     => true,
 
     /**
      *
@@ -142,7 +142,7 @@ return [
          * The color theme of the widget.
          * Supported "light", "dark"
          */
-        'theme'            => 'light',
+        'theme'            => 'dark',
 
         /**
          * The size of the widget.
