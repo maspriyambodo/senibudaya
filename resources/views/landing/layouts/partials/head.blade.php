@@ -13,12 +13,21 @@
                 </div>
                 <div class="offcanvas-body ms-lg-auto d-flex flex-column h-100">
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('landing.home') }}#home" data-scroll-to="#home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('landing.home') }}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('landing.home') }}#about-us" data-scroll-to="#about-us">About Us</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('landing.home') }}#our-collections" data-scroll-to="#our-collections">Our Collections</a></li>
                         @auth
-                          <li class="nav-item d-lg-none"><a class="nav-link" href="{{ route('dashboard') }}">Login</a></li>
-                          <li class="nav-item d-lg-none"><a class="nav-link" href="{{ route('logout') }}">Login</a></li>
+                          <li class="nav-item"><a class="nav-link{{ request()->routeIs('form-pengajuan.create') ? ' active' : '' }}" href="{{ route('form-pengajuan.create') }}">Form Pengajuan</a></li>
+                          <li class="nav-item d-lg-none"><a class="nav-link{{ request()->routeIs('profile.edit') ? ' active' : '' }}" href="{{ route('profile.edit') }}">Profile</a></li>
+                          <li class="nav-item d-lg-none"><a class="nav-link{{ request()->routeIs('form-pengajuan.index') ? ' active' : '' }}" href="{{ route('form-pengajuan.index') }}">List Pengajuan</a></li>
+                          <form method="POST" action="{{ route('logout') }}">
+                              @csrf
+                              <li class="nav-item d-lg-none">
+                                  <button type="submit" class="nav-link">
+                                      {{ __('Log Out') }}
+                                  </button>
+                              </li>
+                          </form>
                         @else
                           <li class="nav-itemv d-lg-none"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                         @endauth
@@ -42,12 +51,16 @@
                         <li class="nav-item dropdown d-none d-md-block">
                             <a class="nav-link dropdown-toggle" href="#" style="text-transform:uppercase" data-bs-toggle="dropdown">{{ Auth::user()->nama_user }}</a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item">
-                                    <a href="{{ route('logout') }}" class="dropdown-item">Logout</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('dashboard') }}" class="dropdown-item">Dashboard</a>
-                                </li>
+                                <li class="nav-item"><a class="dropdown-item{{ request()->routeIs('profile.edit') ? ' active' : '' }}" href="{{ route('profile.edit') }}">Profile</a></li>
+                                <li class="nav-item"><a class="dropdown-item{{ request()->routeIs('form-pengajuan.index') ? ' active' : '' }}" href="{{ route('form-pengajuan.index') }}">List Pengajuan</a></li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                      @csrf
+                                      <li class="nav-item">
+                                          <button type="submit" class="dropdown-item">
+                                              {{ __('Log Out') }}
+                                          </button>
+                                      </li>
+                                </form>
                             </ul>
                         </li>
                     @else
