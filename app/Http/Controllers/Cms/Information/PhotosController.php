@@ -18,7 +18,16 @@ class PhotosController extends AuthController
 
     public function json()
     {
-        $foto = Foto::query();
+        if (Session::get('group') == 2 || Session::get('group') == 1) {
+            $foto = Foto::select('dta_foto.id', 'dta_foto.nama_foto', 'dta_foto.keterangan_foto', 'dta_foto.image_foto', 'dta_foto.status_foto', 'dta_foto.status_approval', 'dta_foto.created_by', 'dta_foto.created_at')
+                    ->join('app_user', 'dta_foto.created_by', '=', 'app_user.id')
+                    ->orderBy('dta_foto.id', 'desc');
+        } else {
+            $foto = Foto::select('dta_foto.id', 'dta_foto.nama_foto', 'dta_foto.keterangan_foto', 'dta_foto.image_foto', 'dta_foto.status_foto', 'dta_foto.status_approval', 'dta_foto.created_by', 'dta_foto.created_at')
+                    ->join('app_user', 'dta_foto.created_by', '=', 'app_user.id')
+                    ->where('dta_foto.created_by', Session::get('uid'))
+                    ->orderBy('dta_foto.id', 'desc');
+        }
 
         return Datatables::of($foto)
         ->addColumn('detail', function ($row) {

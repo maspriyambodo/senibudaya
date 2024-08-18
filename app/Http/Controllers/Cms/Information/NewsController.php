@@ -6,6 +6,8 @@ use App\Http\Controllers\Cms\AuthController;
 use App\Classes\ClassMenu;
 use App\Models\Berita;
 use App\Models\User;
+use App\Helpers\User as UserHelper;
+use App\Models\OurCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -17,23 +19,19 @@ class NewsController extends AuthController {
     private $target = 'cms.information.news';
 
     public function json() {
-        if (Session::get('group') == 2 || Session::get('group') == 1) {
-            $berita = Berita::select('dta_berita.id', 'dta_berita.nama_berita', 'app_user.nama_user', 'dta_berita.keterangan_berita', 'dta_berita.status_berita', 'dta_berita.created_at', 'dta_berita.status_approval')
-                    ->join('app_user', 'dta_berita.created_by', '=', 'app_user.id')
-                    ->orderBy('id', 'desc');
-        } else {
-            $berita = Berita::select('dta_berita.id', 'dta_berita.nama_berita', 'app_user.nama_user', 'dta_berita.keterangan_berita', 'dta_berita.status_berita', 'dta_berita.created_at', 'dta_berita.status_approval')
-                    ->join('app_user', 'dta_berita.created_by', '=', 'app_user.id')
-                    ->where('dta_berita.created_by', Session::get('uid'))
-                    ->orderBy('id', 'desc');
-        }
+        $berita = OurCollection::select('dta_our_collections.id', 'dta_our_collections.nama AS nama_berita', 'dta_our_collections.pencipta', 'dta_our_collections.status AS status_berita', 'dta_our_collections.status_approval', 'dta_our_collections.created_at', 'user_create.nama_user', 'user_approve.nama_user AS nama_approve', 'mt_provinsi.nama AS provinsi', 'mt_kabupaten.nama AS kabupaten')
+                    ->join('app_user AS user_create', 'dta_our_collections.created_by', '=', 'user_create.id')
+                    ->join('app_user AS user_approve', 'dta_our_collections.user_approval', '=', 'user_approve.id')
+                    ->join('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
+                    ->join('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten')
+                    ->where('dta_our_collections.id_category', 4);
 
         return Datatables::of($berita)
                         ->editColumn('created_at', function ($row) {
-                            return date('d/m/Y', strtotime($row->created_at));
+                            return date('d/M/Y', strtotime($row->created_at));
                         })
-                        ->addColumn('display', function ($row) {
-                            return $row->status_berita == "t" ?
+                        ->addColumn('status_berita', function ($row) {
+                            return $row->status_berita == 1 ?
                             "<span class=\"badge badge-success w-100\">Publik</span>" :
                             "<span class=\"badge badge-light-dark  w-100\">Draft</span>";
                         })
@@ -60,13 +58,13 @@ class NewsController extends AuthController {
 					</button>
 					<div class=\"dropdown-menu dropright\">";
                                 if ($this->edit) {
-                                    $button .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/form/' . enkrip($row->id)) . "\" ><i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
+                                    $button .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/form/' . UserHelper::enkrip($row->id)) . "\" ><i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
                                 }
                                 if ($this->delete) {
                                     $button .= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\"><i class=\"fas fa-trash\"></i> Hapus Data</a>";
                                 }
                                 if (Session::get('group') == 2 || Session::get('group') == 1) {
-                                    $button .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" onclick=\"Approval('" . enkrip($row->id) . "','" . $row->nama_berita . "');\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
+                                    $button .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" onclick=\"Approval('" . UserHelper::enkrip($row->id) . "','" . $row->nama_berita . "');\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
                                 }
                                 $button .= "</div>
 				</div>";
@@ -75,19 +73,19 @@ class NewsController extends AuthController {
                         })
                         ->filter(function ($query) {
                             if (request()->has('keyword')) {
-                                $query->where('nama_berita', 'like', "%" . request('keyword') . "%");
+                                $query->where('dta_our_collections.nama', 'like', "%" . request('keyword') . "%");
                             }
                         })
                         ->order(function ($query) {
-                            $query->orderBy('created_at', 'desc');
+                            $query->orderBy('dta_our_collections.created_at', 'desc');
                         })
-                        ->rawColumns(['display', 'button', 'image', 'status_approval'])
+                        ->rawColumns(['status_berita', 'button', 'image', 'status_approval'])
                         ->toJson();
     }
     
     public function news_approval(Request $request) {
-        $id = dekrip($request->id_jurnal);
-        $exec = Berita::where('id', $id)
+        $id = UserHelper::dekrip($request->id_jurnal);
+        $exec = OurCollection::where('id', $id)
                 ->update([
             'status_approval' => $request->approvtxt,
             'user_approval' => Session::get('uid'),
@@ -106,9 +104,9 @@ class NewsController extends AuthController {
 
         $column = array(
             'id' => 'data',
-            'align' => array('center', 'center', 'left', 'left', 'center', 'center'),
-            'data' => array('button', 'nama_berita', 'keterangan_berita', 'created_at', 'nama_user', 'display', 'status_approval'),
-            'nosort' => array(0, 1, 2, 3, 4),
+            'align' => array('center', 'left'),
+            'data' => array('button', 'nama_berita', 'pencipta', 'provinsi', 'kabupaten', 'created_at', 'nama_user', 'status_berita', 'status_approval'),
+            'nosort' => array(0),
         );
         $data = array_merge($data, array('column' => $column));
         return view($this->target, $data);
@@ -118,13 +116,13 @@ class NewsController extends AuthController {
         if ($request->id == 0) {
             $id_berita = 0;
         } else {
-            $id_berita = dekrip($request->id);
+            $id_berita = UserHelper::dekrip($request->id);
         }
-        $berita = Berita::where('id', $id_berita)->first();
+        $berita = OurCollection::where('id', $id_berita)->first();
         if (!isset($berita)) {
             $berita = new Berita();
             $berita->id = 0;
-            $berita->status_berita = 't';
+            $berita->status = 1;
             $berita->mode_berita = 'Add Berita';
         } else {
             $berita->mode_berita = 'Edit Berita';
@@ -140,7 +138,7 @@ class NewsController extends AuthController {
     }
 
     public function store(Request $request) {
-        $id_berita = dekrip($request->id);
+        $id_berita = UserHelper::dekrip($request->id);
         $new = empty($id_berita) ? true : false;
         ClassMenu::store($this, $new);
 
@@ -153,7 +151,7 @@ class NewsController extends AuthController {
                 ]
         );
 
-        $data = Berita::select('image_berita')->where('id', $id_berita)->first();
+        $data = OurCollection::select('image_berita')->where('id', $id_berita)->first();
         $image_berita = isset($data) ? $data->image_berita : '';
         if ($request->hasfile('image_berita')) {
             $foto_temp = public_path('images/berita/' . $image_berita);
@@ -173,14 +171,13 @@ class NewsController extends AuthController {
             })->save($path . '/' . $image_berita);
         }
 
-        $berita = $new ? new Berita() : Berita::find($id_berita);
+        $berita = $new ? new Berita() : OurCollection::find($id_berita);
 
         $berita->slug_berita = $request->slug_berita;
         $berita->nama_berita = $request->nama_berita;
-        $berita->keterangan_berita = $request->keterangan_berita;
         $berita->detail_berita = $request->detail_berita;
         $berita->image_berita = $image_berita;
-        $berita->status_berita = $request->status_berita == "on" ? "t" : "f";
+        $berita->status = $request->status_berita == "on" ? "t" : "f";
         if (Session::get('group') == 2 || Session::get('group') == 1) {
             $berita->status_approval = 2;
         } else {
@@ -202,8 +199,8 @@ class NewsController extends AuthController {
     }
 
     public function destroy(Request $request) {
-        Berita::where('id', $request->dt)
-                ->update(['status_berita' => 'f']);
+        OurCollection::where('id', $request->dt)
+                ->update(['status' => 0]);
         return redirect($this->page)->with('message', "Hapus data berhasil.");
     }
 }

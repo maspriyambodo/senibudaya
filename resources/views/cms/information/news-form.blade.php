@@ -1,5 +1,5 @@
 @include('cms.header')
-<link rel="stylesheet" href="{{asset('cms/css/plugins/trumbowyg.min.css')}}" />
+<link rel="stylesheet" href="{{ asset('cms/css/plugins/trumbowyg.min.css') }}" />
 
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
@@ -44,19 +44,13 @@
                                 <input id="id" name="id" value="{{ enkrip($data->id) }}" type="hidden">
                                 <div class="col-sm-8">
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                    <input id="nama_berita" name="nama_berita" value="{{ $data->nama_berita }}" type="text" class="form-control" {{ noEmpty('Judul tidak boleh kosong.') }} autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Ringkasan</label>
-                                <div class="col-sm-8">
-                                    <textarea id="keterangan_berita" name="keterangan_berita" rows="2" class="form-control" maxlength="160">{{ $data->keterangan_berita }}</textarea>
+                                    <input id="nama_berita" name="nama_berita" value="{{ $data->nama }}" type="text" class="form-control" {{ noEmpty('Judul tidak boleh kosong.') }} autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Slug</label>
                                 <div class="col-sm-8">
-                                    <input id="slug_berita" name="slug_berita" value="{{ $data->slug_berita }}" type="text" class="form-control" {{ noEmpty('Slug tidak boleh kosong.') }} autocomplete="off">
+                                    <input id="slug_berita" name="slug_berita" value="{{ $data->slug }}" type="text" class="form-control" {{ noEmpty('Slug tidak boleh kosong.') }} autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -66,18 +60,18 @@
                                         <input id="image_berita" name="image_berita" type="file" accept="image/*" class="custom-file-input" >
                                         <label class="custom-file-label" for="image_berita">Pilih Gambar</label>
                                     </div>
-                                    <img id="img_berita" class="user-img-radious-style mt-1 w-25 @if(empty($data->image_berita)) d-none @else" src="{{ url('images/berita/'.$data->image_berita) }}@endif">
+                                    <img id="img_berita" class="user-img-radious-style mt-1 w-25 @if(empty($data->banner_path)) d-none @else" src="{{ url($data->banner_path) }}@endif">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Status</label>
                                 <div class="col-sm-6 switch switch-success">
-                                    <input type="checkbox" id="status_berita" name="status_berita" {{ $data->status_berita == 't' ? 'checked' : '' }}  />
+                                    <input type="checkbox" id="status_berita" name="status_berita" {{ $data->status == 1 ? 'checked' : '' }}  />
                                     <label for="status_berita" class="cr"></label>
                                     <label for="status_berita">Aktif ?</label>
                                 </div>
                             </div>
-                            <textarea id="detail_berita" name="detail_berita" class="w-100 border-0">{{ $data->detail_berita }}</textarea>
+                            <textarea id="detail_berita" name="detail_berita" class="w-100 border-0">{{ $data->body }}</textarea>
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary w-25 ml-1">Simpan</button>
