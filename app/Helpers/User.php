@@ -14,7 +14,8 @@ class User {
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher));
         $encryptedText = openssl_encrypt($text, $cipher, $key, 0, $iv);
         $encryptedTextWithIv = base64_encode($iv . $encryptedText);
-        return $encryptedTextWithIv;
+        $encTxt = str_replace(['%', ':', '\'', '?', '&', '/'], ['%25', '%3A', '%5C', '%3F', '%26', '%2F'], $encryptedTextWithIv);
+        return $encTxt;
     }
 
     public static function dekrip($text) {
@@ -25,6 +26,7 @@ class User {
         $iv = substr($decodedData, 0, $ivLength);
         $encryptedText = substr($decodedData, $ivLength);
         $decryptedText = openssl_decrypt($encryptedText, $cipher, $key, 0, $iv);
+        $decTxt = str_replace(['%25', '%3A', '%5C', '%3F', '%26', '%2F'], ['%', ':', '\'', '?', '&', '/'], $decryptedText);
         return $decryptedText;
     }
 
