@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\MailController;
+use \App\Helpers\User as UserHelper;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller {
@@ -48,7 +47,7 @@ class LoginController extends Controller {
             ];
             $exec = User::insertGetId($data);
             if (!is_null($exec)) {
-                $url_link = url('user-activate/' . enkrip($exec . ',' . strtotime(date('Y-m-d H:i:s'))));
+                $url_link = url('user-activate/' . UserHelper::enkrip($exec . ',' . strtotime(date('Y-m-d H:i:s'))));
                 $mail_data = [
                     'id' => $exec,
                     'user_email' => $request->username,
@@ -58,7 +57,7 @@ class LoginController extends Controller {
                     'views_file' => 'emails.mail_activate',
                     'nama' => null
                 ];
-                Mail::to($request->username, $request->namatxt)->send(new MailController($mail_data));
+                UserHelper::composeEmail($mail_data);
                 $response = ['stat' => true, 'msgtxt' => 'We have sent an email to activate your account.'];
             } else {
                 $response = ['stat' => false, 'msgtxt' => 'System error while saving data.'];
@@ -93,7 +92,7 @@ class LoginController extends Controller {
             $response = [
                 'stat' => true
             ];
-            $pass_reset_link = url('reset-password/' . enkrip($user->id_user . ',' . strtotime(date('Y-m-d H:i:s'))));
+            $pass_reset_link = url('reset-password/' . UserHelper::enkrip($user->id_user . ',' . strtotime(date('Y-m-d H:i:s'))));
             $data = [
                 'id' => $user->id,
                 'user_email' => $user->id_user,
@@ -102,7 +101,7 @@ class LoginController extends Controller {
                 'views_file' => 'emails.reset_password',
                 'nama' => $user->nama_user
             ];
-            Mail::to($user->id_user, $user->nama_user)->send(new MailController($data));
+            UserHelper::composeEmail($data);
         } else {
             $response = [
                 'stat' => false,
@@ -111,9 +110,9 @@ class LoginController extends Controller {
         }
         return response()->json($response);
     }
-
+    
     public function reset_password(Request $request) {
-        $decrypted = dekrip($request->param);
+        $decrypted = UserHelper::dekrip($request->param);
         $param = explode(',', $decrypted);
         $user_email = $param[0];
         if (count($param) <> 2) {
