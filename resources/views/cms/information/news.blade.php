@@ -36,21 +36,25 @@
         </div>
     </div>
     <div class="clear mt-4"></div>
-    <table class="table table-bordered table-hover" id="data" style="width:100%;">
-        <thead>
-            <tr>
-                <th>No</th>
-                @if($edit || $delete)<th>#</th>@endif
-                <th>Judul</th>
-                <th>Deskripsi Singkat</th>
-                <th>Tanggal</th>
-                <th>Pemilik</th>
-                <th>Status</th>
-                <th>Persetujuan</th>
-            </tr>
-        </thead>
-    </table>
-    {{ dataTable( $current.'/json', $column ) }}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover" id="data">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    @if($edit || $delete)<th>#</th>@endif
+                    <th>Judul</th>
+                    <th>pencipta</th>
+                    <th>provinsi</th>
+                    <th>kabupaten</th>
+                    <th>Tanggal</th>
+                    <th>Pemilik</th>
+                    <th>Status</th>
+                    <th>Persetujuan</th>
+                </tr>
+            </thead>
+        </table>
+        {{ dataTable( $current.'/json', $column ) }}
+    </div>
 </div>
 </div>
 </div>
