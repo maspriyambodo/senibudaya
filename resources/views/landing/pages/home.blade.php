@@ -92,18 +92,18 @@
             </div>
             <div class="row grid-view gx-md-8 gx-xl-10 gy-8 gy-lg-0 text-center">
                 @foreach($categories_our_collection as $category)
-                    <div class="col-sm-6 col-md-4 col-lg-3 mx-auto">
-                        <div class="card shadow-lg">
+                <div class="col-sm-6 col-md-4 col-lg-3 mx-auto">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-6">
                             <figure class="card-img-top">
                                 <a href="{{ route('landing.show-collections', $category->slug) }}">
-                                  <img src="{{ asset($category->icon_path) }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="{{ $category->nama }}" />
+                                    <img src="{{ asset($category->icon_path) }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="{{ $category->nama }}" />
                                 </a>
                             </figure>
-                            <div class="card-body p-6">
-                                <h3 class="fs-21 mb-0">{{ $category->nama }}</h3>
-                            </div>
+                            <h3 class="fs-21 mb-0">{{ $category->nama }}</h3>
                         </div>
                     </div>
+                </div>
                 @endforeach
             </div>
             </div>
