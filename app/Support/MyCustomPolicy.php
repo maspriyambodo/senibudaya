@@ -22,7 +22,7 @@ class MyCustomPolicy extends Basic {
                 ->addDirective(Directive::IMG, 'self data: blob: https://10.11.11.133 kemenag.go.id *.cloudflare.com cdn-cookieyes.com scentivaid.com img.youtube.com dev.alfabet.io kemenag.go.id android-webview-video-poster: data:')
                 ->addDirective(Directive::MEDIA, 'self data: blob: https://10.11.11.133')
                 ->addDirective(Directive::OBJECT, 'unsafe-eval https://10.11.11.133 *.kemenag.dev *.kemenag.go.id data: localhost')
-                ->addDirective(Directive::FORM_ACTION, 'https://10.11.11.133 senibudaya.test scentivaid.com *.kemenag.go.id *.kemenag.dev localhost')
+                ->addDirective(Directive::FORM_ACTION, 'https://10.11.11.133 senibudaya.test scentivaid.com *.kemenag.go.id *.kemenag.dev self')
                 ->addDirective(Directive::FRAME_ANCESTORS, 'https://10.11.11.133 https://www.facebook.com/ scentivaid.com *.kemenag.dev *.kemenag.go.id')
                 ->addDirective(Directive::SANDBOX, 'allow-scripts allow-forms allow-modals allow-same-origin allow-popups allow-popups-to-escape-sandbox')
                 ->addDirective(Directive::CHILD, 'self https://10.11.11.133 www.youtube.com www.googletagmanager.com')
