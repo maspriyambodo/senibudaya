@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Parameter;
 use Illuminate\Http\Request;
@@ -144,12 +145,15 @@ class LoginController extends Controller {
     }
 
     public function auth(Request $request) {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'username' => 'required',
             'password' => 'required',
             'g-recaptcha-response' => 'recaptcha',
         ]);
-
+        if ($validator->fails()) {
+            $response = [ 'error' => ['stat' => false, 'msgtxt' => 'kesalah sistem, errcode: 19081422'] ];
+            return response()->json($response, 401);
+        }
         $credentials = [
             'id_user' => $request->username,
             'status_user' => 't',
