@@ -58,8 +58,13 @@ class LoginController extends Controller {
                     'views_file' => 'emails.mail_activate',
                     'nama' => null
                 ];
-                UserHelper::composeEmail($mail_data);
-                $response = ['stat' => true, 'msgtxt' => 'We have sent an email to activate your account.'];
+                $mail_ = UserHelper::composeEmail($mail_data);
+                if ($mail_) {
+                    User::where('id', $exec)->delete();
+                    $response = ['stat' => false, 'msgtxt' => 'System error while saving data.'];
+                } else {
+                    $response = ['stat' => true, 'msgtxt' => 'We have sent an email to activate your account.'];
+                }
             } else {
                 $response = ['stat' => false, 'msgtxt' => 'System error while saving data.'];
             }
@@ -90,9 +95,6 @@ class LoginController extends Controller {
     public function req_password(Request $request) {
         $user = User::where('id_user', $request->email)->first();
         if (!is_null($user)) {
-            $response = [
-                'stat' => true
-            ];
             $pass_reset_link = url('reset-password/' . UserHelper::enkrip($user->id_user . ',' . strtotime(date('Y-m-d H:i:s'))));
             $data = [
                 'id' => $user->id,
@@ -102,7 +104,17 @@ class LoginController extends Controller {
                 'views_file' => 'emails.reset_password',
                 'nama' => $user->nama_user
             ];
-            UserHelper::composeEmail($data);
+            $mail_ = UserHelper::composeEmail($data);
+            if ($mail_) {
+                $response = [
+                    'stat' => true
+                ];
+            } else {
+                $response = [
+                    'stat' => false,
+                    'msgtxt' => 'kesalahan sistem, errcode: 15071908'
+                ];
+            }
         } else {
             $response = [
                 'stat' => false,
