@@ -40,13 +40,13 @@ class User {
         $mail = new PHPMailer(true);
         $mail->SMTPDebug = 0;
         $mail->isSMTP();
-        $mail->Host = 'smtp.mailersend.net';
+        $mail->Host = env('MAIL_HOST');
         $mail->SMTPAuth = true;
-        $mail->Username = 'MS_d5ZSM5@scentivaid.com';
-        $mail->Password = '7kudJCm4WM2xsf5h';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
-        $mail->setFrom('MS_d5ZSM5@scentivaid.com', 'Repositori Seni Budaya Islam');
+        $mail->Username = env('MAIL_USERNAME');
+        $mail->Password = env('MAIL_PASSWORD');
+        $mail->SMTPSecure = env('MAIL_ENCRYPTION');
+        $mail->Port = env('MAIL_PORT');
+        $mail->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
         $mail->addAddress($param['user_email']);
 //        $mail->addCC(null);
 //        $mail->addBCC($request->emailBcc);
@@ -54,7 +54,12 @@ class User {
         $mail->isHTML(true);
         $mail->Subject = $param['subject_title'];
         $mail->Body = view($param['views_file'], $data)->render();
-        $mail->send();
+        if(!$mail->send()){
+            $result = false;
+        } else {
+            $result = true;
+        }
+        return $result;
     }
     
 //    public static function composeEmail($param) {
