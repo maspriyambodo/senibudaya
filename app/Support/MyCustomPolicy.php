@@ -17,7 +17,7 @@ class MyCustomPolicy extends Basic {
                 ->addDirective(Directive::FRAME, 'self data: https://10.11.11.133 *.youtube.com *.google.com')
                 ->addDirective(Directive::CONNECT, 'self blob: https://10.11.11.133 consentlog.cookieyes.com log.cookieyes.com cdn-cookieyes.com *.google-analytics.com')
                 ->addDirective(Directive::FONT, 'self data: https://10.11.11.133 cdnjs.cloudflare.com *.googleapis.com *.gstatic.com')
-                ->addDirective(Directive::SCRIPT, 'self report-sample https://10.11.11.133 ajax.googleapis.com maxcdn.bootstrapcdn.com *.googletagmanager.com *.google.com *.gstatic.com www.facebook.com twitter.com www.instagram.com www.youtube.com *.cloudflare.com cdn-cookieyes.com *.datatables.net scentivaid.com unsafe-inline blob: data: unsafe-eval')
+                ->addDirective(Directive::SCRIPT, 'self report-sample https://10.11.11.133 static.cloudflareinsights.com ajax.googleapis.com maxcdn.bootstrapcdn.com *.googletagmanager.com *.google.com *.gstatic.com www.facebook.com twitter.com www.instagram.com www.youtube.com *.cloudflare.com cdn-cookieyes.com *.datatables.net scentivaid.com unsafe-inline blob: data: unsafe-eval')
                 ->addDirective(Directive::STYLE, 'self report-sample https://10.11.11.133 maxcdn.bootstrapcdn.com *.cloudflare.com *.googleapis.com *.datatables.net unsafe-inline')
                 ->addDirective(Directive::IMG, 'self data: blob: https://10.11.11.133 kemenag.go.id *.cloudflare.com cdn-cookieyes.com scentivaid.com img.youtube.com dev.alfabet.io kemenag.go.id android-webview-video-poster: data:')
                 ->addDirective(Directive::MEDIA, 'self data: blob: https://10.11.11.133')
