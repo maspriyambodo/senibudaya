@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Cms\Information;
 
 use App\Http\Controllers\Cms\AuthController;
 use App\Classes\ClassMenu;
-use App\Models\Berita;
-use App\Models\User;
+//use App\Models\User;
 use App\Helpers\User as UserHelper;
 use App\Models\OurCollection;
+use App\Models\Provinsi;
+use App\Models\KabupatenKota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -101,18 +102,19 @@ class NewsController extends AuthController {
 
     public function index() {
         $data = array_merge(ClassMenu::view($this->target), array('filter' => array()));
-
         $column = array(
             'id' => 'data',
             'align' => array('center', 'left'),
             'data' => array('button', 'nama_berita', 'pencipta', 'provinsi', 'kabupaten', 'created_at', 'nama_user', 'status_berita', 'status_approval'),
             'nosort' => array(0),
         );
-        $data = array_merge($data, array('column' => $column));
-        return view($this->target, $data);
+        $data2 = array_merge($data, array('column' => $column));
+        return view($this->target, $data2);
     }
 
     public function form(Request $request) {
+        $provinsi = Provinsi::select('mt_provinsi.id_provinsi', 'mt_provinsi.nama AS provinsi', 'mt_provinsi.stat')
+                ->where('mt_provinsi.stat', 1)->get();
         if ($request->id == 0) {
             $id_berita = 0;
         } else {
@@ -120,7 +122,7 @@ class NewsController extends AuthController {
         }
         $berita = OurCollection::where('id', $id_berita)->first();
         if (!isset($berita)) {
-            $berita = new Berita();
+            $berita = new OurCollection();
             $berita->id = 0;
             $berita->status = 1;
             $berita->mode_berita = 'Add Berita';
@@ -130,11 +132,34 @@ class NewsController extends AuthController {
 
         $data = array_merge(
                 ClassMenu::view($this->target),
-                array(
+                [
                     'data' => $berita,
-                ),
+                    'provinsi' => $provinsi
+                ]
         );
         return view($this->target . '-form', $data);
+    }
+    
+    public function kabupaten(Request $request) {
+        $id_provinsi = $request->id_prov;
+        $kabupaten = KabupatenKota::select('mt_kabupaten.id_kabupaten', 'mt_kabupaten.nama AS kabupaten')
+                ->where([
+                    'mt_kabupaten.id_provinsi' => $id_provinsi,
+                    'mt_kabupaten.stat' => 1
+                ])
+                ->get();
+        if(count($kabupaten) > 0){
+            $response = [
+                'stat' => true,
+                'kabupaten' => $kabupaten
+            ];
+        } else {
+            $response = [
+                'stat' => false,
+                'msgtxt' => 'tidak dapat menemukan data kabupaten!'
+            ];
+        }
+        return response()->json($response);
     }
 
     public function store(Request $request) {
@@ -151,8 +176,8 @@ class NewsController extends AuthController {
                 ]
         );
 
-        $data = OurCollection::select('image_berita')->where('id', $id_berita)->first();
-        $image_berita = isset($data) ? $data->image_berita : '';
+        $data = OurCollection::select('banner_path')->where('id', $id_berita)->first();
+        $image_berita = isset($data) ? $data->banner_path : '';
         if ($request->hasfile('image_berita')) {
             $foto_temp = public_path('images/berita/' . $image_berita);
             if (File::exists($foto_temp)) {
@@ -171,13 +196,14 @@ class NewsController extends AuthController {
             })->save($path . '/' . $image_berita);
         }
 
-        $berita = $new ? new Berita() : OurCollection::find($id_berita);
+        $berita = $new ? new OurCollection() : OurCollection::find($id_berita);
 
-        $berita->slug_berita = $request->slug_berita;
-        $berita->nama_berita = $request->nama_berita;
-        $berita->detail_berita = $request->detail_berita;
-        $berita->image_berita = $image_berita;
-        $berita->status = $request->status_berita == "on" ? "t" : "f";
+        $berita->slug = $request->slug_berita;
+        $berita->nama = $request->nama_berita;
+        $berita->body = $request->detail_berita;
+        $berita->banner_path = $image_berita;
+        $berita->pencipta = $request->pencipta;
+        $berita->status = $request->status_berita == "on" ? 1 : 0;
         if (Session::get('group') == 2 || Session::get('group') == 1) {
             $berita->status_approval = 2;
         } else {

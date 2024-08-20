@@ -48,9 +48,33 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Pencipta</label>
+                                <div class="col-sm-8">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <input id="penciptatxt" name="penciptatxt" value="{{ $data->pencipta }}" type="text" class="form-control" {{ noEmpty('Pencipta tidak boleh kosong.') }} autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Slug</label>
                                 <div class="col-sm-8">
                                     <input id="slug_berita" name="slug_berita" value="{{ $data->slug }}" type="text" class="form-control" {{ noEmpty('Slug tidak boleh kosong.') }} autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Provinsi</label>
+                                <div class="col-sm-8">
+                                    <select name="provtxt" id="provtxt" class="form-control form-select" {{ noEmpty('Provinsi tidak boleh kosong.', true) }} onchange="provinsi(this.value)">
+                                        <option value="">pilih provinsi</option>
+                                        @foreach($provinsi as $dt_prov)
+                                        <option value="{{ $dt_prov->id_provinsi }}">{{ $dt_prov->provinsi }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Kabupaten</label>
+                                <div class="col-sm-8">
+                                    <select name="kabtxt" id="kabtxt" class="form-control form-select" {{ noEmpty('Kabupaten tidak boleh kosong.', true) }}></select>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -99,20 +123,18 @@
 			semantic: false,
 			svgPath: "{{asset('cms/css/plugins/icons.svg')}}",
 			btnsDef: {
-				// Create a new dropdown
 				image: {
 					dropdown: ['insertImage', 'upload'],
 					ico: 'insertImage'
 				}
 			},
-			// Redefine the button pane
 			btns: [
 				['viewHTML'],
 				['formatting'],
 				['strong', 'em', 'del'],
 				['superscript', 'subscript'],
 				['link'],
-				['image'], // Our fresh created dropdown
+				['image'],
 				['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
 				['unorderedList', 'orderedList'],
 				['horizontalRule'],
@@ -122,11 +144,79 @@
 			plugins: {
 				upload: {
 					serverPath: "{{ url('background/upload') }}",
-					fileFieldName: 'image_file',
+					fileFieldName: 'image_file'
 				}
 			}
 			});
     });
+    function provinsi(id_prov) {
+        Swal.fire(
+            {
+            title: 'memuat data...',
+                    html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    onOpen: function () {
+                    Swal.showLoading();
+                    }
+            }
+        );
+    $('#kabtxt').children('option').remove();
+        if (id_prov !== '') {
+            $.ajax({
+                url: "{{ url('news/kabupaten?id_prov='); }}" + id_prov,
+                type: "GET",
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "JSON",
+                success: function (data) {
+                        if(data.stat) {
+                            var i;
+                            for (i = 0; i < data.kabupaten.length; i++) {
+                                var sel = document.getElementById("kabtxt");
+                                var opt = document.createElement("option");
+                                opt.value = data.kabupaten[i].id_kabupaten;
+                                opt.text = data.kabupaten[i].kabupaten;
+                                sel.add(opt, sel.options[i]);
+                            }
+                            Swal.close();
+                            $('#kabtxt').val('');
+                            $('#kabtxt').trigger('change');
+                        } else {
+                            Swal.fire({
+                            text: data.msgtxt,
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "OK",
+                            allowOutsideClick: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                            }).then(function(){
+                                window.location.reload();
+                            });
+                        }
+                },
+                error: function () {
+                    Swal.fire({
+                        text: "kesalahan saat mendapatkan data kabupaten",
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function(){
+                        window.location.reload();
+                    });
+                }
+            });
+        } else {
+            
+        }
+    }
 </script>
 
 @include('cms.footer')	
