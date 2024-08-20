@@ -106,6 +106,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/news/store', [NewsController::class, 'store']);
     Route::post('/news/news-approval', [NewsController::class, 'news_approval']);
     Route::post('/news/destroy', [NewsController::class, 'destroy']);
+    Route::get('/news/kabupaten', [NewsController::class, 'kabupaten']);
 
     //photos
     Route::get('/photos', [PhotosController::class, 'index']);
