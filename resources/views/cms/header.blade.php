@@ -18,10 +18,12 @@
 <link rel="stylesheet" href="{{ asset('cms/css/plugins/lightbox.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('cms/css/plugins/ekko-lightbox.css') }}" />
 <link rel="stylesheet" href="{{ asset('cms/css/style.css') }}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.12.4/sweetalert2.min.css" integrity="sha512-WxRv0maH8aN6vNOcgNFlimjOhKp+CUqqNougXbz0E+D24gP5i+7W/gcc5tenxVmr28rH85XHF5eXehpV2TQhRg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="{{ asset('cms/js/vendor-all.min.js') }}"></script>
 <script async src="{{ asset('cms/js/plugins/bootstrap.min.js') }}"></script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.12.4/sweetalert2.all.min.js" integrity="sha512-aRyxRCMzAorfKGjEjnSeGTVKrI/2irvvR5DI38LV/JXOkL9VLnZ+rfFkD9i1UTWTB8e8W5vpf7SjDsfMOdNosg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{{ asset('datatables/datatables.min.js') }}"></script>
 <script async>var app_url="{{ url('') }}";</script>
 <script async>var app_page="{{ url($current) }}";</script>
