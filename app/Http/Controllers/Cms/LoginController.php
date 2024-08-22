@@ -28,12 +28,17 @@ class LoginController extends Controller {
     }
 
     public function user_activate(Request $request) {
+        $decrypted = UserHelper::dekrip($request->param);
+        $param = explode(',', $decrypted);
+        $id_user = $param[0];
+        User::where('id', $id_user)
+                ->update('status_user', 't');
         return view('cms.user_activate', ['param' => Parameter::data(), 'page' => ' Account Activation']);
     }
     
     public function auth_register(Request $request) {
         $cek_email = User::where('id_user', $request->username)->first();
-        if(!is_null($cek_email)){
+        if (!is_null($cek_email)) {
             $response = ['stat' => false, 'msgtxt' => 'Your email has been registered, please login.'];
         } else {
             $data = [
@@ -48,7 +53,17 @@ class LoginController extends Controller {
             ];
             $exec = User::insertGetId($data);
             if (!is_null($exec)) {
-                $url_link = url('user-activate/' . UserHelper::enkrip($exec . ',' . strtotime(date('Y-m-d H:i:s'))));
+                $url_activate = null;
+                while (true) {
+                    $enc = UserHelper::enkrip($exec . ',' . strtotime(date('Y-m-d H:i:s')));
+                    $decrypted = UserHelper::dekrip($enc);
+                    $param = explode(',', $decrypted);
+                    if (!empty($param[0])) {
+                        $url_activate = $enc;
+                        break;
+                    }
+                }
+                $url_link = url('user-activate/' . $url_activate);
                 $mail_data = [
                     'id' => $exec,
                     'user_email' => $request->username,
@@ -59,14 +74,14 @@ class LoginController extends Controller {
                     'nama' => null
                 ];
                 UserHelper::composeEmail($mail_data);
-                $response = ['stat' => true, 'msgtxt' => 'We have sent an email to activate your account.'];
+                $response = ['stat' => true, 'msgtxt' => 'We have sent an email to activate your account.', 'url_direct' => url('login')];
             } else {
                 $response = ['stat' => false, 'msgtxt' => 'System error while saving data.'];
             }
         }
         return response()->json($response);
     }
-    
+
     public function signup(Request $request) {
         $ses_login = $request->session()->has('user');
         if ($ses_login) {
@@ -90,7 +105,17 @@ class LoginController extends Controller {
     public function req_password(Request $request) {
         $user = User::where('id_user', $request->email)->first();
         if (!is_null($user)) {
-            $pass_reset_link = url('reset-password/' . UserHelper::enkrip($user->id_user . ',' . strtotime(date('Y-m-d H:i:s'))));
+            $url_activate = null;
+            while (true) {
+                $enc = UserHelper::enkrip($user->id_user . ',' . strtotime(date('Y-m-d H:i:s')));
+                $decrypted = UserHelper::dekrip($enc);
+                $param = explode(',', $decrypted);
+                if (!empty($param[0])) {
+                    $url_activate = $enc;
+                    break;
+                }
+            }
+            $pass_reset_link = url('reset-password/' . $url_activate);
             $data = [
                 'id' => $user->id,
                 'user_email' => $user->id_user,
@@ -101,8 +126,8 @@ class LoginController extends Controller {
             ];
             UserHelper::composeEmail($data);
             $response = [
-                    'stat' => true
-                ];
+                'stat' => true
+            ];
         } else {
             $response = [
                 'stat' => false,
@@ -111,7 +136,7 @@ class LoginController extends Controller {
         }
         return response()->json($response);
     }
-    
+
     public function reset_password(Request $request) {
         $decrypted = UserHelper::dekrip($request->param);
         $param = explode(',', $decrypted);

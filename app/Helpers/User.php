@@ -14,7 +14,7 @@ class User {
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher));
         $encryptedText = openssl_encrypt($text, $cipher, $key, 0, $iv);
         $encryptedTextWithIv = base64_encode($iv . $encryptedText);
-        $encTxt = str_replace(['%', ':', '\'', '?', '&', '/'], ['%25', '%3A', '%5C', '%3F', '%26', '%2F'], $encryptedTextWithIv);
+        $encTxt = str_replace(['/', '&', '?', '+'], ['_ganti1_', '_ganti2_', '_ganti3_', '_ganti4_'], $encryptedTextWithIv);
         return $encTxt;
     }
 
@@ -26,7 +26,7 @@ class User {
         $iv = substr($decodedData, 0, $ivLength);
         $encryptedText = substr($decodedData, $ivLength);
         $decryptedText = openssl_decrypt($encryptedText, $cipher, $key, 0, $iv);
-        $decTxt = str_replace(['%25', '%3A', '%5C', '%3F', '%26', '%2F'], ['%', ':', '\'', '?', '&', '/'], $decryptedText);
+        $decTxt = str_replace(['_ganti1_', '_ganti2_', '_ganti3_', '_ganti4_'], ['/', '&', '?', '+'], $decryptedText);
         return $decryptedText;
     }
 

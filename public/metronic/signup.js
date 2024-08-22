@@ -136,7 +136,9 @@ var KTSignupGeneral = function () {
                                                     customClass: {
                                                         confirmButton: "btn btn-primary"
                                                     }
-                                                });
+                                                }).then(function () {
+                                                        location.href = data.url_direct;
+                                                    });
                                             } else {
                                                 t.removeAttribute("data-kt-indicator");
                                                 t.removeAttribute("disabled");
