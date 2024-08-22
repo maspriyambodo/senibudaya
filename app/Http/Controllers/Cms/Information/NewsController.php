@@ -52,6 +52,16 @@ class NewsController extends AuthController {
                         })
                         ->addColumn('button', function ($row) {
                             $button = "";
+                            $row_id = null;
+                            while (true) {
+                                $enc = UserHelper::enkrip($row->id);
+                                $decrypted = UserHelper::dekrip($enc);
+                                $param = explode(',', $decrypted);
+                                if (!empty($param[0])) {
+                                    $row_id = $enc;
+                                    break;
+                                }
+                            }
                             if ($this->edit || $this->delete) {
                                 $button .= "<div class=\"btn-group dropright\">
 					<button class=\"btn btn-sm btn-icon btn-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
@@ -59,13 +69,13 @@ class NewsController extends AuthController {
 					</button>
 					<div class=\"dropdown-menu dropright\">";
                                 if ($this->edit) {
-                                    $button .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/form/' . UserHelper::enkrip($row->id)) . "\" ><i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
+                                    $button .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/form/' . $row_id) . "\" ><i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
                                 }
                                 if ($this->delete) {
                                     $button .= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\"><i class=\"fas fa-trash\"></i> Hapus Data</a>";
                                 }
                                 if (Session::get('group') == 2 || Session::get('group') == 1) {
-                                    $button .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" onclick=\"Approval('" . UserHelper::enkrip($row->id) . "','" . $row->nama_berita . "');\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
+                                    $button .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" onclick=\"Approval('" . $row_id . "','" . $row->nama_berita . "');\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
                                 }
                                 $button .= "</div>
 				</div>";
@@ -202,10 +212,10 @@ class NewsController extends AuthController {
         $berita->slug = $request->slug_berita;
         $berita->nama = $request->nama_berita;
         $berita->body = $request->detail_berita;
-        $berita->banner_path = $image_berita;
-        $berita->pencipta = $request->pencipta;
+        $berita->banner_path = $path . '' .$image_berita;
+        $berita->pencipta = $request->penciptatxt;
         $berita->kd_prov = $request->provtxt;
-        $berita->kd_kabkota = $request->kd_kabkota;
+        $berita->kd_kabkota = $request->kabtxt;
         $berita->status = $request->status_berita == "on" ? 1 : 0;
         $berita->status_approval = 2;
         $berita->user_approval = Session::get('uid');
