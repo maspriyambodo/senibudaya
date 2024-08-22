@@ -32,7 +32,7 @@ class LoginController extends Controller {
         $param = explode(',', $decrypted);
         $id_user = $param[0];
         User::where('id', $id_user)
-                ->update('status_user', 't');
+                ->update(['status_user' => 't']);
         return view('cms.user_activate', ['param' => Parameter::data(), 'page' => ' Account Activation']);
     }
     
