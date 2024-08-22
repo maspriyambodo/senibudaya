@@ -35,7 +35,7 @@
                         <div class="card-body">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Judul</label>
-                                <input id="id" name="id" value="{{ enkrip($data->id) }}" type="hidden">
+                                <input id="id" name="id" value="{{ $id_berita }}" type="hidden">
                                 <div class="col-sm-8">
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                     <input id="nama_berita" name="nama_berita" value="{{ $data->nama }}" type="text" class="form-control" {{ noEmpty( 'Judul tidak boleh kosong.') }} autocomplete="off">

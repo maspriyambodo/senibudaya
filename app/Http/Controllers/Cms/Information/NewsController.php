@@ -144,7 +144,8 @@ class NewsController extends AuthController {
                 ClassMenu::view($this->target),
                 [
                     'data' => $berita,
-                    'provinsi' => $provinsi
+                    'provinsi' => $provinsi,
+                    'id_berita' => $request->id
                 ]
         );
         return view($this->target . '-form', $data);
@@ -212,7 +213,6 @@ class NewsController extends AuthController {
         $berita->slug = $request->slug_berita;
         $berita->nama = $request->nama_berita;
         $berita->body = $request->detail_berita;
-        $berita->banner_path = $path . '' .$image_berita;
         $berita->pencipta = $request->penciptatxt;
         $berita->kd_prov = $request->provtxt;
         $berita->kd_kabkota = $request->kabtxt;
@@ -222,6 +222,9 @@ class NewsController extends AuthController {
         $berita->date_approval = date('Y-m-d H:i:s');
         $berita->created_at = date('Y-m-d H:i:s');
         $berita->updated_at = date('Y-m-d H:i:s');
+        if($request->file('image_berita')){
+            $berita->banner_path = $path . '' . $image_berita;
+        }
         if ($new) {
             $berita->created_by = Session::get('uid');
         }
