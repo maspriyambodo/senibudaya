@@ -59,6 +59,8 @@ var KTAuthResetPassword = (function () {
                                                                             customClass: {
                                                                                 confirmButton: "btn btn-primary"
                                                                             }
+                                                                        }).then(function(){
+                                                                            location.href = data.url_direct
                                                                         });
                                                             } else {
                                                                 e.removeAttribute("data-kt-indicator");

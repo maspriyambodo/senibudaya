@@ -25,7 +25,7 @@
             <div class="row gx-3 gy-10 align-items-center">
                 <div class="col-lg-6">
                     <figure>
-                        <img class="w-auto" src="{{ asset('landing/img/illustrations/3d8.png'); }}" srcset="{{ asset('landing/img/illustrations/3d8@2x.png'); }} 2x" alt="" />
+                        <img class="w-auto" src="{{ asset('landing/img/IMG_0440.png'); }}" srcset="{{ asset('landing/img/IMG_0440.png'); }} 2x" alt="" />
                     </figure>
                 </div>
                 <div class="col-lg-5 ms-auto">

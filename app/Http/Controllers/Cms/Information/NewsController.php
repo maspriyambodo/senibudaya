@@ -197,18 +197,21 @@ class NewsController extends AuthController {
         }
 
         $berita = $new ? new OurCollection() : OurCollection::find($id_berita);
-
+        $berita->id_category = 4;
+        
         $berita->slug = $request->slug_berita;
         $berita->nama = $request->nama_berita;
         $berita->body = $request->detail_berita;
         $berita->banner_path = $image_berita;
         $berita->pencipta = $request->pencipta;
+        $berita->kd_prov = $request->provtxt;
+        $berita->kd_kabkota = $request->kd_kabkota;
         $berita->status = $request->status_berita == "on" ? 1 : 0;
-        if (Session::get('group') == 2 || Session::get('group') == 1) {
-            $berita->status_approval = 2;
-        } else {
-            $berita->status_approval = 1;
-        }
+        $berita->status_approval = 2;
+        $berita->user_approval = Session::get('uid');
+        $berita->date_approval = date('Y-m-d H:i:s');
+        $berita->created_at = date('Y-m-d H:i:s');
+        $berita->updated_at = date('Y-m-d H:i:s');
         if ($new) {
             $berita->created_by = Session::get('uid');
         }

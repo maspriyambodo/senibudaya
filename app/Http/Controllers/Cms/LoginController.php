@@ -126,7 +126,8 @@ class LoginController extends Controller {
             ];
             UserHelper::composeEmail($data);
             $response = [
-                'stat' => true
+                'stat' => true,
+                'url_direct' => url('login')
             ];
         } else {
             $response = [
