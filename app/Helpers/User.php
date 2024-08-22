@@ -27,7 +27,7 @@ class User {
         $encryptedText = substr($decodedData, $ivLength);
         $decryptedText = openssl_decrypt($encryptedText, $cipher, $key, 0, $iv);
         $decTxt = str_replace(['_ganti1_', '_ganti2_', '_ganti3_', '_ganti4_'], ['/', '&', '?', '+'], $decryptedText);
-        return $decryptedText;
+        return $decTxt;
     }
 
     public static function composeEmail($param) {
