@@ -12,6 +12,7 @@ use App\Models\KabupatenKota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use DataTables;
 use Image;
 
@@ -190,14 +191,13 @@ class NewsController extends AuthController {
         $data = OurCollection::select('banner_path')->where('id', $id_berita)->first();
         $image_berita = isset($data) ? $data->banner_path : '';
         if ($request->hasfile('image_berita')) {
-            $foto_temp = public_path('images/berita/' . $image_berita);
-            if (File::exists($foto_temp)) {
-                File::delete($foto_temp);
+            $baseDir = public_path('images/berita/' . date('Y') . '/' . date('F'));
+            if (!file_exists($baseDir)) {
+                mkdir($baseDir, 0755, true);
             }
-
             $image = $request->file('image_berita');
             $image_berita = 'img_' . round(microtime(true) * 1000) . '.' . $image->getClientOriginalExtension();
-            $path = public_path('images/berita/');
+            $path = 'images/berita/' . date('Y') . '/' . date('F');
 
             $width = $height = 800;
             $img_file = Image::make($image->getRealPath());
@@ -210,8 +210,7 @@ class NewsController extends AuthController {
         $berita = $new ? new OurCollection() : OurCollection::find($id_berita);
         $berita->id_category = 4;
         
-        $berita->slug = $request->slug_berita;
-        $berita->nama = $request->nama_berita;
+        $berita->slug = Str::slug($request->nama_berita);
         $berita->body = $request->detail_berita;
         $berita->pencipta = $request->penciptatxt;
         $berita->kd_prov = $request->provtxt;
@@ -223,7 +222,7 @@ class NewsController extends AuthController {
         $berita->created_at = date('Y-m-d H:i:s');
         $berita->updated_at = date('Y-m-d H:i:s');
         if($request->file('image_berita')){
-            $berita->banner_path = $path . '' . $image_berita;
+            $berita->banner_path = $path . '/' . $image_berita;
         }
         if ($new) {
             $berita->created_by = Session::get('uid');
