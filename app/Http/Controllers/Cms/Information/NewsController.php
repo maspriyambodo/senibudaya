@@ -209,7 +209,7 @@ class NewsController extends AuthController {
 
         $berita = $new ? new OurCollection() : OurCollection::find($id_berita);
         $berita->id_category = 4;
-        
+        $berita->nama = $request->nama_berita;
         $berita->slug = Str::slug($request->nama_berita);
         $berita->body = $request->detail_berita;
         $berita->pencipta = $request->penciptatxt;
