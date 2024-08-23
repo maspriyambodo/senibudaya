@@ -195,10 +195,17 @@ class LoginController extends Controller {
 
             $foto_user = public_path('cms/images/user/' . $user->foto_user);
             Session::put('foto_user', (File::exists($foto_user) && !empty($user->foto_user)) ? $user->foto_user : "default.png");
-            $output = [
-                'stat' => true,
-                'url_direct' => url('/dashboard')
-            ];
+            if ($user->id_group == 5) {
+                $output = [
+                    'stat' => true,
+                    'url_direct' => url('/profile')
+                ];
+            } else {
+                $output = [
+                    'stat' => true,
+                    'url_direct' => url('/dashboard')
+                ];
+            }
         } else {
             $output = [
                 'stat' => false,
