@@ -47,7 +47,7 @@
                     <th>provinsi</th>
                     <th>kabupaten</th>
                     <th>Tanggal</th>
-                    <th>Pemilik</th>
+                    <th>Penulis</th>
                     <th>Status</th>
                     <th>Persetujuan</th>
                 </tr>

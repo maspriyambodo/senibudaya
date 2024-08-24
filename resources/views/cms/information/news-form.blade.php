@@ -49,12 +49,6 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Slug</label>
-                                <div class="col-sm-8">
-                                    <input id="slug_berita" name="slug_berita" value="{{ $data->slug }}" type="text" class="form-control" {{ noEmpty( 'Slug tidak boleh kosong.') }} autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Provinsi</label>
                                 <div class="col-sm-8">
                                     <select name="provtxt" id="provtxt" class="form-control form-select" {{ noEmpty( 'Provinsi tidak boleh kosong.', true) }} onchange="provinsi(this.value)">
