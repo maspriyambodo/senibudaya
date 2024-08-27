@@ -2,7 +2,8 @@
 @section('title', 'Form Pengajuan')
 @section('stylesheet')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/third_party/image_tui.min.css' rel='stylesheet' type='text/css' />
 @endsection
 @section('content')
     <section class="wrapper bg-soft-primary">
@@ -46,9 +47,7 @@
                                     </div>
 
                                     <div class="form-floating mb-4">
-                                        <div id="editor-container" style="height: 500px;"></div>
-                                        <input type="file" id="media-upload" accept="image/*,video/*,audio/*" style="display: none;">
-                                        <input type="hidden" name="editor-container" id="editor-content">
+                                        <textarea id="body" name="body"></textarea>
                                     </div>
 
                                     <div class="form-floating mb-4">
@@ -97,106 +96,53 @@
 @endsection
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/froala-editor@latest/js/third_party/image_tui.min.js'></script>
     <script>
-        const BlockEmbed = Quill.import('blots/block/embed');
-        class VideoBlot extends BlockEmbed {
-            static create(value) {
-                let node = super.create();
-                node.setAttribute('src', value);
-                node.setAttribute('controls', 'controls');
-                node.setAttribute('style', 'width: 100%;');
-                return node;
-            }
-
-            static value(node) {
-                return node.getAttribute('src');
-            }
-        }
-        VideoBlot.blotName = 'video';
-        VideoBlot.tagName = 'video';
-        Quill.register(VideoBlot);
-
-        class AudioBlot extends BlockEmbed {
-            static create(value) {
-                let node = super.create();
-                node.setAttribute('src', value);
-                node.setAttribute('controls', 'controls');
-                node.setAttribute('style', 'width: 100%;');
-                return node;
-            }
-
-            static value(node) {
-                return node.getAttribute('src');
-            }
-        }
-        AudioBlot.blotName = 'audio';
-        AudioBlot.tagName = 'audio';
-        Quill.register(AudioBlot);
-
-        var quill = new Quill('#editor-container', {
-            theme: 'snow',
-            modules: {
-                toolbar: {
-                    container: [
-                        [{ 'font': [] }],
-                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'script': 'sub'}, { 'script': 'super' }],
-                        ['blockquote', 'code-block'],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                        [{ 'indent': '-1'}, { 'indent': '+1' }],
-                        [{ 'direction': 'rtl' }],
-                        [{ 'align': [] }],
-                        ['link', 'image', 'video']
-                    ],
-                    handlers: {
-                        'image': function() {
-                            document.getElementById('media-upload').click();
-                        }
-                    }
+        new FroalaEditor('#body', {
+            filesManagerUploadURL: '{{ route("form-pengajuan.upload-media") }}',
+            filesManagerUploadParams: {
+                _token: '{{ csrf_token() }}'
+            },
+            filesManagerAllowedTypes: ['audio/mpeg', 'audio/wav', 'audio/ogg', 'video/mp4', 'video/quicktime', 'video/webm', 'application/pdf', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif'],
+            quickInsertEnabled: false,
+            toolbarButtons: {
+                moreText: {
+                    buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'],
+                    align: 'left',
+                    buttonsVisible: 5
+                },
+                moreParagraph: {
+                    buttons: ['alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'formatOLSimple', 'formatUL', 'paragraphFormat'],
+                    align: 'left',
+                    buttonsVisible: 5
+                },
+                moreMisc: {
+                    buttons: ['undo', 'redo', 'html'],
+                    align: 'right',
+                    buttonsVisible: 3
+                },
+                moreRich: {
+                    buttons: [],
+                    align: 'left',
+                    buttonsVisible: 0
+                },
+                insertFiles: {
+                    buttons: ['insertFiles'],
+                    align: 'left',
+                    buttonsVisible: 4
                 }
+            },
+            events: {
+                'filesManager.uploaded': function (response) {
+                    console.log('File berhasil di-upload:', response);
+                    return response.link;
+                },
+                'filesManager.error': function (error, response) {
+                    console.error('File upload error:', error);
+                },
             }
         });
-
-        document.getElementById('media-upload').addEventListener('change', function() {
-            var file = this.files[0];
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    var range = quill.getSelection(true);
-                    if (file.type.startsWith('image/')) {
-                        quill.insertEmbed(range.index, 'image', e.target.result);
-                    } else if (file.type.startsWith('video/')) {
-                        quill.insertEmbed(range.index, 'video', e.target.result);
-                    } else if (file.type.startsWith('audio/')) {
-                        quill.insertEmbed(range.index, 'audio', e.target.result);
-                    }
-                    quill.setSelection(range.index + 1);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var form = document.getElementById('pengajuanForm');
-        var quillEditor = quill;
-
-        form.addEventListener('submit', function(e) {
-          var editorContent = document.querySelector('input[name="editor-container"]');
-          var editorHtml = quillEditor.root.innerHTML.trim();
-
-          editorContent.value = editorHtml;
-
-          var formData = new FormData(form);
-          for (var pair of formData.entries()) {
-            console.log(pair[0] + ': ' + (pair[1] instanceof File ? pair[1].name : pair[1]));
-          }
-        });
-      });
     </script>
 
     <script>

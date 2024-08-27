@@ -37,7 +37,7 @@ class FormPengajuanController extends Controller
             'banner_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'kd_prov' => 'required',
             'kd_kabkota' => 'required',
-            'editor-container' => 'required',
+            'body' => 'required',
         ]);
 
         $formPengajuan = OurCollection::create([
@@ -48,15 +48,16 @@ class FormPengajuanController extends Controller
             'kd_prov' => $request->kd_prov,
             'kd_kabkota' => $request->kd_kabkota,
             'status' => 1,
-            'status_approval' => 1,
+            'status_approval' => 0,
             'created_by' => Session::get('uid'),
+            'body' => $request->body,
         ]);
 
         $baseDir = public_path('form-pengajuan/' . $formPengajuan->id);
         if (!file_exists($baseDir)) {
             mkdir($baseDir, 0755, true);
             mkdir($baseDir . '/banner_path', 0755, true);
-            mkdir($baseDir . '/body', 0755, true);
+            mkdir($baseDir . '/media', 0755, true);
         }
 
         $bannerFile = $request->file('banner_path');
@@ -64,51 +65,62 @@ class FormPengajuanController extends Controller
         $bannerFile->move($baseDir . '/banner_path', $bannerFileName);
         $formPengajuan->banner_path = 'form-pengajuan/' . $formPengajuan->id . '/banner_path/' . $bannerFileName;
 
-        $body = $request->input('editor-container');
-        if (!empty($body)) {
-            try {
-                $processedBody = $this->processQuillContent($body, $baseDir . '/body', $formPengajuan->id);
-                $formPengajuan->body = $processedBody;
-            } catch (\Exception $e) {
-                Log::error('Error processing Quill content: ' . $e->getMessage());
-                return redirect()->back()->with('error', 'Terjadi kesalahan saat memproses konten editor. Silakan coba lagi.');
-            }
-        } else {
-            $formPengajuan->body = '';
-        }
+        $body = $formPengajuan->body;
+        $tempDir = public_path('form-pengajuan/temp');
+        $mediaDir = $baseDir . '/media';
 
+        $body = $this->moveMediaFilesAndUpdateBody($body, $tempDir, $mediaDir, $formPengajuan->id);
+
+        $formPengajuan->body = $body;
         $formPengajuan->save();
 
         return redirect()->route('form-pengajuan.create')->with('success', 'Form pengajuan berhasil disimpan.');
     }
 
-    private function processQuillContent($content, $uploadDir, $formId)
+    public function uploadMedia(Request $request)
     {
-        if (empty($content)) {
-            return '';
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            $baseDir = public_path('form-pengajuan/temp');
+            if (!file_exists($baseDir)) {
+                mkdir($baseDir, 0755, true);
+            }
+
+            $file->move($baseDir, $filename);
+
+            $filePath = asset('form-pengajuan/temp/' . $filename);
+
+            return response()->json([
+                'link' => $filePath,
+            ]);
         }
+        return response()->json(['error' => 'No file uploaded.'], 400);
+    }
 
+    private function moveMediaFilesAndUpdateBody($body, $tempDir, $mediaDir, $formId)
+    {
         $dom = new \DOMDocument();
-        libxml_use_internal_errors(true);
-        $dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        libxml_clear_errors();
+        @$dom->loadHTML(mb_convert_encoding($body, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
-        $mediaElements = $dom->getElementsByTagName('img');
-        $mediaElements = array_merge(iterator_to_array($mediaElements), iterator_to_array($dom->getElementsByTagName('video')));
-        $mediaElements = array_merge($mediaElements, iterator_to_array($dom->getElementsByTagName('audio')));
+        $elements = $dom->getElementsByTagName('*');
+        foreach ($elements as $element) {
+            if (in_array($element->tagName, ['img', 'video', 'audio', 'source', 'a'])) {
+                $attribute = ($element->tagName === 'a') ? 'href' : 'src';
+                $src = $element->getAttribute($attribute);
 
-        foreach ($mediaElements as $media) {
-            $src = $media->getAttribute('src');
-            if (preg_match('/^data:(image|video|audio)\/(\w+);base64,/', $src, $matches)) {
-                $mediaData = base64_decode(explode(',', $src)[1]);
-                $mediaType = $matches[1];
-                $extension = $matches[2];
-                $filename = $mediaType . '_' . time() . '_' . uniqid() . '.' . $extension;
+                if (strpos($src, 'form-pengajuan/temp/') !== false) {
+                    $fileName = basename($src);
+                    $oldPath = $tempDir . '/' . $fileName;
+                    $newPath = $mediaDir . '/' . $fileName;
 
-                file_put_contents($uploadDir . '/' . $filename, $mediaData);
-
-                $newSrc = '/form-pengajuan/' . $formId . '/body/' . $filename;
-                $media->setAttribute('src', $newSrc);
+                    if (file_exists($oldPath)) {
+                        rename($oldPath, $newPath);
+                        $newSrc = asset('form-pengajuan/' . $formId . '/media/' . $fileName);
+                        $element->setAttribute($attribute, $newSrc);
+                    }
+                }
             }
         }
 
@@ -118,5 +130,20 @@ class FormPengajuanController extends Controller
     public function getKabKota($id_provinsi)
     {
         return KabupatenKota::where('id_provinsi', $id_provinsi)->where('stat', 1)->get()->toJson();
+    }
+
+    public function cleanupTempFiles()
+    {
+        $tempDir = public_path('form-pengajuan/temp');
+        $files = glob($tempDir . '/*');
+        $now = time();
+
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                if ($now - filemtime($file) >= 24 * 3600) {
+                    unlink($file);
+                }
+            }
+        }
     }
 }

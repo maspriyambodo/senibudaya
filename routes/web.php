@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('my-pengajuan', [FormPengajuanController::class, 'index'])->name('form-pengajuan.index');
     Route::get('form-pengajuan/create', [FormPengajuanController::class, 'create'])->name('form-pengajuan.create');
     Route::post('form-pengajuan/store', [FormPengajuanController::class, 'store'])->name('form-pengajuan.store');
+    route::post('form-pengajuan/upload-media', [FormPengajuanController::class, 'uploadMedia'])->name('form-pengajuan.upload-media');
     Route::get('/get-kabkota/{id}', [FormPengajuanController::class, 'getKabKota'])->name('get.kabkota');
 
     //dashboard

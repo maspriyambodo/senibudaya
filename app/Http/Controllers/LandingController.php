@@ -19,7 +19,7 @@ class LandingController extends Controller
     {
         $categories_our_collection = CategoriesOurCollection::where('status', 1)->where('slug', $slug)->firstOrFail();
 
-        $query = OurCollection::where('status', 1)->where('id_category', $categories_our_collection->id);
+        $query = OurCollection::select('dta_our_collections.*')->where('status', 1)->where('id_category', $categories_our_collection->id);
 
         if ($request->has('search')) {
             $search = $request->search;
@@ -30,18 +30,22 @@ class LandingController extends Controller
                     $query->where('pencipta', 'like', "%$search%");
                     break;
                 case 'Kota/Kab':
-                    $query->where('kd_kabkota', 'like', "%$search%");
+                    $query->join('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten')
+                          ->where('mt_kabupaten.nama', 'like', "%$search%");
                     break;
                 case 'Provinsi':
-                    $query->where('kd_prov', 'like', "%$search%");
+                    $query->join('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
+                          ->where('mt_provinsi.nama', 'like', "%$search%");
                     break;
                 case 'Tahun':
-                    $query->whereYear('created_at', $search);
+                    $query->whereYear('dta_our_collections.created_at', $search);
                     break;
                 default:
-                    $query->where('nama', 'like', "%$search%");
+                    $query->where('dta_our_collections.nama', 'like', "%$search%");
             }
         }
+
+        $our_collections = $query->paginate(12);
 
         $our_collections = $query->paginate(12);
 
