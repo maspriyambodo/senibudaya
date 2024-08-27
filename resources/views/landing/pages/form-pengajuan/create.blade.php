@@ -84,7 +84,7 @@
                                         </select>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary rounded-pill">Daftar</button>
+                                    <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
                                 </form>
                             </div>
                         </div>
