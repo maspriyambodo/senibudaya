@@ -7,6 +7,7 @@ use App\Models\Provinsi;
 use App\Models\KabupatenKota;
 use App\Models\CategoriesOurCollection;
 use App\Models\OurCollection;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 class FormPengajuanController extends Controller
@@ -48,7 +49,7 @@ class FormPengajuanController extends Controller
             'kd_kabkota' => $request->kd_kabkota,
             'status' => 1,
             'status_approval' => 1,
-            'created_by' => $request->user()->id,
+            'created_by' => Session::get('uid'),
         ]);
 
         $baseDir = public_path('form-pengajuan/' . $formPengajuan->id);

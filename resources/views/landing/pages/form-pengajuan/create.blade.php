@@ -41,7 +41,7 @@
                                 <form id="pengajuanForm" action="{{ route('form-pengajuan.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-floating mb-4">
-                                        <input name="nama" id="nama" type="text" class="form-control" placeholder="Nama" value="{{ old('nama') }}" required>
+                                        <input name="nama" id="nama" type="text" class="form-control" placeholder="Nama" value="{{ old('nama') }}" autocomplete="off" required>
                                         <label for="nama">Nama</label>
                                     </div>
 
@@ -52,7 +52,7 @@
                                     </div>
 
                                     <div class="form-floating mb-4">
-                                        <input name="pencipta" id="pencipta" type="text" class="form-control" placeholder="Pencipta" value="{{ old('pencipta') }}" required>
+                                        <input name="pencipta" id="pencipta" type="text" class="form-control" placeholder="Pencipta" value="{{ old('pencipta') }}" autocomplete="off" required>
                                         <label for="pencipta">Pencipta</label>
                                     </div>
 
@@ -149,7 +149,7 @@
                         [{ 'indent': '-1'}, { 'indent': '+1' }],
                         [{ 'direction': 'rtl' }],
                         [{ 'align': [] }],
-                        ['link', 'image'],
+                        ['link', 'image', 'video']
                     ],
                     handlers: {
                         'image': function() {
