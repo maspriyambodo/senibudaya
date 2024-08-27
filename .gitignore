@@ -29,3 +29,4 @@ storage/logs-*
 /nbproject/*
 /public/cms/images/user/
 public/images/berita/
+public/form-pengajuan/*
