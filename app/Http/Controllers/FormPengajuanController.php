@@ -48,7 +48,7 @@ class FormPengajuanController extends Controller
             'kd_prov' => $request->kd_prov,
             'kd_kabkota' => $request->kd_kabkota,
             'status' => 1,
-            'status_approval' => 0,
+            'status_approval' => 1, // 0. ditolak 1. menunggu persetujuan 2. disetujui
             'created_by' => Session::get('uid'),
             'body' => $request->body,
         ]);
