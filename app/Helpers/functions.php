@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Cookie;
 
 function searchFilter($option) {
-    echo "<input type=\"text\" id=\"keyword\" name=\"keyword\" value=\"" . request()->cookie('keyword') . "\" class=\"form-control text-filter mb-2\" placeholder=\"search\">
+    echo "<input type=\"text\" id=\"keyword\" name=\"keyword\" value=\"" . request()->cookie('keyword') . "\" class=\"form-control\" placeholder=\"search\">
 		<input type=\"hidden\" id=\"filter\" name=\"filter\">";
     if (count($option) > 0)
         echo "<button class=\"btn btn-light btn-sm dropdown-toggle dropdown-filter\" type=\"button\" data-toggle=\"dropdown\">
