@@ -9,7 +9,6 @@ $(document).ready(function () {
         value = value.toLowerCase();
         value = replaceAll(value, " ", "-");
         value = value.replace(/[^a-z0-9-]/gi, '');
-        ;
         $('#slug_berita').val(value);
     });
 
@@ -20,7 +19,7 @@ $(document).ready(function () {
 		let reader = new FileReader();
 		reader.onload = (e) => { 
 		  $('#img_berita').attr('src', e.target.result); 
-		}
+		};
 		reader.readAsDataURL(this.files[0]);
 		$('#img_berita').removeClass('d-none');
     });

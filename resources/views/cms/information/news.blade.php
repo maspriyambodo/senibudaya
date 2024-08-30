@@ -22,17 +22,51 @@
 </div>
 </div>
 {{ alertInfo() }}
-<div class="bg-white  p-2 m-4">
-    <div class="row">
-        <div class="col-md-6 text-left">
+<div class="bg-white p-2 m-4">
+    <div class="row g-3 align-items-center">
+        <div class="col-2">
+            <label for="categorytxt" class="col-form-label form-label">Kategori</label>
+        </div>
+        <div class="col-4">
+            <select id="categorytxt" name="categorytxt" class="form-control">
+                <option value="">-- pilih --</option>
+                <option value="1">Audio</option>
+                <option value="2">Video</option>
+                <option value="3">Gambar</option>
+                <option value="4">Tulisan</option>
+            </select>
+        </div>
+    </div>
+    <div class="clearfix my-2"></div>
+    <div class="row g-3 align-items-center">
+        <div class="col-2">
+            <label for="apprtxt" class="col-form-label form-label">Status Approval</label>
+        </div>
+        <div class="col-4">
+            <select id="apprtxt" name="apprtxt" class="form-control">
+                <option value="">-- pilih --</option>
+                <option value="0">ditolak</option>
+                <option value="1">menunggu persetujuan</option>
+                <option value="2">disetujui</option>
+            </select>
+        </div>
+    </div>
+    <div class="clearfix my-2"></div>
+    <div class="row g-3 align-items-center">
+        <div class="col-2">
+            <label for="categorytxt" class="col-form-label form-label">Pencarian</label>
+        </div>
+        <div class="col-4">
             @if(isset($filter))
             {{ searchFilter($filter) }}
             @endif
         </div>
-        <div class="col-md-6 text-right">
+        <div class="col-6 text-right">
             @if($input)
             <a href="{{ url($current.'/form/0') }}" class="btn btn-sm btn-warning"><i class="feather icon-plus"></i> Tambah Data</a>
-            @else&nbsp;@endif
+            @else
+            &nbsp;
+            @endif
         </div>
     </div>
     <div class="clear mt-4"></div>
@@ -53,7 +87,6 @@
                 </tr>
             </thead>
         </table>
-        {{ dataTable( $current.'/json', $column ) }}
     </div>
 </div>
 </div>
@@ -95,5 +128,92 @@
         </div>
     </div>
 </div>
-<script async src="{{asset('cms/js/information/'.$current.'.js')}}"></script>
+<script>
+    $(function () {
+        var dTable = $("#data").DataTable({
+            processing: true,
+            serverSide: true,
+            paging: true,
+            ordering: true,
+            deferRender: true,
+            info: true,
+            ajax: {
+                url: "news/json",
+                data: function (d) {
+                    d.keyword = $("#keyword").val();
+                    d.kategori = $("#categorytxt").val();
+                    d.approval = $("#apprtxt").val();
+                }
+            },
+            order: [[0, "asc"]],
+            columnDefs: [
+                { className: "text-center text-nowrap", targets: [0] },
+                { className: "text-right text-nowrap", targets: [] },
+                { orderable: false, targets: [1,2,3] }
+            ],
+            columns: [
+                {
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                { data: "button" },
+                { data: "nama_berita" },
+                { data: "pencipta" },
+                { data: "provinsi" },
+                { data: "kabupaten" },
+                { data: "created_at" },
+                { data: "nama_user" },
+                { data: "status_berita" },
+                { data: "status_approval" }
+            ],
+            displayStart: 0,
+            pageLength: 10,
+            rowCallback: function (row, data) {
+                $(row).unbind("click");
+                $(row).on("click", "#edit", function () {
+                    $.fn.start_length(dTable.page.info()["start"], dTable.page.info()["length"]);
+                    $.fn.edit(data);
+                });
+                $(row).on("click", "#update", function () {
+                    $.fn.start_length(dTable.page.info()["start"], dTable.page.info()["length"]);
+                    $.fn.update(data.id);
+                });
+                $(row).on("click", "#del", function () {
+                    $.fn.start_length(dTable.page.info()["start"], dTable.page.info()["length"]);
+                    $.fn.del(data.id);
+                });
+            },
+            drawCallback: function () {
+                $('[data-toggle="popover"]').popover({ container: "body" });
+                $("#input").on("click", function () {
+                    $.fn.start_length(dTable.page.info()["start"], dTable.page.info()["length"]);
+                    $.fn.input();
+                });
+            },
+            initComplete: function () {
+                $.fn.start_length(0, 0, "", "");
+            },
+            dom: `<'row'<'col-sm-6 text-left'><'col-sm-6 text-right'B>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`
+        });
+        $("#keyword").keyup(
+            delay(function (e) {
+                dTable.draw();
+                e.preventDefault();
+            }, 500)
+        );
+        $("#categorytxt").change(
+            delay(function (e) {
+                dTable.draw();
+                e.preventDefault();
+            }, 50)
+        );
+        $("#apprtxt").change(
+            delay(function (e) {
+                dTable.draw();
+                e.preventDefault();
+            }, 50)
+        );
+    });
+</script>
 @include('cms.footer')

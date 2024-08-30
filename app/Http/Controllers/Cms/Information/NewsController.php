@@ -20,21 +20,33 @@ class NewsController extends AuthController {
 
     private $target = 'cms.information.news';
 
-    public function json() {
-        $berita = OurCollection::select('dta_our_collections.id', 'dta_our_collections.nama AS nama_berita', 'dta_our_collections.pencipta', 'dta_our_collections.status AS status_berita', 'dta_our_collections.status_approval', 'dta_our_collections.created_at', 'user_create.nama_user', 'user_approve.nama_user AS nama_approve', 'mt_provinsi.nama AS provinsi', 'mt_kabupaten.nama AS kabupaten')
+    public function json(Request $request) {
+        $berita = OurCollection::select('dta_our_collections.id', 'dta_our_collections.id_category', 'dta_our_collections.nama AS nama_berita', 'dta_our_collections.pencipta', 'dta_our_collections.status AS status_berita', 'dta_our_collections.status_approval', 'dta_our_collections.created_at', 'user_create.nama_user', 'user_approve.nama_user AS nama_approve', 'mt_provinsi.nama AS provinsi', 'mt_kabupaten.nama AS kabupaten')
                     ->join('app_user AS user_create', 'dta_our_collections.created_by', '=', 'user_create.id')
                     ->join('app_user AS user_approve', 'dta_our_collections.user_approval', '=', 'user_approve.id')
                     ->join('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
-                    ->join('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten')
-                    ->where('dta_our_collections.id_category', 4);
-
+                    ->join('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten');
+            if ($request->filled('kategori')) {
+                $berita->where('dta_our_collections.id_category', '=', $request->kategori);
+            }
+            if ($request->filled('approval')) {
+                $berita->where('dta_our_collections.status_approval', '=', $request->approval);
+            }
+            if ($request->filled('keyword')) {
+                $berita->where('dta_our_collections.nama', 'like', "%" . $request->keyword . "%");
+                                $berita->orWhere('dta_our_collections.pencipta', 'like', "%" . $request->keyword . "%");
+                                $berita->orWhere('user_create.nama_user', 'like', "%" . $request->keyword . "%");
+                                $berita->orWhere('mt_provinsi.nama', 'like', "%" . $request->keyword . "%");
+                                $berita->orWhere('mt_kabupaten.nama', 'like', "%" . $request->keyword . "%");
+            }
+            $berita = $berita->latest()->get();
         return Datatables::of($berita)
                         ->editColumn('created_at', function ($row) {
                             return date('d/M/Y', strtotime($row->created_at));
                         })
                         ->addColumn('status_berita', function ($row) {
                             return $row->status_berita == 1 ?
-                            "<span class=\"badge badge-success w-100\">Publik</span>" :
+                            "<span class=\"badge badge-success w-100\">Publish</span>" :
                             "<span class=\"badge badge-light-dark  w-100\">Draft</span>";
                         })
                         ->addColumn('status_approval', function ($row) {
@@ -65,8 +77,8 @@ class NewsController extends AuthController {
                             }
                             if ($this->edit || $this->delete) {
                                 $button .= "<div class=\"btn-group dropright\">
-					<button class=\"btn btn-sm btn-icon btn-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
-						<i class=\"fas fa-ellipsis-v\"></i> 
+					<button class=\"btn btn-sm btn-icon btn-secondary\" type=\"button\" data-toggle=\"dropdown\">
+						<i class=\"fas fa-bars\"></i>
 					</button>
 					<div class=\"dropdown-menu dropright\">";
                                 if ($this->edit) {
@@ -83,16 +95,14 @@ class NewsController extends AuthController {
                             }
                             return $button;
                         })
-                        ->filter(function ($query) {
-                            if (request()->has('keyword')) {
-                                $query->where('dta_our_collections.nama', 'like', "%" . request('keyword') . "%");
-                            }
-                        })
-                        ->order(function ($query) {
-                            $query->orderBy('dta_our_collections.created_at', 'desc');
-                        })
-                        ->rawColumns(['status_berita', 'button', 'image', 'status_approval'])
-                        ->toJson();
+                        ->rawColumns(
+                                    [
+                                        'status_berita',
+                                        'button',
+                                        'status_approval'
+                                    ]
+                                )
+                        ->make(true);
     }
     
     public function news_approval(Request $request) {
