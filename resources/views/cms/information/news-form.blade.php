@@ -1,5 +1,6 @@
 @include('cms.header')
-<link rel="stylesheet" href="{{ asset('cms/css/plugins/trumbowyg.min.css') }}" />
+<link href="{{ asset('froala_editor_4.2.1/css/froala_editor.pkgd.min.css'); }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('froala_editor_4.2.1/css/third_party/image_tui.min.css'); }}" rel="stylesheet" type="text/css"/>
 <div class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -85,7 +86,9 @@
                                     <label for="status_berita">Aktif ?</label>
                                 </div>
                             </div>
-                            <textarea id="detail_berita" name="detail_berita" class="w-100 border-0">{{ $data->body }}</textarea>
+                            <div class="form-floating mb-4">
+                                <textarea id="body" name="detail_berita">{{ $data->body }}</textarea>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary w-25 ml-1">Simpan</button>
@@ -103,8 +106,58 @@
 <!-- [ Main Content ] end -->
 <input type="hidden" id="kotkabtxt" name="kotkabtxt" value="{{ $data->kd_kabkota }}" />
 <script src="{{asset('cms/js/information/'.$current.'.js')}}"></script>
-<script src="{{asset('cms/js/plugins/trumbowyg.min.js')}}"></script>
-<script src="{{asset('cms/js/plugins/trumbowyg.upload.js')}}"></script>
+<script src="{{ asset('froala_editor_4.2.1/js/froala_editor.pkgd.min.js'); }}" type="text/javascript"></script>
+    <script src="{{ asset('froala_editor_4.2.1/js/third_party/image_tui.min.js'); }}" type="text/javascript"></script>
+    <script>
+        var editor = new FroalaEditor('#body', {
+            height: 400,
+            filesManagerUploadURL: '{{ route("form-pengajuan.upload-media") }}',
+            filesManagerUploadParams: {
+                _token: '{{ csrf_token() }}'
+            },
+            filesManagerAllowedTypes: ['audio/mpeg', 'audio/wav', 'audio/ogg', 'video/mp4', 'video/quicktime', 'video/webm', 'application/pdf', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif'],
+            quickInsertEnabled: false,
+            toolbarButtons: {
+                moreText: {
+                    buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'],
+                    align: 'left',
+                    buttonsVisible: 5
+                },
+                moreParagraph: {
+                    buttons: ['alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'formatOLSimple', 'formatUL', 'paragraphFormat'],
+                    align: 'left',
+                    buttonsVisible: 5
+                },
+                moreMisc: {
+                    buttons: ['undo', 'redo', 'html'],
+                    align: 'right',
+                    buttonsVisible: 3
+                },
+                moreRich: {
+                    buttons: [],
+                    align: 'left',
+                    buttonsVisible: 0
+                },
+                insertFiles: {
+                    buttons: ['insertFiles'],
+                    align: 'left',
+                    buttonsVisible: 4
+                }
+            },
+            events: {
+                'filesManager.uploaded': function (response) {
+                    console.log('File berhasil di-upload:', response);
+                    return response.link;
+                },
+                'filesManager.error': function (error, response) {
+                    console.error('File upload error:', error);
+                }
+            }
+        }, function(){
+//            editor.html.set('<p>My custom paragraph.</p>');
+        });
+        
+    </script>
 <script type="text/javascript">
     $(document).ready(function() {
     $('.form-select').select2();
@@ -112,36 +165,6 @@
     if (id_prov != '') {
         $('#provtxt').trigger('change.select2');
     }
-    $('#detail_berita')
-        .trumbowyg({
-            semantic: false,
-            svgPath: "{{asset('cms/css/plugins/icons.svg')}}",
-            btnsDef: {
-                image: {
-                    dropdown: ['insertImage', 'upload'],
-                    ico: 'insertImage'
-                }
-            },
-            btns: [
-                ['viewHTML'],
-                ['formatting'],
-                ['strong', 'em', 'del'],
-                ['superscript', 'subscript'],
-                ['link'],
-                ['image'],
-                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-                ['unorderedList', 'orderedList'],
-                ['horizontalRule'],
-                ['removeformat'],
-                ['fullscreen']
-            ],
-            plugins: {
-                upload: {
-                    serverPath: "{{ url('background/upload') }}",
-                    fileFieldName: 'image_file'
-                }
-            }
-        });
 });
 
 function provinsi(id_prov) {

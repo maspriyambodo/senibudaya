@@ -21,25 +21,25 @@ class NewsController extends AuthController {
     private $target = 'cms.information.news';
 
     public function json(Request $request) {
-        $berita = OurCollection::select('dta_our_collections.id', 'dta_our_collections.id_category', 'dta_our_collections.nama AS nama_berita', 'dta_our_collections.pencipta', 'dta_our_collections.status AS status_berita', 'dta_our_collections.status_approval', 'dta_our_collections.created_at', 'user_create.nama_user', 'user_approve.nama_user AS nama_approve', 'mt_provinsi.nama AS provinsi', 'mt_kabupaten.nama AS kabupaten')
+        $exec = OurCollection::select('dta_our_collections.id', 'dta_our_collections.id_category', 'dta_our_collections.nama AS nama_berita', 'dta_our_collections.pencipta', 'dta_our_collections.status AS status_berita', 'dta_our_collections.status_approval', 'dta_our_collections.created_at', 'user_create.nama_user', 'user_approve.nama_user AS nama_approve', 'mt_provinsi.nama AS provinsi', 'mt_kabupaten.nama AS kabupaten')
                     ->join('app_user AS user_create', 'dta_our_collections.created_by', '=', 'user_create.id')
                     ->join('app_user AS user_approve', 'dta_our_collections.user_approval', '=', 'user_approve.id')
                     ->join('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
                     ->join('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten');
             if ($request->filled('kategori')) {
-                $berita->where('dta_our_collections.id_category', '=', $request->kategori);
+                $exec->where('dta_our_collections.id_category', '=', $request->kategori);
             }
             if ($request->filled('approval')) {
-                $berita->where('dta_our_collections.status_approval', '=', $request->approval);
+                $exec->where('dta_our_collections.status_approval', '=', $request->approval);
             }
             if ($request->filled('keyword')) {
-                $berita->where('dta_our_collections.nama', 'like', "%" . $request->keyword . "%");
+                $exec->where('dta_our_collections.nama', 'like', "%" . $request->keyword . "%");
                                 $berita->orWhere('dta_our_collections.pencipta', 'like', "%" . $request->keyword . "%");
                                 $berita->orWhere('user_create.nama_user', 'like', "%" . $request->keyword . "%");
                                 $berita->orWhere('mt_provinsi.nama', 'like', "%" . $request->keyword . "%");
                                 $berita->orWhere('mt_kabupaten.nama', 'like', "%" . $request->keyword . "%");
             }
-            $berita = $berita->latest()->get();
+            $berita = $exec->latest()->get();
         return Datatables::of($berita)
                         ->editColumn('created_at', function ($row) {
                             return date('d/M/Y', strtotime($row->created_at));

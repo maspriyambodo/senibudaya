@@ -2,8 +2,8 @@
 @section('title', 'Form Pengajuan')
 @section('stylesheet')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
-    <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/third_party/image_tui.min.css' rel='stylesheet' type='text/css' />
+    <link href="{{ asset('froala_editor_4.2.1/css/froala_editor.pkgd.min.css'); }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('froala_editor_4.2.1/css/third_party/image_tui.min.css'); }}" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
     <section class="wrapper bg-soft-primary">
@@ -96,10 +96,11 @@
 @endsection
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src='https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/froala-editor@latest/js/third_party/image_tui.min.js'></script>
+    <script src="{{ asset('froala_editor_4.2.1/js/froala_editor.pkgd.min.js'); }}" type="text/javascript"></script>
+    <script src="{{ asset('froala_editor_4.2.1/js/third_party/image_tui.min.js'); }}" type="text/javascript"></script>
     <script>
-        new FroalaEditor('#body', {
+        var editor = new FroalaEditor('#body', {
+            height: 400,
             filesManagerUploadURL: '{{ route("form-pengajuan.upload-media") }}',
             filesManagerUploadParams: {
                 _token: '{{ csrf_token() }}'
@@ -140,9 +141,12 @@
                 },
                 'filesManager.error': function (error, response) {
                     console.error('File upload error:', error);
-                },
+                }
             }
+        }, function(){
+            editor.html.set('<p>My custom paragraph.</p>');
         });
+        
     </script>
 
     <script>
