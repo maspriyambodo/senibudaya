@@ -2,17 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita;
 use Illuminate\Http\Request;
 use App\Models\CategoriesOurCollection;
 use App\Models\OurCollection;
+use Illuminate\Support\Facades\DB;
 
 class LandingController extends Controller
 {
     public function index()
     {
+        $main_berita_1 = Berita::latest()->first();
+        $main_berita_2 = Berita::latest()->skip(1)->take(2)->get();
         $categories_our_collection = CategoriesOurCollection::where('status', 1)->orderBy('urutan')->get();
+        $total_our_collections = OurCollection::where('status', 1)->where('status_approval', 1)->count();
+        $total_audio = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 1)->count();
+        $total_video = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 2)->count();
+        $total_photo = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 3)->count();
+        $total_document = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 4)->count();
+        $dta_berita = Berita::latest()->skip(3)->take(3)->get();
 
-        return view('landing.pages.home', compact('categories_our_collection'));
+        return view('landing.pages.home', compact('categories_our_collection', 'total_our_collections', 'total_audio', 'total_video', 'total_photo', 'total_document', 'main_berita_1', 'main_berita_2', 'dta_berita'));
     }
 
     public function show_collections(Request $request, $slug)
@@ -62,5 +72,46 @@ class LandingController extends Controller
                                            ->get();
 
         return view('landing.pages.our-collections.show-detail', compact('our_collection', 'category', 'random_collections'));
+    }
+
+    public function peta_sebaran()
+    {
+        $exec = DB::table('dta_our_collections')
+            ->select(
+                'mt_provinsi.id_provinsi',
+                'mt_provinsi.nama',
+                'mt_provinsi.latitude',
+                'mt_provinsi.longitude',
+                DB::raw('COUNT(dta_our_collections.id) AS total')
+            )
+            ->join('mt_provinsi', 'mt_provinsi.id_provinsi', '=', 'dta_our_collections.kd_prov')
+            ->where('dta_our_collections.status_approval', 1)
+            ->where('dta_our_collections.status', 1)
+            ->where('mt_provinsi.id_provinsi', '!=', 0)
+            ->groupBy('mt_provinsi.id_provinsi')
+            ->get();
+
+        $data = [];
+        $data['type'] = 'FeatureCollection';
+
+        foreach ($exec as $item) {
+            $data['features'][] = [
+                'type' => 'Feature',
+                'properties' => [
+                    'id_provinsi' => $item->id_provinsi,
+                    'Provinsi' => $item->nama,
+                    'total' => $item->total,
+                ],
+                'geometry' => [
+                    'type' => 'Point',
+                    'coordinates' => [
+                        $item->latitude,
+                        $item->longitude,
+                    ],
+                ],
+            ];
+        }
+
+        return response()->json($data, 200);
     }
 }
