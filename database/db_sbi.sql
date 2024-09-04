@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 04/09/2024 20:14:18
+ Date: 04/09/2024 20:20:27
 */
 
 SET NAMES utf8mb4;
@@ -1216,6 +1216,6 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `sebaran_provinsi` AS sel
 -- View structure for total_kategori
 -- ----------------------------
 DROP VIEW IF EXISTS `total_kategori`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `total_kategori` AS select `dta_categories_our_collection`.`nama` AS `kategori`,count(`dta_our_collections`.`id`) AS `tot_kategori` from (`dta_our_collections` join `dta_categories_our_collection` on((`dta_our_collections`.`id_category` = `dta_categories_our_collection`.`id`))) group by `dta_our_collections`.`id_category`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `total_kategori` AS select `dta_our_collections`.`id_category` AS `id_category`,`dta_categories_our_collection`.`nama` AS `kategori`,count(`dta_our_collections`.`id`) AS `tot_kategori` from (`dta_our_collections` join `dta_categories_our_collection` on((`dta_our_collections`.`id_category` = `dta_categories_our_collection`.`id`))) group by `dta_our_collections`.`id_category`;
 
 SET FOREIGN_KEY_CHECKS = 1;
