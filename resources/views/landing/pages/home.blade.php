@@ -1,8 +1,8 @@
 @extends('landing.layouts.master')
 @section('title', 'Home')
 @section('stylesheet')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+    <link href="{{ asset('leaflet/leaflet.css'); }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('leaflet/easy-button.css'); }}" rel="stylesheet" type="text/css"/>
     <style>
         #map {
             height: 600px;
@@ -188,20 +188,19 @@
     </section>
 @endsection
 @section('scripts')
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://torfsen.github.io/leaflet.zoomhome/dist/leaflet.zoomhome.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
-
+    <script src="{{ asset('leaflet/leaflet.js'); }}" type="text/javascript"></script>
+    <script src="{{ asset('leaflet/leaflet.zoomhome.min.js'); }}" type="text/javascript"></script>
+    <script src="{{ asset('leaflet/easy-button.js'); }}" type="text/javascript"></script>
     <script>
         $(document).ready(function() {
-          var url_geojson = '{{ route('landing.peta-sebaran') }}'
+          var url_geojson = '{{ route('landing.peta-sebaran') }}';
           var map = L.map('map', {
             closePopupOnClick: false,
             zoomControl: false
           }).setView([-2.5489, 118.0149], 5);
           var tiles = L.tileLayer('http://{s}.google.com/vt/lyrs=y&hl=id&x={x}&y={y}&z={z}', {
             maxZoom: 10,
-            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
           }).addTo(map);
 
           function get_prov() {
@@ -217,19 +216,19 @@
                   popup.on("popupclose", function(e) {});
 
                   layer.on('dblclick', function(e) {
-                    map.setView(e.latlng, 7)
-                    id_prov = feature.properties.id_provinsi
+                    map.setView(e.latlng, 7);
+                    id_prov = feature.properties.id_provinsi;
                   });
                 },
                 pointToLayer: function(feature, latlng) {
-                  return L.marker(latlng)
+                  return L.marker(latlng);
                 }
               }).addTo(map);
               map.setView(new L.LatLng(-0.9, 117.2837585), 5);
             });
           }
 
-          get_prov()
+          get_prov();
 
           var stateChangingButton = L.easyButton({
             states: [{
@@ -237,7 +236,7 @@
               icon: 'fa-home',
               title: 'zoom to a forest',
               onClick: function(btn, map) {
-                get_prov()
+                get_prov();
                 $(".leaflet-marker-icon").remove();
                 $(".leaflet-popup").remove();
                 $(".leaflet-marker-shadow").remove();
