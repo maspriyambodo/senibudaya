@@ -1,5 +1,7 @@
 @extends('landing.layouts.master')
 @section('title', $our_collection->nama)
+@section('meta-description', substr(strip_tags($our_collection->body), 0, 160))
+@section('meta-image', asset($our_collection->banner_path))
 @section('content')
     <section class="wrapper bg-soft-primary">
         <div class="container pt-10 pb-19 pt-md-14 pb-md-20 text-center">
