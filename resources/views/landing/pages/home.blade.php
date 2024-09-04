@@ -195,11 +195,12 @@
         $(document).ready(function() {
           var url_geojson = '{{ route('landing.peta-sebaran') }}';
           var map = L.map('map', {
-            closePopupOnClick: false,
-            zoomControl: false
-          }).setView([-2.5489, 118.0149], 5);
+            closePopupOnClick: true,
+            zoomControl: true,
+            attributionControl: false
+          }).setView([-2.5489, 118.0149], 10);
           var tiles = L.tileLayer('http://{s}.google.com/vt/lyrs=y&hl=id&x={x}&y={y}&z={z}', {
-            maxZoom: 10,
+            maxZoom: 20,
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
           }).addTo(map);
 
@@ -233,7 +234,7 @@
           var stateChangingButton = L.easyButton({
             states: [{
               stateName: 'zoom-to-forest',
-              icon: 'fa-home',
+              icon: 'uil uil-layer-group',
               title: 'zoom to a forest',
               onClick: function(btn, map) {
                 get_prov();
