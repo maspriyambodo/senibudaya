@@ -31,6 +31,17 @@
         <link rel="preload" href="{{ asset('landing/css/fonts/urbanist.css') }}" as="style" onload="this.rel='stylesheet'">
         <link rel="stylesheet" href="{{ asset('landing/plugins/toastr/toastr.min.css') }}">
         <link rel="stylesheet" href="{{ asset('landing/plugins/sweetalert2/sweetalert2.min.css') }}">
+
+        <style>
+            @keyframes loading {
+                0% {
+                    background-position: 0% 0%;
+                }
+                100% {
+                    background-position: 100% 0%;
+                }
+            }
+        </style>
         @yield('stylesheet')
 	</head>
 	<body>
