@@ -127,4 +127,24 @@ class LandingController extends Controller
 
         return response()->json($data, 200);
     }
+
+    public function search(Request $request)
+    {
+        $q = $request->q;
+
+        $query = OurCollection::select('dta_our_collections.*')->where('status', 1);
+
+        if ($q) {
+            $query->where(function ($query) use ($q) {
+                $query->where('dta_our_collections.nama', 'like', "%$q%")
+                    ->orWhere('dta_our_collections.pencipta', 'like', "%$q%")
+                    ->orWhere('dta_our_collections.kd_kabkota', 'like', "%$q%")
+                    ->orWhere('dta_our_collections.kd_prov', 'like', "%$q%");
+            });
+        }
+
+        $our_collections = $query->paginate(12);
+
+        return view('landing.pages.our-collections.lists-all', compact('our_collections'));
+    }
 }
