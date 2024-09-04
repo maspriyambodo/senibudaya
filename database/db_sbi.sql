@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 18/08/2024 23:14:23
+ Date: 04/09/2024 20:14:18
 */
 
 SET NAMES utf8mb4;
@@ -57,14 +57,6 @@ INSERT INTO `app_akses` VALUES (17, 2, 6, 'view', 't', 1, '2022-12-11 03:59:18',
 INSERT INTO `app_akses` VALUES (18, 2, 6, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 INSERT INTO `app_akses` VALUES (19, 2, 6, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 INSERT INTO `app_akses` VALUES (20, 2, 6, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (21, 2, 9, 'view', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (22, 2, 9, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (23, 2, 9, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (24, 2, 9, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (25, 2, 10, 'view', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (26, 2, 10, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (27, 2, 10, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (28, 2, 10, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 INSERT INTO `app_akses` VALUES (29, 2, 19, 'view', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 INSERT INTO `app_akses` VALUES (30, 2, 19, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 INSERT INTO `app_akses` VALUES (31, 2, 19, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
@@ -121,14 +113,6 @@ INSERT INTO `app_akses` VALUES (85, 5, 6, 'view', 't', 4, '2024-08-11 19:44:57',
 INSERT INTO `app_akses` VALUES (86, 5, 6, 'input', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
 INSERT INTO `app_akses` VALUES (87, 5, 6, 'edit', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
 INSERT INTO `app_akses` VALUES (88, 5, 6, 'delete', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
-INSERT INTO `app_akses` VALUES (93, 5, 9, 'view', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
-INSERT INTO `app_akses` VALUES (94, 5, 9, 'input', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
-INSERT INTO `app_akses` VALUES (95, 5, 9, 'edit', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
-INSERT INTO `app_akses` VALUES (96, 5, 9, 'delete', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
-INSERT INTO `app_akses` VALUES (97, 5, 10, 'view', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
-INSERT INTO `app_akses` VALUES (98, 5, 10, 'input', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
-INSERT INTO `app_akses` VALUES (99, 5, 10, 'edit', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
-INSERT INTO `app_akses` VALUES (100, 5, 10, 'delete', 't', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
 INSERT INTO `app_akses` VALUES (101, 5, 20, 'view', 'f', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
 INSERT INTO `app_akses` VALUES (102, 5, 20, 'input', 'f', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
 INSERT INTO `app_akses` VALUES (103, 5, 20, 'edit', 'f', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
@@ -141,10 +125,6 @@ INSERT INTO `app_akses` VALUES (109, 5, 24, 'view', 'f', 4, '2024-08-11 19:44:57
 INSERT INTO `app_akses` VALUES (110, 5, 24, 'input', 'f', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
 INSERT INTO `app_akses` VALUES (111, 5, 24, 'edit', 'f', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
 INSERT INTO `app_akses` VALUES (112, 5, 24, 'delete', 'f', 4, '2024-08-11 19:44:57', 4, '2024-08-11 19:44:57');
-INSERT INTO `app_akses` VALUES (113, 2, 27, 'view', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (114, 2, 27, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (115, 2, 27, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
-INSERT INTO `app_akses` VALUES (116, 2, 27, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 
 -- ----------------------------
 -- Table structure for app_group
@@ -201,16 +181,13 @@ INSERT INTO `app_menu` VALUES (1, 0, 'Konten', '', '', 'konten', 'fas fa-th-larg
 INSERT INTO `app_menu` VALUES (2, 1, 'Parameter', '', 'content', 'parameter', '', 1111, 1, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (3, 1, 'Menu', '', 'content', 'menu', '', 1111, 2, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (4, 0, 'Infomasi', '', '', 'informasi', 'fas fa-clone', 1000, 2, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
-INSERT INTO `app_menu` VALUES (6, 4, 'Tulisan', '', 'information', 'news', '', 1111, 2, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
-INSERT INTO `app_menu` VALUES (9, 4, 'Foto', '', 'information', 'photos', '', 1111, 5, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
-INSERT INTO `app_menu` VALUES (10, 4, 'Video', '', 'information', 'videos', '', 1111, 6, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
+INSERT INTO `app_menu` VALUES (6, 4, 'Jurnal', '', 'information', 'news', '', 1111, 2, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (19, 0, 'Kontak', '', '', 'kontak', 'fas fa-address-book', 1000, 6, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (20, 19, 'Hubungi Kami', '', 'contact', 'contact', '', 1001, 1, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (22, 0, 'User', '', '', 'setting', 'fas fa-cog', 1000, 7, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (23, 22, 'Daftar User', '', 'setting', 'user', '', 1111, 1, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (24, 22, 'Group User', '', 'setting', 'group', '', 1111, 2, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (25, 4, 'Banner', '', 'information', 'banner', '', 1111, 0, 't', 1, '2022-10-02 10:43:25', 1, '2023-12-14 10:49:09');
-INSERT INTO `app_menu` VALUES (27, 4, 'Audio', '', 'information', 'audio', '', 1111, 6, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 
 -- ----------------------------
 -- Table structure for app_parameter
@@ -280,13 +257,14 @@ CREATE TABLE `app_user`  (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `id_user`(`id_user` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '~ data user aplikasi' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 64 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '~ data user aplikasi' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of app_user
 -- ----------------------------
 INSERT INTO `app_user` VALUES (4, NULL, NULL, NULL, NULL, NULL, 2, 'admin@dev.com', '$2y$10$NoO/e4BBXRJ3nxjqwMPGreotpWSzdMfD7tv7KB1WEhj6GfBVpGCEq', 'Administrator', 'admin@default.template', NULL, 'img_1723346979292.jpg', 't', NULL, 1, '2022-10-18 16:07:40', 4, '2024-08-11 10:29:39');
-INSERT INTO `app_user` VALUES (61, NULL, NULL, NULL, NULL, NULL, 5, 'maspriyambodo@gmail.com', '$2y$10$FvghNbRPlB4kzZ52PIv/8u60u3uaJ3AWYvlhCK1bn0pJO.B4mmxHW', 'priyambodo', 'maspriyambodo@gmail.com', NULL, NULL, 't', NULL, NULL, '2024-08-11 08:24:01', 4, '2024-08-11 19:20:58');
+INSERT INTO `app_user` VALUES (61, NULL, NULL, NULL, NULL, NULL, 5, 'info@scentivaid.com', '$2y$10$FvghNbRPlB4kzZ52PIv/8u60u3uaJ3AWYvlhCK1bn0pJO.B4mmxHW', 'priyambodo', 'maspriyambodo@gmail.com', NULL, NULL, 't', NULL, NULL, '2024-08-11 08:24:01', 4, '2024-08-11 19:20:58');
+INSERT INTO `app_user` VALUES (63, NULL, NULL, NULL, NULL, NULL, 5, 'casugi.cabiku@gmail.com', '$2y$10$QhD0Vwx9lTb1FQ6xcqXkjem571.p3OAZFIcxehA8VKuNnUI7gH41O', 'priyambodo', 'casugi.cabiku@gmail.com', NULL, NULL, 't', NULL, NULL, '2024-08-22 10:02:50', NULL, '2024-08-22 10:07:42');
 
 -- ----------------------------
 -- Table structure for dta_banner
@@ -363,9 +341,9 @@ CREATE TABLE `dta_categories_our_collection`  (
 -- Records of dta_categories_our_collection
 -- ----------------------------
 INSERT INTO `dta_categories_our_collection` VALUES (1, 'Audio', 'audio', 1, 'cms/images/icon/audio.png', 1, NULL, '2024-08-17 17:19:13', NULL, '0000-00-00 00:00:00');
-INSERT INTO `dta_categories_our_collection` VALUES (2, 'Video', 'video', 2, 'landing/img/icons/lineal/video.svg', 1, NULL, '2024-08-17 17:19:13', NULL, '0000-00-00 00:00:00');
-INSERT INTO `dta_categories_our_collection` VALUES (3, 'Gambar', 'gambar', 3, 'landing/img/icons/lineal/pictures.svg', 1, NULL, '2024-08-17 17:19:13', NULL, '0000-00-00 00:00:00');
-INSERT INTO `dta_categories_our_collection` VALUES (4, 'Tulisan', 'tulisan', 4, 'landing/img/icons/lineal/files.svg', 1, NULL, '2024-08-17 17:19:13', NULL, '0000-00-00 00:00:00');
+INSERT INTO `dta_categories_our_collection` VALUES (2, 'Video', 'video', 2, 'cms/images/icon/videos.png', 1, NULL, '2024-08-17 17:19:13', NULL, '0000-00-00 00:00:00');
+INSERT INTO `dta_categories_our_collection` VALUES (3, 'Gambar', 'gambar', 3, 'cms/images/icon/photos.png', 1, NULL, '2024-08-17 17:19:13', NULL, '0000-00-00 00:00:00');
+INSERT INTO `dta_categories_our_collection` VALUES (4, 'Tulisan', 'tulisan', 4, 'cms/images/icon/news.png', 1, NULL, '2024-08-17 17:19:13', NULL, '0000-00-00 00:00:00');
 
 -- ----------------------------
 -- Table structure for dta_content
@@ -547,7 +525,7 @@ CREATE TABLE `dta_our_collections`  (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_slug`(`slug` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 55 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dta_our_collections
@@ -572,6 +550,15 @@ INSERT INTO `dta_our_collections` VALUES (17, 4, 'Gerabah', 'gerabah', 'Kerajina
 INSERT INTO `dta_our_collections` VALUES (18, 4, 'Tari Kipas Pakarena', 'tari-kipas-pakarena', 'Tarian klasik dari Sulawesi Selatan', 'landing/img/photos/b1.jpg', 'Masyarakat Gowa', 73, 7301, 1, 1, 61, '2024-08-18 14:00:00', 61, '2024-08-18 13:00:00', 18, '2024-08-18 13:00:00');
 INSERT INTO `dta_our_collections` VALUES (19, 4, 'Ukiran Jepara', 'ukiran-jepara', 'Seni ukir kayu', 'landing/img/photos/b1.jpg', 'Pengrajin Jepara', 33, 3320, 1, 1, 61, '2024-08-18 15:00:00', 61, '2024-08-18 14:00:00', 19, '2024-08-18 14:00:00');
 INSERT INTO `dta_our_collections` VALUES (20, 4, 'Tari Gandrung', 'tari-gandrung', 'Tarian selamat datang dari Banyuwangi', 'landing/img/photos/b1.jpg', 'Masyarakat Banyuwangi', 35, 3510, 1, 1, 4, '2024-08-18 15:27:54', 61, '2024-08-18 15:00:00', 20, '2024-08-18 15:27:54');
+INSERT INTO `dta_our_collections` VALUES (41, 4, 'Where does it come from?', 'where-does-it-come-from', 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.', 'images/berita/2024/August/img_1724384793606.jpg', 'Contrary to popular belief', 11, 1101, 1, 2, 4, '2024-08-23 10:46:33', 4, '2024-08-23 10:46:33', 4, '2024-08-23 10:46:33');
+INSERT INTO `dta_our_collections` VALUES (43, 4, 'Where can I get some?', 'where-can-i-get-some', 'There are many variations of passages of Lorem Ipsum available, but the \r\nmajority have suffered alteration in some form, by injected humour, or \r\nrandomised words which don\'t look even slightly believable. If you are \r\ngoing to use a passage of Lorem Ipsum, you need to be sure there isn\'t \r\nanything embarrassing hidden in the middle of text. All the Lorem Ipsum \r\ngenerators on the Internet tend to repeat predefined chunks as \r\nnecessary, making this the first true generator on the Internet. It uses\r\n a dictionary of over 200 Latin words, combined with a handful of model \r\nsentence structures, to generate Lorem Ipsum which looks reasonable. The\r\n generated Lorem Ipsum is therefore always free from repetition, \r\ninjected humour, or non-characteristic words etc.', 'images/berita/2024/August/img_1724385185025.png', 'injected humour and the like', 11, 1102, 1, 2, 4, '2024-08-23 10:53:05', 4, '2024-08-23 10:53:05', 4, '2024-08-23 10:53:05');
+INSERT INTO `dta_our_collections` VALUES (44, 4, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry', 'lorem-ipsum-is-simply-dummy-text-of-the-printing-and-typesetting-industry', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\n', 'form-pengajuan/44/banner_path/banner.png', 'Lorem Ipsum', 51, 5103, 1, NULL, NULL, NULL, NULL, '2024-08-23 10:55:58', NULL, '2024-08-23 10:55:58');
+INSERT INTO `dta_our_collections` VALUES (45, 2, 'Taylor Swift - Who’s Afraid of Little Old Me? (Official Lyric Video)', 'taylor-swift-whos-afraid-of-little-old-me-official-lyric-video', '<video src=\"https://www.youtube.com/embed/vOZFiX6hDXQ?showinfo=0\" controls=\"controls\" style=\"width: 100%;\"><p><br></p></video>\n', 'form-pengajuan/45/banner_path/banner.jpeg', 'Taylor Swift', 31, 3174, 1, NULL, NULL, NULL, 4, '2024-08-27 09:22:07', NULL, '2024-08-27 09:22:07');
+INSERT INTO `dta_our_collections` VALUES (46, 2, 'Taylor Swift - Delicate', 'taylor-swift-delicate', '<video src=\"https://youtu.be/4QIZE708gJ4?si=zamiSukh4C-tW_x-\" controls=\"controls\" style=\"width: 100%;\"><p><br></p></video>', 'form-pengajuan/46/banner_path/banner.jpeg', 'Taylor Swift', 31, 3174, 1, 2, 61, '2024-08-27 09:55:52', 4, '2024-08-27 09:49:09', NULL, '2024-08-27 09:49:09');
+INSERT INTO `dta_our_collections` VALUES (47, 2, 'Afrojack - Ten Feet Tall (Official Lyric Video) ft. Wrabel', 'afrojack-ten-feet-tall-official-lyric-video-ft-wrabel', '<p><span contenteditable=\"false\" draggable=\"true\" class=\"fr-video fr-deletable fr-fvc fr-dvb fr-draggable\"><iframe width=\"640\" height=\"360\" src=\"https://www.youtube.com/embed/bltr_Dsk5EY?&amp;wmode=opaque&amp;rel=0\" frameborder=\"0\" allowfullscreen=\"\" class=\"fr-draggable\"></iframe></span></p>\n', 'form-pengajuan/47/banner_path/banner.jpeg', 'Afrojack', 51, 5101, 1, 2, NULL, NULL, 4, '2024-08-28 13:28:45', NULL, '2024-08-28 13:28:45');
+INSERT INTO `dta_our_collections` VALUES (48, 2, 'Pramono-Rano: Cerita Anies, Titah Mega, dan Tawa Jokowi | Mata Najwa', 'pramono-rano-cerita-anies-titah-mega-dan-tawa-jokowi-mata-najwa', '<p><span contenteditable=\"false\" draggable=\"true\" class=\"fr-video fr-deletable fr-fvc fr-dvb fr-draggable\"><iframe width=\"640\" height=\"360\" src=\"https://www.youtube.com/embed/MYTIAlFtg_8?&amp;wmode=opaque&amp;rel=0\" frameborder=\"0\" allowfullscreen=\"\"></iframe></span></p>\n', 'form-pengajuan/48/banner_path/banner.jpeg', 'Najwa', 31, 3171, 1, 1, NULL, NULL, 4, '2024-08-30 17:51:39', NULL, '2024-08-30 17:51:39');
+INSERT INTO `dta_our_collections` VALUES (52, 2, 'Ahok soal Jokowi, Prabowo, dan Jakarta Hari Ini | Mata Najwa', 'ahok-soal-jokowi-prabowo-dan-jakarta-hari-ini-mata-najwa', '<p><span contenteditable=\"false\" draggable=\"true\" class=\"fr-video fr-deletable fr-fvc fr-dvb fr-draggable\"><iframe width=\"640\" height=\"360\" src=\"https://www.youtube.com/embed/4UFiy6OkgN0?&amp;wmode=opaque&amp;rel=0\" frameborder=\"0\" allowfullscreen=\"\"></iframe></span></p>\n', 'form-pengajuan/52/banner_path/banner.jpeg', 'Najwa', 31, 3171, 1, 1, NULL, NULL, 4, '2024-08-30 17:56:28', NULL, '2024-08-30 17:56:28');
+INSERT INTO `dta_our_collections` VALUES (54, 2, 'SETELAH REVISI UU PILKADA KANDAS // SIAPA SAJA YANG MENINGGALKAN JOKOWI?', 'setelah-revisi-uu-pilkada-kandas-siapa-saja-yang-meninggalkan-jokowi', '<p><span contenteditable=\"false\" draggable=\"true\" class=\"fr-video fr-deletable fr-fvc fr-dvb fr-draggable\"><iframe width=\"640\" height=\"360\" src=\"https://www.youtube.com/embed/glj0_FU65BM?&amp;wmode=opaque&amp;rel=0\" frameborder=\"0\" allowfullscreen=\"\"></iframe></span></p>\n', 'form-pengajuan/54/banner_path/banner.jpeg', 'ILC', 31, 3175, 1, 1, NULL, NULL, 4, '2024-08-30 17:59:29', NULL, '2024-08-30 17:59:29');
 
 -- ----------------------------
 -- Table structure for dta_video
@@ -1218,5 +1205,17 @@ INSERT INTO `mt_provinsi` VALUES (93, 'PAPUA SELATAN', 1, 137.876018865, -4.5718
 INSERT INTO `mt_provinsi` VALUES (94, 'PAPUA TENGAH', 1, 136.019727337, -2.7118504449999, 1, '2024-01-12 08:43:04', NULL, NULL, NULL, NULL);
 INSERT INTO `mt_provinsi` VALUES (95, 'PAPUA PEGUNUNGAN', 1, 138.17845364, -3.1107957959999, 1, '2024-01-12 08:43:04', NULL, NULL, NULL, NULL);
 INSERT INTO `mt_provinsi` VALUES (96, 'PAPUA BARAT DAYA', 1, 132.598825601, -2.1988046119999, 1, '2024-01-12 08:43:04', NULL, NULL, NULL, NULL);
+
+-- ----------------------------
+-- View structure for sebaran_provinsi
+-- ----------------------------
+DROP VIEW IF EXISTS `sebaran_provinsi`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `sebaran_provinsi` AS select `mt_provinsi`.`id_provinsi` AS `id_provinsi`,`mt_provinsi`.`nama` AS `provinsi`,count(`dta_our_collections`.`id`) AS `tot_prov` from (`mt_provinsi` join `dta_our_collections` on((`mt_provinsi`.`id_provinsi` = `dta_our_collections`.`kd_prov`))) group by `mt_provinsi`.`id_provinsi` order by `mt_provinsi`.`id_provinsi`;
+
+-- ----------------------------
+-- View structure for total_kategori
+-- ----------------------------
+DROP VIEW IF EXISTS `total_kategori`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `total_kategori` AS select `dta_categories_our_collection`.`nama` AS `kategori`,count(`dta_our_collections`.`id`) AS `tot_kategori` from (`dta_our_collections` join `dta_categories_our_collection` on((`dta_our_collections`.`id_category` = `dta_categories_our_collection`.`id`))) group by `dta_our_collections`.`id_category`;
 
 SET FOREIGN_KEY_CHECKS = 1;
