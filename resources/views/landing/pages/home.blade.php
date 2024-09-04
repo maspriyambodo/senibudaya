@@ -197,29 +197,23 @@
 
     <script>
         $(document).ready(function() {
-          let url_geojson = '{{ route('landing.peta-sebaran') }}'
-          let map = L.map('map', {
+          var url_geojson = '{{ route('landing.peta-sebaran') }}'
+          var map = L.map('map', {
             closePopupOnClick: false,
             zoomControl: false
           }).setView([-2.5489, 118.0149], 5);
-          let tiles = L.tileLayer('http://{s}.google.com/vt/lyrs=y&hl=id&x={x}&y={y}&z={z}', {
+          var tiles = L.tileLayer('http://{s}.google.com/vt/lyrs=y&hl=id&x={x}&y={y}&z={z}', {
             maxZoom: 10,
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
           }).addTo(map);
 
           function get_prov() {
             fetch(url_geojson).then(res => res.json()).then(data => {
-              map.eachLayer(function(layer) {
-                    if (layer instanceof L.Marker || layer instanceof L.GeoJSON) {
-                        map.removeLayer(layer);
-                    }
-                });
-
               quake = L.geoJson(data, {
                 onEachFeature: function(feature, layer) {
-                  let popupContent = 'Provinsi: ' + feature.properties.Provinsi + '<br>' +
+                  var popupContent = 'Provinsi: ' + feature.properties.Provinsi + '<br>' +
                     'Total Koleksi: ' + feature.properties.total;
-                  let popup;
+                  var popup;
                   popup = layer.bindPopup(popupContent, {
                     closeButton: false
                   });
@@ -240,10 +234,10 @@
 
           get_prov()
 
-          let stateChangingButton = L.easyButton({
+          var stateChangingButton = L.easyButton({
             states: [{
               stateName: 'zoom-to-forest',
-              icon: 'uil uil-home',
+              icon: 'fa-home',
               title: 'zoom to a forest',
               onClick: function(btn, map) {
                 get_prov()
