@@ -12,17 +12,30 @@ class LandingController extends Controller
 {
     public function index()
     {
-        $main_berita_1 = Berita::latest()->first();
-        $main_berita_2 = Berita::latest()->skip(1)->take(2)->get();
+        $main_our_collection_1 = OurCollection::where('status', 1)
+            ->where('status_approval', 1)
+            ->latest()
+            ->first();
+        $main_our_collection_2 = OurCollection::where('status', 1)
+            ->where('status_approval', 1)
+            ->latest()
+            ->skip(1)
+            ->take(2)
+            ->get();
         $categories_our_collection = CategoriesOurCollection::where('status', 1)->orderBy('urutan')->get();
         $total_our_collections = OurCollection::where('status', 1)->where('status_approval', 1)->count();
         $total_audio = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 1)->count();
         $total_video = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 2)->count();
         $total_photo = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 3)->count();
         $total_document = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 4)->count();
-        $dta_berita = Berita::latest()->skip(3)->take(3)->get();
+        $dta_our_collection = OurCollection::where('status', 1)
+                  ->where('status_approval', 1)
+                  ->latest()
+                  ->skip(3)
+                  ->take(3)
+                  ->get();
 
-        return view('landing.pages.home', compact('categories_our_collection', 'total_our_collections', 'total_audio', 'total_video', 'total_photo', 'total_document', 'main_berita_1', 'main_berita_2', 'dta_berita'));
+        return view('landing.pages.home', compact('categories_our_collection', 'total_our_collections', 'total_audio', 'total_video', 'total_photo', 'total_document', 'main_our_collection_1', 'main_our_collection_2', 'dta_our_collection'));
     }
 
     public function show_collections(Request $request, $slug)

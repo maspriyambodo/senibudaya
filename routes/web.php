@@ -27,7 +27,6 @@ Route::get('/show-collections/{slug}', [LandingController::class, 'show_collecti
 Route::get('/show-collection-detail/{slug}', [LandingController::class, 'show_collection_detail'])->name('landing.show-collection-detail');
 Route::get("email", [PHPMailerController::class, "email"])->name("email");
 Route::post("send-email", [PHPMailerController::class, "composeEmail"])->name("send-email");
-Route::get('/berita/{slug}', [LandingController::class, 'show_berita'])->name('berita.show');
 Route::get('peta-sebaran', [LandingController::class, 'peta_sebaran'])->name('landing.peta-sebaran');
 //Route::get('/generate-password/{tulispassword}', function ($request) {
 //    return Hash::make(md5($request));

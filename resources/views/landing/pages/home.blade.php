@@ -21,7 +21,7 @@
                                 <div class="swiper">
                                     <div class="swiper-wrapper">
                                         <div class="swiper-slide">
-                                            <img src="{{ asset($main_berita_1->image_berita) }}" alt="{{ $main_berita_1->nama_berita }}" />
+                                            <img src="{{ asset($main_our_collection_1->banner_path) }}" alt="{{ $main_our_collection_1->nama }}" />
                                         </div>
                                     </div>
                                 </div>
@@ -29,32 +29,29 @@
                         </div>
                         <div class="post-header mb-5">
                             <h2 class="post-title mt-1 mb-4">
-                                <a class="link-dark" href="{{ route('berita.show', $main_berita_1->slug_berita) }}">{{ $main_berita_1->nama_berita }}</a>
+                                <a class="link-dark" href="{{ route('landing.show-collection-detail', $main_our_collection_1->slug) }}">{{ $main_our_collection_1->nama }}</a>
                             </h2>
                             <ul class="post-meta mb-0">
                                 <li class="post-date">
                                     <i class="uil uil-calendar-alt"></i>
-                                    <span>{{ $main_berita_1->created_at->format('d M Y') }}</span>
+                                    <span>{{ $main_our_collection_1->created_at->format('d M Y') }}</span>
                                 </li>
                             </ul>
-                        </div>
-                        <div class="post-content">
-                            <p>{!! Str::limit($main_berita_1->detail_berita, 200) !!}</p>
                         </div>
                     </article>
                 </div>
 
                 <div class="col-lg-4">
                     <div class="row gy-10">
-                        @foreach($main_berita_2 as $val)
+                        @foreach($main_our_collection_2 as $val)
                             <div class="col-md-6 col-lg-12">
                                 <article class="post">
                                     <figure class="rounded mb-5">
-                                        <img src="{{ asset($val->image_berita) }}" alt="{{ $val->nama_berita }}" />
+                                        <img src="{{ asset($val->banner_path) }}" alt="{{ $val->nama }}" />
                                     </figure>
                                     <div class="post-header">
                                         <h2 class="post-title h3 mt-1 mb-3">
-                                            <a class="link-dark" href="{{ route('berita.show', $val->slug_berita) }}">{{ $val->nama_berita }}</a>
+                                            <a class="link-dark" href="{{ route('landing.show-collection-detail', $val->slug) }}">{{ $val->nama }}</a>
                                         </h2>
                                     </div>
                                     <div class="post-footer">
@@ -148,27 +145,27 @@
         </div>
     </section>
 
-    <section class="wrapper bg-light" id="latest-berita">
+    <section class="wrapper bg-light" id="latest-our-collections">
         <div class="container py-14 py-md-16">
             <div class="row gx-lg-8 gx-xl-12 gy-10 gy-lg-0">
                 <div class="col-lg-4 mt-lg-2">
                     <h2 class="display-4 mb-3">Koleksi Terbaru</h2>
-                    <p class="lead fs-lg mb-6 pe-xxl-5">Berikut adalah beberapa berita pilihan terbaru lainnya.</p>
+                    <p class="lead fs-lg mb-6 pe-xxl-5">Berikut adalah beberapa koleksi pilihan terbaru lainnya.</p>
                     <a href="#" class="btn btn-soft-primary rounded-pill">Lihat Semua</a>
                 </div>
                 <div class="col-lg-8">
                     <div class="swiper-container blog grid-view mb-6" data-margin="30" data-dots="true" data-items-md="2" data-items-xs="1">
                         <div class="swiper">
                             <div class="swiper-wrapper">
-                                @foreach($dta_berita as $val)
+                                @foreach($dta_our_collection as $val)
                                     <div class="swiper-slide">
                                         <article>
                                             <figure class="rounded mb-5">
-                                                <img src="{{ asset($val->image_berita) }}" alt="{{ $val->nama_berita }}" />
+                                                <img src="{{ asset($val->banner_path) }}" alt="{{ $val->nama }}" />
                                             </figure>
                                             <div class="post-header">
                                                 <h2 class="post-title h3 mt-1 mb-3">
-                                                    <a class="link-dark" href="{{ route('berita.show', $val->slug_berita) }}">{{ $val->nama_berita }}</a>
+                                                    <a class="link-dark" href="{{ route('landing.show-collection-detail', $val->slug) }}">{{ $val->nama }}</a>
                                                 </h2>
                                             </div>
                                             <div class="post-footer">
