@@ -40,10 +40,26 @@ class LandingController extends Controller
 
     public function show_collections(Request $request, $slug)
     {
-        $categories_our_collection = CategoriesOurCollection::where('status', 1)->where('slug', $slug)->firstOrFail();
-
-        $query = OurCollection::select('dta_our_collections.*')->where('status', 1)->where('id_category', $categories_our_collection->id);
-
+        if ($slug == 'all') {
+            $categories_our_collection = (object) [
+                        'nama' => 'Semua Koleksi',
+                        'slug' => 'all',
+                        'urutan' => 1
+            ];
+            $query = OurCollection::select('dta_our_collections.*')
+                    ->where([
+                ['status', '=', 1],
+                ['status_approval', '=', 2]
+            ]);
+        } else {
+            $categories_our_collection = CategoriesOurCollection::where('status', 1)->where('slug', $slug)->firstOrFail();
+            $query = OurCollection::select('dta_our_collections.*')
+                    ->where([
+                ['status', '=', 1],
+                ['status_approval', '=', 2],
+                ['id_category', '=', $categories_our_collection->id]
+            ]);
+        }
         if ($request->has('search')) {
             $search = $request->search;
             $filter = $request->filter;

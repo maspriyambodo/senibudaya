@@ -161,7 +161,7 @@
                 <div class="col-lg-4 mt-lg-2">
                     <h2 class="display-4 mb-3">Koleksi Terbaru</h2>
                     <p class="lead fs-lg mb-6 pe-xxl-5">Berikut adalah beberapa koleksi pilihan terbaru lainnya.</p>
-                    <a href="{{ route('landing.home') }}#our-collections" data-scroll-to="#our-collections" class="btn btn-soft-primary rounded-pill">Lihat Semua</a>
+                    <a href="{{ route('landing.show-collections', 'all') }}" class="btn btn-soft-primary rounded-pill">Lihat Semua</a>
                 </div>
                 <div class="col-lg-8">
                     <div class="swiper-container blog grid-view mb-6" data-margin="30" data-dots="true" data-items-md="2" data-items-xs="1">
