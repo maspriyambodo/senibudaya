@@ -25,6 +25,7 @@
                         <div class="col-md-12 col-lg-3 mb-3">
                             <div class="form-select-wrapper">
                                 <select class="form-select" name="filter">
+                                    <option value="Judul" {{ request('filter') == 'Judul' ? 'selected' : '' }}>Judul</option>
                                     <option value="Pencipta" {{ request('filter') == 'Pencipta' ? 'selected' : '' }}>Pencipta</option>
                                     <option value="Kota/Kab" {{ request('filter') == 'Kota/Kab' ? 'selected' : '' }}>Kota/Kab</option>
                                     <option value="Provinsi" {{ request('filter') == 'Provinsi' ? 'selected' : '' }}>Provinsi</option>

@@ -65,6 +65,9 @@ class LandingController extends Controller
             $filter = $request->filter;
 
             switch ($filter) {
+                case 'Judul':
+                    $query->where('nama', 'like', "%$search%");
+                    break;
                 case 'Pencipta':
                     $query->where('pencipta', 'like', "%$search%");
                     break;
@@ -85,9 +88,6 @@ class LandingController extends Controller
         }
 
         $our_collections = $query->paginate(12);
-
-        $our_collections = $query->paginate(12);
-
         return view('landing.pages.our-collections.lists', compact('our_collections', 'categories_our_collection'));
     }
 
