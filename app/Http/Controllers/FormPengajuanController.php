@@ -35,8 +35,6 @@ class FormPengajuanController extends Controller
             'pencipta' => 'required|string|max:255',
             'id_category' => 'required',
             'banner_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'kd_prov' => 'required',
-            'kd_kabkota' => 'required',
             'body' => 'required',
         ]);
 

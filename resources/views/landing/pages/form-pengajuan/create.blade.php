@@ -70,7 +70,7 @@
                                     </div>
 
                                     <div class="form-select-wrapper mb-4">
-                                        <select name="kd_prov" class="form-select select2" aria-label="Pilih Provinsi" onchange="getKabKota(this.value)" required>
+                                        <select name="kd_prov" class="form-select select2" aria-label="Pilih Provinsi" onchange="getKabKota(this.value)">
                                             <option value="" selected disabled hidden>Pilih Provinsi</option>
                                             @foreach($provinsis as $item)
                                                 <option value="{{ $item->id_provinsi }}" {{ old('kd_prov') == $item->id_provinsi ? 'selected' : '' }}>{{ $item->nama }}</option>
@@ -79,7 +79,7 @@
                                     </div>
 
                                     <div class="form-select-wrapper mb-4">
-                                        <select name="kd_kabkota" id="kd_kabkota" class="form-select select2" aria-label="Pilih Kabupaten/Kota" required>
+                                        <select name="kd_kabkota" id="kd_kabkota" class="form-select select2" aria-label="Pilih Kabupaten/Kota">
                                             <option value="" selected disabled hidden>Pilih Kabupaten/Kota</option>
                                         </select>
                                     </div>
@@ -146,7 +146,7 @@
         }, function(){
             editor.html.set('<p>My custom paragraph.</p>');
         });
-        
+
     </script>
 
     <script>
