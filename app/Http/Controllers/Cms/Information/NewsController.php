@@ -216,7 +216,7 @@ class NewsController extends AuthController {
                 $constraint->aspectRatio();
             })->save($path . '/' . $image_berita);
         }
-        $detail_berita = str_replace(['Powered by', 'Froala Editor'], '', $request->detail_berita);
+        $detail_berita = str_replace(['Powered by', 'Froala Editor', 'https://www.froala.com/wysiwyg-editor?pb=1'], '', $request->detail_berita);
         $berita = $new ? new OurCollection() : OurCollection::find($id_berita);
         $berita->id_category = $request->kategoritxt;
         $berita->nama = $request->nama_berita;
