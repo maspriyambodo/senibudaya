@@ -41,6 +41,10 @@
                     background-position: 100% 0%;
                 }
             }
+
+            [data-f-id="pbf"] {
+                display: none;
+            }
         </style>
         @yield('stylesheet')
 	</head>
