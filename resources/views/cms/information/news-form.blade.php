@@ -37,10 +37,10 @@
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                     <select id="kategoritxt" name="kategoritxt" class="form-control" {{ noEmpty( 'Kategori tidak boleh kosong.') }}>
                                         <option value="">-- pilih kategori --</option>
-                                        <option value="1">Audio</option>
-                                        <option value="2">Video</option>
-                                        <option value="3">Gambar</option>
-                                        <option value="4">Tulisan</option>
+                                        <option value="1"{{ $data->id_category == 1 ? ' selected=""' : '' }}>Audio</option>
+                                        <option value="2"{{ $data->id_category == 2 ? ' selected=""' : '' }}>Video</option>
+                                        <option value="3"{{ $data->id_category == 3 ? ' selected=""' : '' }}>Gambar</option>
+                                        <option value="4"{{ $data->id_category == 4 ? ' selected=""' : '' }}>Tulisan</option>
                                     </select>
                                 </div>
                             </div>
@@ -64,7 +64,8 @@
                                 <div class="col-sm-8">
                                     <select name="provtxt" id="provtxt" class="form-control form-select" onchange="provinsi(this.value)">
                                         <option value="">pilih provinsi</option>
-                                        @foreach($provinsi as $dt_prov) @if($data->kd_prov == $dt_prov->id_provinsi)
+                                        @foreach($provinsi as $dt_prov)
+                                        @if($data->kd_prov == $dt_prov->id_provinsi)
                                         <option value="{{ $dt_prov->id_provinsi }}" selected>{{ $dt_prov->provinsi }}</option>
                                         @else
                                         <option value="{{ $dt_prov->id_provinsi }}">{{ $dt_prov->provinsi }}</option>
