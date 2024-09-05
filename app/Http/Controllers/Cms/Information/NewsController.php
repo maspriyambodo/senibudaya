@@ -24,8 +24,8 @@ class NewsController extends AuthController {
         $exec = OurCollection::select('dta_our_collections.id', 'dta_our_collections.id_category', 'dta_our_collections.nama AS nama_berita', 'dta_our_collections.pencipta', 'dta_our_collections.status AS status_berita', 'dta_our_collections.status_approval', 'dta_our_collections.created_at', 'user_create.nama_user', 'user_approve.nama_user AS nama_approve', 'mt_provinsi.nama AS provinsi', 'mt_kabupaten.nama AS kabupaten')
                     ->join('app_user AS user_create', 'dta_our_collections.created_by', '=', 'user_create.id')
                     ->join('app_user AS user_approve', 'dta_our_collections.user_approval', '=', 'user_approve.id')
-                    ->join('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
-                    ->join('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten');
+                    ->leftJoin('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
+                    ->leftJoin('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten');
             if ($request->filled('kategori')) {
                 $exec->where('dta_our_collections.id_category', '=', $request->kategori);
             }

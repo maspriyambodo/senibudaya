@@ -62,7 +62,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Provinsi</label>
                                 <div class="col-sm-8">
-                                    <select name="provtxt" id="provtxt" class="form-control form-select" {{ noEmpty( 'Provinsi tidak boleh kosong.', true) }} onchange="provinsi(this.value)">
+                                    <select name="provtxt" id="provtxt" class="form-control form-select" onchange="provinsi(this.value)">
                                         <option value="">pilih provinsi</option>
                                         @foreach($provinsi as $dt_prov) @if($data->kd_prov == $dt_prov->id_provinsi)
                                         <option value="{{ $dt_prov->id_provinsi }}" selected>{{ $dt_prov->provinsi }}</option>
