@@ -21,11 +21,13 @@
                                 <div class="swiper">
                                     <div class="swiper-wrapper">
                                         <div class="swiper-slide">
+                                            <a href="{{ route('landing.show-collection-detail', $main_our_collection_1->slug) }}">
                                             @if(file_exists(public_path($main_our_collection_1->banner_path)))
                                               <img src="{{ asset($main_our_collection_1->banner_path) }}" alt="{{ $main_our_collection_1->nama }}" />
                                             @else
                                                   <div style="width: 100%; height: 500px; background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px;"></div>
                                             @endif
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
