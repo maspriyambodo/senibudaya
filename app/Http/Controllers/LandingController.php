@@ -13,23 +13,23 @@ class LandingController extends Controller
     public function index()
     {
         $main_our_collection_1 = OurCollection::where('status', 1)
-            ->where('status_approval', 1)
+            ->where('status_approval', 2)
             ->latest()
             ->first();
         $main_our_collection_2 = OurCollection::where('status', 1)
-            ->where('status_approval', 1)
+            ->where('status_approval', 2)
             ->latest()
             ->skip(1)
             ->take(2)
             ->get();
         $categories_our_collection = CategoriesOurCollection::where('status', 1)->orderBy('urutan')->get();
-        $total_our_collections = OurCollection::where('status', 1)->where('status_approval', 1)->count();
-        $total_audio = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 1)->count();
-        $total_video = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 2)->count();
-        $total_photo = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 3)->count();
-        $total_document = OurCollection::where('status', 1)->where('status_approval', 1)->where('id_category', 4)->count();
+        $total_our_collections = OurCollection::where('status', 1)->where('status_approval', 2)->count();
+        $total_audio = OurCollection::where('status', 1)->where('status_approval', 2)->where('id_category', 1)->count();
+        $total_video = OurCollection::where('status', 1)->where('status_approval', 2)->where('id_category', 2)->count();
+        $total_photo = OurCollection::where('status', 1)->where('status_approval', 2)->where('id_category', 3)->count();
+        $total_document = OurCollection::where('status', 1)->where('status_approval', 2)->where('id_category', 4)->count();
         $dta_our_collection = OurCollection::where('status', 1)
-                  ->where('status_approval', 1)
+                  ->where('status_approval', 2)
                   ->latest()
                   ->skip(3)
                   ->take(3)
@@ -98,7 +98,7 @@ class LandingController extends Controller
                 DB::raw('COUNT(dta_our_collections.id) AS total')
             )
             ->join('mt_provinsi', 'mt_provinsi.id_provinsi', '=', 'dta_our_collections.kd_prov')
-            ->where('dta_our_collections.status_approval', 1)
+            ->where('dta_our_collections.status_approval', 2)
             ->where('dta_our_collections.status', 1)
             ->where('mt_provinsi.id_provinsi', '!=', 0)
             ->groupBy('mt_provinsi.id_provinsi')
