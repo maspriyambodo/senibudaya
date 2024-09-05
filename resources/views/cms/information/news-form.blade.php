@@ -30,10 +30,20 @@
                 <div class="card">
                     <form action="{{ url($current) }}/store" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="">
                         @csrf
-                        <div class="card-header">
-                            <h6>{{ $data->mode_berita }}</h6>
-                        </div>
                         <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Kategori</label>
+                                <div class="col-sm-8">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <select id="kategoritxt" name="kategoritxt" class="form-control" {{ noEmpty( 'Kategori tidak boleh kosong.') }}>
+                                        <option value="">-- pilih kategori --</option>
+                                        <option value="1">Audio</option>
+                                        <option value="2">Video</option>
+                                        <option value="3">Gambar</option>
+                                        <option value="4">Tulisan</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Judul</label>
                                 <input id="id" name="id" value="{{ $id_berita }}" type="hidden">
@@ -65,7 +75,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Kabupaten</label>
                                 <div class="col-sm-8">
-                                    <select name="kabtxt" id="kabtxt" class="form-control form-select" {{ noEmpty( 'Kabupaten tidak boleh kosong.', true) }}></select>
+                                    <select name="kabtxt" id="kabtxt" class="form-control form-select"></select>
                                 </div>
                             </div>
                             <div class="form-group row">

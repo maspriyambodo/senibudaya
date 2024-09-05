@@ -146,9 +146,9 @@ class NewsController extends AuthController {
             $berita = new OurCollection();
             $berita->id = 0;
             $berita->status = 1;
-            $berita->mode_berita = 'Add Berita';
+            $berita->mode_berita = 'Add Content';
         } else {
-            $berita->mode_berita = 'Edit Berita';
+            $berita->mode_berita = 'Edit Content';
         }
 
         $data = array_merge(
@@ -218,7 +218,7 @@ class NewsController extends AuthController {
         }
 
         $berita = $new ? new OurCollection() : OurCollection::find($id_berita);
-        $berita->id_category = 4;
+        $berita->id_category = $request->kategoritxt;
         $berita->nama = $request->nama_berita;
         $berita->slug = Str::slug($request->nama_berita);
         $berita->body = $request->detail_berita;
