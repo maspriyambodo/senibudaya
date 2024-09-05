@@ -24,6 +24,7 @@ use App\Http\Controllers\ProfileController;
 //front
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/show-collections/{slug}', [LandingController::class, 'show_collections'])->name('landing.show-collections');
+Route::get('/search', [LandingController::class, 'search'])->name('landing.search');
 Route::get('/show-collection-detail/{slug}', [LandingController::class, 'show_collection_detail'])->name('landing.show-collection-detail');
 Route::get("email", [PHPMailerController::class, "email"])->name("email");
 Route::post("send-email", [PHPMailerController::class, "composeEmail"])->name("send-email");

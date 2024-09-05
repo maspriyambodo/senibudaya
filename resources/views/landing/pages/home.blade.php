@@ -21,7 +21,11 @@
                                 <div class="swiper">
                                     <div class="swiper-wrapper">
                                         <div class="swiper-slide">
-                                            <img src="{{ asset($main_our_collection_1->banner_path) }}" alt="{{ $main_our_collection_1->nama }}" />
+                                            @if(file_exists(public_path($main_our_collection_1->banner_path)))
+                                              <img src="{{ asset($main_our_collection_1->banner_path) }}" alt="{{ $main_our_collection_1->nama }}" />
+                                            @else
+                                                  <div style="width: 100%; height: 500px; background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px;"></div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -47,7 +51,11 @@
                             <div class="col-md-6 col-lg-12">
                                 <article class="post">
                                     <figure class="rounded mb-5">
-                                        <img src="{{ asset($val->banner_path) }}" alt="{{ $val->nama }}" />
+                                        @if(file_exists(public_path($val->banner_path)))
+                                            <img src="{{ asset($val->banner_path) }}" alt="{{ $val->nama }}" />
+                                        @else
+                                            <div style="width: 100%; height: 200px; background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px;"></div>
+                                        @endif
                                     </figure>
                                     <div class="post-header">
                                         <h2 class="post-title h3 mt-1 mb-3">
@@ -151,7 +159,7 @@
                 <div class="col-lg-4 mt-lg-2">
                     <h2 class="display-4 mb-3">Koleksi Terbaru</h2>
                     <p class="lead fs-lg mb-6 pe-xxl-5">Berikut adalah beberapa koleksi pilihan terbaru lainnya.</p>
-                    <a href="#" class="btn btn-soft-primary rounded-pill">Lihat Semua</a>
+                    <a href="{{ route('landing.home') }}#our-collections" data-scroll-to="#our-collections" class="btn btn-soft-primary rounded-pill">Lihat Semua</a>
                 </div>
                 <div class="col-lg-8">
                     <div class="swiper-container blog grid-view mb-6" data-margin="30" data-dots="true" data-items-md="2" data-items-xs="1">
@@ -161,7 +169,11 @@
                                     <div class="swiper-slide">
                                         <article>
                                             <figure class="rounded mb-5">
-                                                <img src="{{ asset($val->banner_path) }}" alt="{{ $val->nama }}" />
+                                                @if(file_exists(public_path($val->banner_path)))
+                                                    <img src="{{ asset($val->banner_path) }}" alt="{{ $val->nama }}" />
+                                                @else
+                                                    <div style="width: 100%; height: 250px; background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px;"></div>
+                                                @endif
                                             </figure>
                                             <div class="post-header">
                                                 <h2 class="post-title h3 mt-1 mb-3">
@@ -195,11 +207,12 @@
         $(document).ready(function() {
           var url_geojson = '{{ route('landing.peta-sebaran') }}';
           var map = L.map('map', {
-            closePopupOnClick: false,
-            zoomControl: false
-          }).setView([-2.5489, 118.0149], 5);
+            closePopupOnClick: true,
+            zoomControl: true,
+            attributionControl: false
+          }).setView([-2.5489, 118.0149], 10);
           var tiles = L.tileLayer('http://{s}.google.com/vt/lyrs=y&hl=id&x={x}&y={y}&z={z}', {
-            maxZoom: 10,
+            maxZoom: 20,
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
           }).addTo(map);
 
@@ -233,7 +246,7 @@
           var stateChangingButton = L.easyButton({
             states: [{
               stateName: 'zoom-to-forest',
-              icon: 'fa-home',
+              icon: 'uil uil-layer-group',
               title: 'zoom to a forest',
               onClick: function(btn, map) {
                 get_prov();

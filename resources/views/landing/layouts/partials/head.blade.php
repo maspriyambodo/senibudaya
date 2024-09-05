@@ -29,8 +29,13 @@
                               </li>
                           </form>
                         @else
-                          <li class="nav-itemv d-lg-none"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                          <li class="nav-item d-lg-none"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                         @endauth
+                        <li class="nav-item d-lg-none">
+                            <form class="search-form" method="GET" action="{{ route('landing.search') }}">
+                                <input type="text" class="form-control" placeholder="Search" name="q" value="{{ request('search') }}">
+                            </form>
+                        </li>
                     </ul>
                     <div class="offcanvas-footer d-lg-none">
                         <div>
@@ -67,6 +72,11 @@
                         <li class="nav-item d-none d-md-block">
                             <a href="{{ route('login') }}" class="btn btn-sm btn-primary rounded-pill">Sign In</a>
                         </li>
+                        <li class="nav-item d-none d-md-block">
+                            <form class="search-form" method="GET" action="{{ route('landing.search') }}">
+                                <input type="text" class="form-control" placeholder="Search" name="q" value="{{ request('search') }}">
+                            </form>
+                        </li>
                     @endauth
                     <li class="nav-item d-lg-none">
                         <button class="hamburger offcanvas-nav-btn"><span></span></button>
@@ -76,3 +86,11 @@
         </div>
     </nav>
 </header>
+<div class="offcanvas offcanvas-top bg-light" id="offcanvas-search" data-bs-scroll="true">
+    <div class="container d-flex flex-row py-6">
+        <form class="search-form w-100">
+            <input id="search-form" type="text" class="form-control" placeholder="Type keyword and hit enter">
+        </form>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+</div>

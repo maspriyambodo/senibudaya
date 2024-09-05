@@ -1,5 +1,7 @@
 @extends('landing.layouts.master')
 @section('title', $our_collection->nama)
+@section('meta-description', substr(strip_tags($our_collection->body), 0, 160))
+@section('meta-image', asset($our_collection->banner_path))
 @section('content')
     <section class="wrapper bg-soft-primary">
         <div class="container pt-10 pb-19 pt-md-14 pb-md-20 text-center">
@@ -23,7 +25,11 @@
                     <div class="blog single mt-n17">
                         <div class="card">
                             <figure class="card-img-top">
-                                <img src="{{ asset($our_collection->banner_path) }}" alt="{{ $our_collection->nama }}" />
+                                @if(file_exists(public_path($our_collection->banner_path)))
+                                    <img src="{{ asset($our_collection->banner_path) }}" alt="{{ $our_collection->nama }}" />
+                                @else
+                                    <div style="width: 100%; height: 600px; background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px;"></div>
+                                @endif
                             </figure>
                             <div class="card-body">
                                 <div class="classic-view">
@@ -69,7 +75,11 @@
                       <div class="card">
                           <figure class="card-img-top overlay overlay-1 hover-scale">
                               <a href="{{ route('landing.show-collection-detail', $collection->slug) }}">
-                                  <img src="{{ asset($collection->banner_path) }}" alt="{{ $collection->nama }}" />
+                                  @if(file_exists(public_path($collection->banner_path)))
+                                      <img src="{{ asset($collection->banner_path) }}" alt="{{ $collection->nama }}" />
+                                  @else
+                                      <div style="width: 100%; height: 190px; background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px;"></div>
+                                  @endif
                               </a>
                               <figcaption>
                                   <h5 class="from-top mb-0">Lihat Detail</h5>
