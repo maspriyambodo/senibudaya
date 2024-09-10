@@ -1,7 +1,7 @@
 @extends('landing.layouts.master')
 @section('title', 'Form Pengajuan')
 @section('stylesheet')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('cms/css/plugins/select2.min.css'); }}" />
     <link href="{{ asset('froala_editor_4.2.1/css/froala_editor.pkgd.min.css'); }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('froala_editor_4.2.1/css/third_party/image_tui.min.css'); }}" rel="stylesheet" type="text/css"/>
 @endsection
@@ -70,7 +70,7 @@
                                     </div>
 
                                     <div class="form-select-wrapper mb-4">
-                                        <select name="kd_prov" class="form-select select2" aria-label="Pilih Provinsi" onchange="getKabKota(this.value)">
+                                        <select name="kd_prov" class="form-select select2" aria-label="Pilih Provinsi" onchange="getKabKota(this.value);">
                                             <option value="" selected disabled hidden>Pilih Provinsi</option>
                                             @foreach($provinsis as $item)
                                                 <option value="{{ $item->id_provinsi }}" {{ old('kd_prov') == $item->id_provinsi ? 'selected' : '' }}>{{ $item->nama }}</option>
@@ -95,7 +95,7 @@
     </section>
 @endsection
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('cms/js/plugins/select2.full.min.js'); }}"></script>
     <script src="{{ asset('froala_editor_4.2.1/js/froala_editor.pkgd.min.js'); }}" type="text/javascript"></script>
     <script src="{{ asset('froala_editor_4.2.1/js/third_party/image_tui.min.js'); }}" type="text/javascript"></script>
     <script>
