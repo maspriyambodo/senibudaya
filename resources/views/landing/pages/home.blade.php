@@ -110,6 +110,11 @@
     <section class="wrapper bg-light" id="facts">
         <div class="container py-10">
             <div class="row">
+                <div class="col-lg-12 col-xl-10 col-xxl-7 mx-auto text-center">
+                    <h2 class="display-5 text-center mt-2 mb-10">Statistik</h2>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-xl-10 mx-auto">
                     <div class="card image-wrapper bg-full bg-image bg-overlay" data-image-src="/landing/img/photos/bg2.jpg">
                         <div class="card-body p-9 p-xl-10">
