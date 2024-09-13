@@ -94,7 +94,7 @@
         </div>
     </section>
 @endsection
-@push('scripts')
+@section('scripts')
     <script src="{{ asset('cms/js/plugins/select2.full.min.js'); }}"></script>
     <script src="{{ asset('froala_editor_4.2.1/js/froala_editor.pkgd.min.js'); }}" type="text/javascript"></script>
     <script src="{{ asset('froala_editor_4.2.1/js/third_party/image_tui.min.js'); }}" type="text/javascript"></script>
@@ -174,4 +174,4 @@
             }
         });
     </script>
-@endpush
+@endsection

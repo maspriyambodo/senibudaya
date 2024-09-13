@@ -72,7 +72,7 @@
         </div>
     </section>
 @endsection
-@push('scripts')
+@section('scripts')
     @if (session()->has('success'))
         <script>
             toastr.success("{{ session()->get('success') }}", {timeOut: 5000})
@@ -83,4 +83,4 @@
             toastr.error("{{ session()->get('error') }}", {timeOut: 5000})
         </script>
     @endif
-@endpush
+@endsection
