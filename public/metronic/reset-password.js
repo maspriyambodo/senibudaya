@@ -31,6 +31,7 @@ var KTAuthResetPassword = (function () {
                                                         icon: "error",
                                                         buttonsStyling: !1,
                                                         confirmButtonText: "Ok, got it!",
+                                                        allowOutsideClick: false,
                                                         customClass: {
                                                             confirmButton: "btn btn-primary"
                                                         }
@@ -56,6 +57,7 @@ var KTAuthResetPassword = (function () {
                                                                             icon: "success",
                                                                             buttonsStyling: !1,
                                                                             confirmButtonText: "Ok",
+                                                                            allowOutsideClick: false,
                                                                             customClass: {
                                                                                 confirmButton: "btn btn-primary"
                                                                             }
@@ -70,6 +72,7 @@ var KTAuthResetPassword = (function () {
                                                                     icon: "error",
                                                                     buttonsStyling: !1,
                                                                     confirmButtonText: "Ok, got it!",
+                                                                    allowOutsideClick: false,
                                                                     customClass: {
                                                                         confirmButton: "btn btn-primary"
                                                                     }
@@ -82,6 +85,7 @@ var KTAuthResetPassword = (function () {
                                                                 icon: "error",
                                                                 buttonsStyling: !1,
                                                                 confirmButtonText: "Ok",
+                                                                allowOutsideClick: false,
                                                                 customClass: {
                                                                     confirmButton: "btn btn-primary"
                                                                 }
@@ -96,6 +100,7 @@ var KTAuthResetPassword = (function () {
                                         icon: "error",
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
+                                        allowOutsideClick: false,
                                         customClass: {confirmButton: "btn btn-primary"},
                                     });
                         });
@@ -116,12 +121,13 @@ var KTAuthResetPassword = (function () {
                                                                 icon: "success",
                                                                 buttonsStyling: !1,
                                                                 confirmButtonText: "Ok, got it!",
+                                                                allowOutsideClick: false,
                                                                 customClass: {confirmButton: "btn btn-primary"},
                                                             });
                                                     const e = t.getAttribute("data-kt-redirect-url");
                                                     e && (location.href = e);
                                                 } else
-                                                    Swal.fire({text: "Sorry, the email is incorrect, please try again.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: {confirmButton: "btn btn-primary"}});
+                                                    Swal.fire({text: "Sorry, the email is incorrect, please try again.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!",allowOutsideClick: false, customClass: {confirmButton: "btn btn-primary"}});
                                             })
                                             .catch(function (t) {
                                                 Swal.fire({
@@ -129,6 +135,7 @@ var KTAuthResetPassword = (function () {
                                                     icon: "error",
                                                     buttonsStyling: !1,
                                                     confirmButtonText: "Ok, got it!",
+                                                    allowOutsideClick: false,
                                                     customClass: {confirmButton: "btn btn-primary"},
                                                 });
                                             })
@@ -140,6 +147,7 @@ var KTAuthResetPassword = (function () {
                                         icon: "error",
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
+                                        allowOutsideClick: false,
                                         customClass: {confirmButton: "btn btn-primary"},
                                     });
                         });

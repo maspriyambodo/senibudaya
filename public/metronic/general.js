@@ -58,6 +58,7 @@ var KTSigninGeneral = (function () {
                                                         icon: "error",
                                                         buttonsStyling: !1,
                                                         confirmButtonText: "Ok, got it!",
+                                                        allowOutsideClick: false,
                                                         customClass: {
                                                             confirmButton: "btn btn-primary"
                                                         }
@@ -83,6 +84,7 @@ var KTSigninGeneral = (function () {
                                                                             icon: "success",
                                                                             buttonsStyling: !1,
                                                                             confirmButtonText: "Ok, got it!",
+                                                                            allowOutsideClick: false,
                                                                             customClass: {
                                                                                 confirmButton: "btn btn-primary"
                                                                             }
@@ -102,6 +104,7 @@ var KTSigninGeneral = (function () {
                                                                     icon: "error",
                                                                     buttonsStyling: !1,
                                                                     confirmButtonText: "Ok, got it!",
+                                                                    allowOutsideClick: false,
                                                                     customClass: {
                                                                         confirmButton: "btn btn-primary"
                                                                     }
@@ -114,6 +117,7 @@ var KTSigninGeneral = (function () {
                                                                 icon: "error",
                                                                 buttonsStyling: !1,
                                                                 confirmButtonText: "Ok, got it!",
+                                                                allowOutsideClick: false,
                                                                 customClass: {
                                                                     confirmButton: "btn btn-primary"
                                                                 }
@@ -129,6 +133,7 @@ var KTSigninGeneral = (function () {
                                         icon: "error",
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
+                                        allowOutsideClick: false,
                                         customClass: {
                                             confirmButton: "btn btn-primary"
                                         },
@@ -151,6 +156,7 @@ var KTSigninGeneral = (function () {
                                                         icon: "success",
                                                         buttonsStyling: !1,
                                                         confirmButtonText: "Ok, got it!",
+                                                        allowOutsideClick: false,
                                                         customClass: {
                                                             confirmButton: "btn btn-primary"
                                                         }
@@ -163,6 +169,7 @@ var KTSigninGeneral = (function () {
                                                 icon: "error",
                                                 buttonsStyling: !1,
                                                 confirmButtonText: "Ok, got it!",
+                                                allowOutsideClick: false,
                                                 customClass: {
                                                     confirmButton: "btn btn-primary"
                                                 }
@@ -175,6 +182,7 @@ var KTSigninGeneral = (function () {
                                             icon: "error",
                                             buttonsStyling: !1,
                                             confirmButtonText: "Ok, got it!",
+                                            allowOutsideClick: false,
                                             customClass: {
                                                 confirmButton: "btn btn-primary"
                                             },
@@ -188,6 +196,7 @@ var KTSigninGeneral = (function () {
                                 icon: "error",
                                 buttonsStyling: !1,
                                 confirmButtonText: "Ok, got it!",
+                                allowOutsideClick: false,
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 },

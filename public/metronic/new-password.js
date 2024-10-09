@@ -77,6 +77,7 @@ var KTAuthNewPassword = (function () {
                                                                 icon: "success",
                                                                 buttonsStyling: !1,
                                                                 confirmButtonText: "Ok",
+                                                                allowOutsideClick: false,
                                                                 customClass: {
                                                                     confirmButton: "btn btn-primary"
                                                                 }
@@ -89,6 +90,7 @@ var KTAuthNewPassword = (function () {
                                                                         icon: "error",
                                                                         buttonsStyling: !1,
                                                                         confirmButtonText: "Ok",
+                                                                        allowOutsideClick: false,
                                                                         customClass: {
                                                                             confirmButton: "btn btn-primary"
                                                                         }
@@ -103,6 +105,7 @@ var KTAuthNewPassword = (function () {
                                                                     icon: "error",
                                                                     buttonsStyling: !1,
                                                                     confirmButtonText: "Ok",
+                                                                    allowOutsideClick: false,
                                                                     customClass: {
                                                                         confirmButton: "btn btn-primary"
                                                                     }
@@ -116,6 +119,7 @@ var KTAuthNewPassword = (function () {
                                                             icon: "success",
                                                             buttonsStyling: !1,
                                                             confirmButtonText: "Ok, got it!",
+                                                            allowOutsideClick: false,
                                                             customClass: {confirmButton: "btn btn-primary"},
                                                         }).then(function (e) {
                                                     if (e.isConfirmed) {
@@ -130,6 +134,7 @@ var KTAuthNewPassword = (function () {
                                         icon: "error",
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
+                                        allowOutsideClick: false,
                                         customClass: {confirmButton: "btn btn-primary"},
                                     });
                         });
@@ -149,7 +154,7 @@ var KTAuthNewPassword = (function () {
                                                     const e = t.getAttribute("data-kt-redirect-url");
                                                     e && (location.href = e);
                                                 } else
-                                                    Swal.fire({text: "Sorry, the email is incorrect, please try again.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: {confirmButton: "btn btn-primary"}});
+                                                    Swal.fire({text: "Sorry, the email is incorrect, please try again.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!",allowOutsideClick: false, customClass: {confirmButton: "btn btn-primary"}});
                                             })
                                             .catch(function (t) {
                                                 Swal.fire({
@@ -157,6 +162,7 @@ var KTAuthNewPassword = (function () {
                                                     icon: "error",
                                                     buttonsStyling: !1,
                                                     confirmButtonText: "Ok, got it!",
+                                                    allowOutsideClick: false,
                                                     customClass: {confirmButton: "btn btn-primary"},
                                                 });
                                             })
@@ -168,6 +174,7 @@ var KTAuthNewPassword = (function () {
                                         icon: "error",
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
+                                        allowOutsideClick: false,
                                         customClass: {confirmButton: "btn btn-primary"},
                                     });
                         });
