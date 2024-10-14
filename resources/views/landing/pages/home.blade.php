@@ -116,7 +116,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-10 mx-auto">
-                    <div class="card image-wrapper bg-full bg-image bg-overlay" data-image-src="/landing/img/photos/bg2.jpg">
+                    <div class="card image-wrapper bg-full bg-image bg-overlay" data-image-src="{{ asset('/landing/img/photos/bg2.jpg');}}">
                         <div class="card-body p-9 p-xl-10">
                             <div class="row align-items-center counter-wrapper gy-4 text-center text-white">
                                 <div class="col-6 col-lg-3">
