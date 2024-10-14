@@ -3,7 +3,7 @@
         <div class="container flex-lg-row flex-nowrap align-items-center">
             <div class="navbar-brand w-100">
                 <a href="{{ route('landing.home') }}">
-                    <img width="170" src="https://kemenag.go.id/assets/imgs/theme/logo.png" alt="Logo" srcset="https://kemenag.go.id/assets/imgs/theme/logo.png 2x" />
+                    <img width="170" src="{{ asset('images/repositori_logo.png') }}" alt="Logo" srcset="{{ asset('images/repositori_logo.png') }} 2x" />
                 </a>
             </div>
             <div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start">

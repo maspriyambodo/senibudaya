@@ -39,7 +39,7 @@
 <div class="m-header">
 <a class="mobile-menu" id="mobile-collapse" href="javascript:void(0)"><span></span></a>
 <a href="{{ url('/') }}" class="b-brand">
-<img src="{{ asset('images/logo-black.png') }}" height="65" alt="" class="logo lazy" />
+<img src="{{ asset('images/repositori_logo.png') }}" height="65" alt="" class="logo lazy" />
 </a>
 <a href="javascript:void(0)" class="mob-toggler">
 <i class="feather icon-more-vertical"></i>
