@@ -233,6 +233,7 @@ class NewsController extends AuthController {
         $berita->updated_at = date('Y-m-d H:i:s');
         if($request->file('image_berita')){
             $berita->banner_path = $path . '/' . $image_berita;
+            $berita->banner_source = $request->srcpicttxt;
         }
         if ($new) {
             $berita->created_by = Session::get('uid');

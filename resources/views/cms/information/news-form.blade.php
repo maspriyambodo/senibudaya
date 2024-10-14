@@ -90,6 +90,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Sumber Gambar</label>
+                                <div class="col-sm-8">
+                                    <input id="srcpicttxt" name="srcpicttxt" type="text" class="form-control" autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Status</label>
                                 <div class="col-sm-6 switch switch-success">
                                     <input type="checkbox" id="status_berita" name="status_berita" {{ $data->status == 1 ? 'checked' : '' }} />
