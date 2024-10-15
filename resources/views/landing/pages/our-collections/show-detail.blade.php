@@ -27,6 +27,9 @@
                             <figure class="card-img-top">
                                 @if(file_exists(public_path($our_collection->banner_path)))
                                     <img src="{{ asset($our_collection->banner_path) }}" alt="{{ $our_collection->nama }}" />
+                                    @if($our_collection->banner_source)
+                                        <p class="text-muted text-center">sumber: {{ $our_collection->banner_source; }}</p>
+                                    @endif
                                 @else
                                     <div style="width: 100%; height: 600px; background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px;"></div>
                                 @endif
