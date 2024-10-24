@@ -90,7 +90,7 @@
             </div>
             <div class="row grid-view gx-md-8 gx-xl-10 gy-8 gy-lg-0 text-center">
                 @foreach($categories_our_collection as $category)
-                    <div class="col-sm-6 col-md-4 col-lg-3 mx-auto">
+                    <div class="col-sm-6 col-md-4 col-lg-3 mx-auto my-4">
                         <div class="card shadow-lg">
                             <div class="card-body p-6">
                                 <figure class="card-img-top">
