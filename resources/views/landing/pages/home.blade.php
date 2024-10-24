@@ -98,7 +98,7 @@
                                         <img src="{{ asset($category->icon_path) }}" class="svg-inject icon-svg icon-svg-lg text-primary" alt="{{ $category->nama }}" />
                                     </a>
                                 </figure>
-                                <h3 class="fs-21 mb-0">{{ $category->nama }}</h3>
+                                <a href="{{ route('landing.show-collections', $category->slug) }}"><h3 class="fs-21 mb-0">{{ $category->nama }}</h3></a>
                             </div>
                         </div>
                     </div>
