@@ -1,6 +1,6 @@
 @include('cms.header')
 <link href="{{ asset('froala_editor_4.2.1/css/froala_editor.pkgd.min.css'); }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('froala_editor_4.2.1/css/third_party/image_tui.min.css'); }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('froala_editor_4.2.1/css/third_party/image_tui.min.css'); }}" rel="stylesheet" type="text/css"/>
 <div class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -28,7 +28,7 @@
             <!-- [ sample-page ] start -->
             <div class="col-sm-12">
                 <div class="card">
-                    <form action="{{ url($current) }}/store" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="">
+                    <form id="form_news" action="{{ url($current) }}/store" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="">
                         @csrf
                         <div class="card-body">
                             <div class="form-group row">
@@ -45,11 +45,40 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Sub Kategori</label>
+                                <div class="col-sm-8">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <select id="kategori2txt" name="kategori2txt" class="form-control" {{ noEmpty( 'Sub Kategori tidak boleh kosong.') }}>
+                                        <option value="">-- pilih subkategori --</option>
+                                        <option value="1"{{ $data->id_category == 1 ? ' selected=""' : '' }}>Seni Rupa & Kriya </option>
+                                        <option value="2"{{ $data->id_category == 2 ? ' selected=""' : '' }}>Seni Pertunjukkan</option>
+                                        <option value="3"{{ $data->id_category == 3 ? ' selected=""' : '' }}>Kaligrafi</option>
+                                        <option value="4"{{ $data->id_category == 4 ? ' selected=""' : '' }}>Musik</option>
+                                        <option value="5"{{ $data->id_category == 5 ? ' selected=""' : '' }}>Film</option>
+                                        <option value="6"{{ $data->id_category == 6 ? ' selected=""' : '' }}>Bahasa & Sastra</option>
+                                        <option value="7"{{ $data->id_category == 7 ? ' selected=""' : '' }}>Arsitektur</option>
+                                        <option value="8"{{ $data->id_category == 8 ? ' selected=""' : '' }}>Pakaian adat</option>
+                                        <option value="9"{{ $data->id_category == 9 ? ' selected=""' : '' }}>Tradisi lisan</option>
+                                        <option value="10"{{ $data->id_category == 10 ? ' selected=""' : '' }}>Adat istiadat</option>
+                                        <option value="11"{{ $data->id_category == 11 ? ' selected=""' : '' }}>Ritus</option>
+                                        <option value="12"{{ $data->id_category == 12 ? ' selected=""' : '' }}>Manuskrip</option>
+                                        <option value="13"{{ $data->id_category == 13 ? ' selected=""' : '' }}>Permainan rakyat</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Judul</label>
                                 <input id="id" name="id" value="{{ $id_berita }}" type="hidden">
                                 <div class="col-sm-8">
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                    <input id="nama_berita" name="nama_berita" value="{{ $data->nama }}" type="text" class="form-control" {{ noEmpty( 'Judul tidak boleh kosong.') }} autocomplete="off">
+                                    <input id="nama_berita" name="nama_berita" value="{{ $data->nama }}" type="text" class="form-control" {{ noEmpty( 'Judul tidak boleh kosong.') }} onchange="create_slug(this.value);" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Slug</label>
+                                <div class="col-sm-8">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <input id="slugtxt" name="slugtxt" value="{{ $data->slug }}" type="text" class="form-control" {{ noEmpty( 'slug tidak boleh kosong.') }} autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -108,7 +137,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary w-25 ml-1">Simpan</button>
+                            <button id="btnsub" type="button" class="btn btn-primary w-25 ml-1" onclick="simpan();">Simpan</button>
                             <a href="{{ url($current) }}" class="btn btn-light w-25">Batal</a>
                             <span class="text-validation bottom-validation"></span>
                         </div>
@@ -124,107 +153,172 @@
 <input type="hidden" id="kotkabtxt" name="kotkabtxt" value="{{ $data->kd_kabkota }}" />
 <script src="{{asset('cms/js/information/'.$current.'.js')}}"></script>
 <script src="{{ asset('froala_editor_4.2.1/js/froala_editor.pkgd.min.js'); }}" type="text/javascript"></script>
-    <script src="{{ asset('froala_editor_4.2.1/js/third_party/image_tui.min.js'); }}" type="text/javascript"></script>
-    <script>
-        var editor = new FroalaEditor('#body', {
-            height: 400,
-            filesManagerUploadURL: '{{ route("form-pengajuan.upload-media") }}',
-            filesManagerUploadParams: {
-                _token: '{{ csrf_token() }}'
-            },
-            filesManagerAllowedTypes: ['audio/mpeg', 'audio/wav', 'audio/ogg', 'video/mp4', 'video/quicktime', 'video/webm', 'application/pdf', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif'],
-            quickInsertEnabled: false,
-            toolbarButtons: {
-                moreText: {
-                    buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'],
-                    align: 'left',
-                    buttonsVisible: 5
-                },
-                moreParagraph: {
-                    buttons: ['alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'formatOLSimple', 'formatUL', 'paragraphFormat'],
-                    align: 'left',
-                    buttonsVisible: 5
-                },
-                moreMisc: {
-                    buttons: ['undo', 'redo', 'html'],
-                    align: 'right',
-                    buttonsVisible: 3
-                },
-                moreRich: {
-                    buttons: [],
-                    align: 'left',
-                    buttonsVisible: 0
-                },
-                insertFiles: {
-                    buttons: ['insertFiles'],
-                    align: 'left',
-                    buttonsVisible: 4
-                }
-            },
-            events: {
-                'filesManager.uploaded': function (response) {
-                    console.log('File berhasil di-upload:', response);
-                    return response.link;
-                },
-                'filesManager.error': function (error, response) {
-                    console.error('File upload error:', error);
-                }
-            }
-        }, function(){
+<script src="{{ asset('froala_editor_4.2.1/js/third_party/image_tui.min.js'); }}" type="text/javascript"></script>
+<script>
+                                var editor = new FroalaEditor('#body', {
+                                    height: 400,
+                                    filesManagerUploadURL: '{{ route("form-pengajuan.upload-media") }}',
+                                    filesManagerUploadParams: {
+                                        _token: '{{ csrf_token() }}'
+                                    },
+                                    filesManagerAllowedTypes: ['audio/mpeg', 'audio/wav', 'audio/ogg', 'video/mp4', 'video/quicktime', 'video/webm', 'application/pdf', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif'],
+                                    quickInsertEnabled: false,
+                                    toolbarButtons: {
+                                        moreText: {
+                                            buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'],
+                                            align: 'left',
+                                            buttonsVisible: 5
+                                        },
+                                        moreParagraph: {
+                                            buttons: ['alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'formatOLSimple', 'formatUL', 'paragraphFormat'],
+                                            align: 'left',
+                                            buttonsVisible: 5
+                                        },
+                                        moreMisc: {
+                                            buttons: ['undo', 'redo', 'html'],
+                                            align: 'right',
+                                            buttonsVisible: 3
+                                        },
+                                        moreRich: {
+                                            buttons: [],
+                                            align: 'left',
+                                            buttonsVisible: 0
+                                        },
+                                        insertFiles: {
+                                            buttons: ['insertFiles'],
+                                            align: 'left',
+                                            buttonsVisible: 4
+                                        }
+                                    },
+                                    events: {
+                                        'filesManager.uploaded': function (response) {
+                                            console.log('File berhasil di-upload:', response);
+                                            return response.link;
+                                        },
+                                        'filesManager.error': function (error, response) {
+                                            console.error('File upload error:', error);
+                                        }
+                                    }
+                                }, function () {
 //            editor.html.set('<p>My custom paragraph.</p>');
-        });
-        
-    </script>
-<script type="text/javascript">
-    $(document).ready(function() {
-    $('.form-select').select2();
-    var id_prov = $('#provtxt').val();
-    if (id_prov != '') {
-        $('#provtxt').trigger('change.select2');
-    }
-});
+                                });
 
-function provinsi(id_prov) {
-    Swal.fire({
-        title: 'memuat data...',
-        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        onOpen: function() {
-            Swal.showLoading();
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.form-select').select2();
+        var id_prov = $('#provtxt').val();
+        if (id_prov != '') {
+            $('#provtxt').trigger('change.select2');
         }
     });
-    $('#kabtxt').children('option').remove();
-    if (id_prov !== '') {
-        $.ajax({
-            url: "{{ url('news/kabupaten?id_prov='); }}" + id_prov,
-            type: "GET",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "JSON",
-            success: function(data) {
-                var id_kab = $('#kotkabtxt').val();
-                if (data.stat) {
-                    var i;
-                    for (i = 0; i < data.kabupaten.length; i++) {
-                        var sel = document.getElementById("kabtxt");
-                        var opt = document.createElement("option");
-                        opt.value = data.kabupaten[i].id_kabupaten;
-                        opt.text = data.kabupaten[i].kabupaten;
-                        sel.add(opt, sel.options[i]);
-                    }
-                    if (id_kab !== '') {
-                        $('#kabtxt').val(id_kab);
-                        $('#kabtxt').trigger('change');
+    function create_slug(nama_berita) {
+        var slug;
+        var trimmed = $.trim(nama_berita);
+        slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
+                replace(/-+/g, '-').
+                replace(/^-|-$/g, '');
+        $('input[name="slugtxt"]').val(slug.toLowerCase());
+        if (nama_berita !== '') {
+            $.ajax({
+                url: "{{ url('news/check_slug?slug='); }}" + slug.toLowerCase(),
+                type: "GET",
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "JSON",
+                success: function (data) {
+                    if (!data.stat) {
+                        Swal.fire({
+                            text: data.msgtxt,
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "OK",
+                            allowOutsideClick: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        });
+                        return false;
                     } else {
-                        $('#kabtxt').val('');
-                        $('#kabtxt').trigger('change');
+                        return true;
                     }
-                    Swal.close();
-                } else {
+                },
+                error: function () {
+                    return true;
+                }
+            });
+        } else {
+            Swal.fire({
+                text: 'slug belum diisi!',
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
+    }
+
+    function provinsi(id_prov) {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
+        $('#kabtxt').children('option').remove();
+        if (id_prov !== '') {
+            $.ajax({
+                url: "{{ url('news/kabupaten?id_prov='); }}" + id_prov,
+                type: "GET",
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "JSON",
+                success: function (data) {
+                    var id_kab = $('#kotkabtxt').val();
+                    if (data.stat) {
+                        var i;
+                        for (i = 0; i < data.kabupaten.length; i++) {
+                            var sel = document.getElementById("kabtxt");
+                            var opt = document.createElement("option");
+                            opt.value = data.kabupaten[i].id_kabupaten;
+                            opt.text = data.kabupaten[i].kabupaten;
+                            sel.add(opt, sel.options[i]);
+                        }
+                        if (id_kab !== '') {
+                            $('#kabtxt').val(id_kab);
+                            $('#kabtxt').trigger('change');
+                        } else {
+                            $('#kabtxt').val('');
+                            $('#kabtxt').trigger('change');
+                        }
+                        Swal.close();
+                    } else {
+                        Swal.fire({
+                            text: data.msgtxt,
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "OK",
+                            allowOutsideClick: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        }).then(function () {
+                            window.location.reload();
+                        });
+                    }
+                },
+                error: function () {
                     Swal.fire({
-                        text: data.msgtxt,
+                        text: "kesalahan saat mendapatkan data kabupaten",
                         icon: "error",
                         buttonsStyling: !1,
                         confirmButtonText: "OK",
@@ -232,30 +326,116 @@ function provinsi(id_prov) {
                         customClass: {
                             confirmButton: "btn btn-primary"
                         }
-                    }).then(function() {
+                    }).then(function () {
                         window.location.reload();
                     });
                 }
-            },
-            error: function() {
-                Swal.fire({
-                    text: "kesalahan saat mendapatkan data kabupaten",
-                    icon: "error",
-                    buttonsStyling: !1,
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false,
-                    customClass: {
-                        confirmButton: "btn btn-primary"
-                    }
-                }).then(function() {
-                    window.location.reload();
-                });
-            }
-        });
-    } else {
+            });
+        } else {
 
+        }
     }
-}
+
+    function simpan() {
+        var kategori, subkategori, judul, slug, submit_form;
+        kategori = $('select#kategoritxt').val();
+        subkategori = $('select#kategori2txt').val();
+        judul = $('input[name="nama_berita"]').val();
+        slug = $('input[name="slugtxt"]').val();
+        submit_form = true;
+        if (kategori === '') {
+            submit_form = false;
+            Swal.fire({
+                text: 'kategori tidak boleh kosong!',
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
+        if (subkategori === '') {
+            submit_form = false;
+            Swal.fire({
+                text: 'sub kategori tidak boleh kosong!',
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
+        if (judul === '') {
+            submit_form = false;
+            Swal.fire({
+                text: 'judul tidak boleh kosong!',
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
+        if (slug === '') {
+            submit_form = false;
+            Swal.fire({
+                text: 'slug tidak boleh kosong!',
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        } else {
+            $.ajax({
+                url: "{{ url('news/check_slug?slug='); }}" + slug,
+                type: "GET",
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "JSON",
+                success: function (data) {
+                    if (!data.stat) {
+                        Swal.fire({
+                            text: data.msgtxt,
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "OK",
+                            allowOutsideClick: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        });
+                        submit_form = false;
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                error: function () {
+                    return true;
+                }
+            });
+        }
+
+        if (submit_form) {
+            $("#form_news").submit();
+        } else {
+            $("#btnsub").attr("type", "button");
+        }
+    }
 </script>
 
 @include('cms.footer')	

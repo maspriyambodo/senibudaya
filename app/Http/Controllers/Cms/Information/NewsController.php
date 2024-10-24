@@ -19,7 +19,7 @@ use Image;
 class NewsController extends AuthController {
 
     private $target = 'cms.information.news';
-
+    
     public function json(Request $request) {
         $exec = OurCollection::select('dta_our_collections.id', 'dta_our_collections.id_category', 'dta_our_collections.nama AS nama_berita', 'dta_our_collections.pencipta', 'dta_our_collections.status AS status_berita', 'dta_our_collections.status_approval', 'dta_our_collections.created_at', 'user_create.nama_user', 'user_approve.nama_user AS nama_approve', 'mt_provinsi.nama AS provinsi', 'mt_kabupaten.nama AS kabupaten')
                     ->join('app_user AS user_create', 'dta_our_collections.created_by', '=', 'user_create.id')
@@ -183,7 +183,23 @@ class NewsController extends AuthController {
         }
         return response()->json($response);
     }
-
+    
+    public function check_slug(Request $request) {
+        $slug = $request->slug;
+        $check = OurCollection::select('slug')->where('slug', $slug)->get();
+        if(count($check) > 0){
+            $response = [
+                'stat' => false,
+                'msgtxt' => 'duplikat slug'
+            ];
+        } else {
+            $response = [
+                'stat' => true
+            ];
+        }
+        return response()->json($response);
+    }
+    
     public function store(Request $request) {
         $id_berita = UserHelper::dekrip($request->id);
         $new = empty($id_berita) ? true : false;
@@ -220,8 +236,9 @@ class NewsController extends AuthController {
         $berita = $new ? new OurCollection() : OurCollection::find($id_berita);
         $berita->id_category = $request->kategoritxt;
         $berita->nama = $request->nama_berita;
-        $berita->slug = Str::slug($request->nama_berita);
+        $berita->slug = Str::slug($request->slugtxt);
         $berita->body = $request->detail_berita;
+        $berita->sub_category = $request->kategori2txt;
         $berita->pencipta = $request->penciptatxt;
         $berita->kd_prov = $request->provtxt;
         $berita->kd_kabkota = $request->kabtxt;
