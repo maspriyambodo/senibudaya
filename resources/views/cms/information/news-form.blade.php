@@ -37,10 +37,12 @@
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                     <select id="kategoritxt" name="kategoritxt" class="form-control" {{ noEmpty( 'Kategori tidak boleh kosong.') }}>
                                         <option value="">-- pilih kategori --</option>
-                                        <option value="1"{{ $data->id_category == 1 ? ' selected=""' : '' }}>Audio</option>
-                                        <option value="2"{{ $data->id_category == 2 ? ' selected=""' : '' }}>Video</option>
-                                        <option value="3"{{ $data->id_category == 3 ? ' selected=""' : '' }}>Gambar</option>
-                                        <option value="4"{{ $data->id_category == 4 ? ' selected=""' : '' }}>Tulisan</option>
+                                        @foreach($kategori_collection as $kategori1)
+                                        @if($kategori1->id_sub_category == 0)
+                                        <option value="{{ $kategori1->id }}"{{ $data->id_category == $kategori1->id ? ' selected=""' : '' }}>{{ $kategori1->nama }}</option>
+                                        @else
+                                        @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -50,19 +52,12 @@
                                     <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                     <select id="kategori2txt" name="kategori2txt" class="form-control" {{ noEmpty( 'Sub Kategori tidak boleh kosong.') }}>
                                         <option value="">-- pilih subkategori --</option>
-                                        <option value="1"{{ $data->id_category == 1 ? ' selected=""' : '' }}>Seni Rupa & Kriya </option>
-                                        <option value="2"{{ $data->id_category == 2 ? ' selected=""' : '' }}>Seni Pertunjukkan</option>
-                                        <option value="3"{{ $data->id_category == 3 ? ' selected=""' : '' }}>Kaligrafi</option>
-                                        <option value="4"{{ $data->id_category == 4 ? ' selected=""' : '' }}>Musik</option>
-                                        <option value="5"{{ $data->id_category == 5 ? ' selected=""' : '' }}>Film</option>
-                                        <option value="6"{{ $data->id_category == 6 ? ' selected=""' : '' }}>Bahasa & Sastra</option>
-                                        <option value="7"{{ $data->id_category == 7 ? ' selected=""' : '' }}>Arsitektur</option>
-                                        <option value="8"{{ $data->id_category == 8 ? ' selected=""' : '' }}>Pakaian adat</option>
-                                        <option value="9"{{ $data->id_category == 9 ? ' selected=""' : '' }}>Tradisi lisan</option>
-                                        <option value="10"{{ $data->id_category == 10 ? ' selected=""' : '' }}>Adat istiadat</option>
-                                        <option value="11"{{ $data->id_category == 11 ? ' selected=""' : '' }}>Ritus</option>
-                                        <option value="12"{{ $data->id_category == 12 ? ' selected=""' : '' }}>Manuskrip</option>
-                                        <option value="13"{{ $data->id_category == 13 ? ' selected=""' : '' }}>Permainan rakyat</option>
+                                        @foreach($kategori_collection as $kategori2)
+                                        @if($kategori2->id_sub_category == 1)
+                                        <option value="{{ $kategori2->id }}"{{ $data->sub_category == $kategori2->id ? ' selected=""' : '' }}>{{ $kategori2->nama }}</option>
+                                        @else
+                                        @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

@@ -135,6 +135,7 @@ class NewsController extends AuthController {
     }
 
     public function form(Request $request) {
+        $kategori = CategoriesOurCollection::select('id', 'id_sub_category', 'nama')->where('status', 1)->get();
         $provinsi = Provinsi::select('mt_provinsi.id_provinsi', 'mt_provinsi.nama AS provinsi', 'mt_provinsi.stat')
                 ->where('mt_provinsi.stat', 1)->get();
         $berita = OurCollection::where('id', $request->id)->first();
@@ -152,7 +153,8 @@ class NewsController extends AuthController {
                 [
                     'data' => $berita,
                     'provinsi' => $provinsi,
-                    'id_berita' => $request->id
+                    'id_berita' => $request->id,
+                    'kategori_collection' => $kategori
                 ]
         );
         return view($this->target . '-form', $data);
