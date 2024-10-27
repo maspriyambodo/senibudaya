@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use Illuminate\Http\Request;
+use App\Models\Parameter;
 use App\Models\CategoriesOurCollection;
 use App\Models\OurCollection;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 class LandingController extends Controller
 {
     public function index() {
+        $param = Parameter::data();
         $main_our_collection_1 = OurCollection::where('status', 1)
                 ->where('status_approval', 2)
                 ->latest()
@@ -65,11 +67,12 @@ class LandingController extends Controller
                 ->take(3)
                 ->get();
 
-        return view('landing.pages.home', compact('categories_our_collection', 'total_our_collections', 'tot_collection', 'main_our_collection_1', 'main_our_collection_2', 'dta_our_collection'));
+        return view('landing.pages.home', compact('param', 'categories_our_collection', 'total_our_collections', 'tot_collection', 'main_our_collection_1', 'main_our_collection_2', 'dta_our_collection'));
     }
 
     public function show_collections(Request $request, $slug)
     {
+        $param = Parameter::data();
         if ($slug == 'all') {
             $categories_our_collection = (object) [
                         'nama' => 'Semua Koleksi',
@@ -123,11 +126,12 @@ class LandingController extends Controller
         }
 
         $our_collections = $query->paginate(12);
-        return view('landing.pages.our-collections.lists', compact('our_collections', 'categories_our_collection'));
+        return view('landing.pages.our-collections.lists', compact('our_collections', 'categories_our_collection', 'param'));
     }
 
     public function show_collection_detail($slug)
     {
+        $param = Parameter::data();
         $our_collection = OurCollection::where('slug', $slug)->firstOrFail();
         $category = CategoriesOurCollection::findOrFail($our_collection->id_category);
         $random_collections = OurCollection::where('id', '!=', $our_collection->id)
@@ -135,7 +139,7 @@ class LandingController extends Controller
                                            ->take(4)
                                            ->get();
 
-        return view('landing.pages.our-collections.show-detail', compact('our_collection', 'category', 'random_collections'));
+        return view('landing.pages.our-collections.show-detail', compact('our_collection', 'category', 'random_collections', 'param'));
     }
 
     public function peta_sebaran()
@@ -181,6 +185,7 @@ class LandingController extends Controller
 
     public function search(Request $request)
     {
+        $param = Parameter::data();
         $q = $request->q;
 
         $query = OurCollection::select('dta_our_collections.*')->where('status', 1);
@@ -196,6 +201,6 @@ class LandingController extends Controller
 
         $our_collections = $query->paginate(12);
 
-        return view('landing.pages.our-collections.lists-all', compact('our_collections'));
+        return view('landing.pages.our-collections.lists-all', compact('our_collections', 'param'));
     }
 }

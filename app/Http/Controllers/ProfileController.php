@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Parameter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,7 @@ class ProfileController extends Controller
     {
         return view('landing.pages.profile.edit', [
             'user' => $request->user(),
+            'param' => Parameter::data()
         ]);
     }
 

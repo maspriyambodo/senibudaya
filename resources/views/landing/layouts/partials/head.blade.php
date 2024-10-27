@@ -3,7 +3,7 @@
         <div class="container flex-lg-row flex-nowrap align-items-center">
             <div class="navbar-brand w-100">
                 <a href="{{ route('landing.home') }}">
-                    <img width="170" src="{{ asset('images/repositori_logo.png') }}" alt="Logo" srcset="{{ asset('images/repositori_logo.png') }} 2x" />
+                    <img src="{{ asset('images/' . $param->logo); }}" alt="{{ $param->title; }}" class="logo lazy" height="65" style="height: 15%;max-width: 75%;">
                 </a>
             </div>
             <div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start">

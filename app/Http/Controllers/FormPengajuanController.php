@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Parameter;
 use App\Models\Provinsi;
 use App\Models\KabupatenKota;
 use App\Models\CategoriesOurCollection;
@@ -15,17 +16,18 @@ class FormPengajuanController extends Controller
     public function index()
     {
         $pengajuans = OurCollection::where('created_by', auth()->id())->orderBy('created_at', 'desc')->paginate(6);
-
-        return view('landing.pages.form-pengajuan.index', compact('pengajuans'));
+        $param = Parameter::data();
+        return view('landing.pages.form-pengajuan.index', compact('pengajuans', 'param'));
     }
 
     public function create()
     {
+      $param = Parameter::data();
       $provinsis = Provinsi::where('stat', 1)->select('id_provinsi', 'nama')->get();
       $kabupatenKotas = KabupatenKota::where('stat', 1)->select('id_kabupaten', 'nama')->get();
       $categories_our_collection = CategoriesOurCollection::where('status', 1)->orderBy('urutan')->get();
 
-      return view('landing.pages.form-pengajuan.create', compact('provinsis', 'kabupatenKotas', 'categories_our_collection'));
+      return view('landing.pages.form-pengajuan.create', compact('param', 'provinsis', 'kabupatenKotas', 'categories_our_collection'));
     }
 
     public function store(Request $request)
