@@ -38,10 +38,10 @@ class NewsController extends AuthController {
             }
             if ($request->filled('keyword')) {
                 $exec->where('dta_our_collections.nama', 'like', "%" . $request->keyword . "%");
-                                $berita->orWhere('dta_our_collections.pencipta', 'like', "%" . $request->keyword . "%");
-                                $berita->orWhere('user_create.nama_user', 'like', "%" . $request->keyword . "%");
-                                $berita->orWhere('mt_provinsi.nama', 'like', "%" . $request->keyword . "%");
-                                $berita->orWhere('mt_kabupaten.nama', 'like', "%" . $request->keyword . "%");
+                                $exec->orWhere('dta_our_collections.pencipta', 'like', "%" . $request->keyword . "%");
+                                $exec->orWhere('user_create.nama_user', 'like', "%" . $request->keyword . "%");
+                                $exec->orWhere('mt_provinsi.nama', 'like', "%" . $request->keyword . "%");
+                                $exec->orWhere('mt_kabupaten.nama', 'like', "%" . $request->keyword . "%");
             }
             $berita = $exec->latest()->get();
         return Datatables::of($berita)
