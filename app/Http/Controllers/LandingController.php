@@ -24,11 +24,19 @@ class LandingController extends Controller
         $kategori = DB::table('dta_categories_our_collection')
                 ->select('dta_categories_our_collection.id', 'dta_categories_our_collection.nama', DB::raw('COUNT(dta_our_collections.id) as total'))
                 ->join('dta_our_collections', 'dta_categories_our_collection.id', '=', 'dta_our_collections.id_category')
+                ->where([
+                    ['dta_our_collections.status', 1],
+                    ['dta_our_collections.status_approval', 2]
+                ])
                 ->groupBy('dta_categories_our_collection.id');
 
         $subkategori = DB::table('dta_categories_our_collection')
                 ->select('dta_categories_our_collection.id', 'dta_categories_our_collection.nama', DB::raw('COUNT(dta_our_collections.id) as total'))
                 ->join('dta_our_collections', 'dta_categories_our_collection.id', '=', 'dta_our_collections.sub_category')
+                ->where([
+                    ['dta_our_collections.status', 1],
+                    ['dta_our_collections.status_approval', 2]
+                ])
                 ->groupBy('dta_categories_our_collection.id');
 
         $tot_collection = DB::table('dta_categories_our_collection')
