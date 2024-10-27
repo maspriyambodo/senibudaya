@@ -170,21 +170,32 @@ class NewsController extends AuthController {
     }
     
     public function check_slug(Request $request) {
+        $id_berita = $request->id_berita;
         $slug = $request->slug;
         $check = OurCollection::select('slug')->where('slug', $slug)->get();
-        if(count($check) > 0){
-            $response = [
-                'stat' => false,
-                'msgtxt' => 'duplikat slug'
-            ];
+        $tot_slug = count($check);
+        if ($id_berita == 0) {
+            if ($tot_slug > 0) {
+                $response = [
+                    'stat' => false,
+                    'msgtxt' => 'duplikat slug, errcode: 17532710'
+                ];
+            } else {
+                $response = [
+                    'stat' => true
+                ];
+            }
         } else {
-            $response = [
-                'stat' => true
-            ];
+            if ($tot_slug > 1) {
+                $response = [
+                    'stat' => false,
+                    'msgtxt' => 'duplikat slug, errcode: 17542710'
+                ];
+            }
         }
         return response()->json($response);
     }
-    
+
     public function store(Request $request) {
         $new = empty($request->id) ? true : false;
         ClassMenu::store($this, $new);

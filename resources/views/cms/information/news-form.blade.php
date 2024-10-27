@@ -213,6 +213,7 @@
         }
     });
     function create_slug(nama_berita) {
+        var id_berita = $('input[name="id"]').val();
         var slug;
         var trimmed = $.trim(nama_berita);
         slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
@@ -221,7 +222,7 @@
         $('input[name="slugtxt"]').val(slug.toLowerCase());
         if (nama_berita !== '') {
             $.ajax({
-                url: "{{ url('news/check_slug?slug='); }}" + slug.toLowerCase(),
+                url: "{{ url('news/check_slug?slug='); }}" + slug.toLowerCase() + "&id_berita=" + id_berita,
                 type: "GET",
                 cache: false,
                 contentType: false,
