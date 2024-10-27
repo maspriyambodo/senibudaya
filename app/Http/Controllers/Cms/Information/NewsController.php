@@ -65,16 +65,6 @@ class NewsController extends AuthController {
                         })
                         ->addColumn('button', function ($row) {
                             $button = "";
-                            $row_id = null;
-                            while (true) {
-                                $enc = UserHelper::enkrip($row->id);
-                                $decrypted = UserHelper::dekrip($enc);
-                                $param = explode(',', $decrypted);
-                                if (!empty($param[0])) {
-                                    $row_id = $enc;
-                                    break;
-                                }
-                            }
                             if ($this->edit || $this->delete) {
                                 $button .= "<div class=\"btn-group dropright\">
 					<button class=\"btn btn-sm btn-icon btn-secondary\" type=\"button\" data-toggle=\"dropdown\">
@@ -82,13 +72,13 @@ class NewsController extends AuthController {
 					</button>
 					<div class=\"dropdown-menu dropright\">";
                                 if ($this->edit) {
-                                    $button .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/form/' . $row_id) . "\" ><i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
+                                    $button .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/form/' . $row->id) . "\" ><i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
                                 }
                                 if ($this->delete) {
                                     $button .= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\"><i class=\"fas fa-trash\"></i> Hapus Data</a>";
                                 }
                                 if (Session::get('group') == 2 || Session::get('group') == 1) {
-                                    $button .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" onclick=\"Approval('" . $row_id . "','" . $row->nama_berita . "');\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
+                                    $button .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" onclick=\"Approval('" . $row->id . "','" . $row->nama_berita . "');\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
                                 }
                                 $button .= "</div>
 				</div>";
@@ -136,12 +126,7 @@ class NewsController extends AuthController {
     public function form(Request $request) {
         $provinsi = Provinsi::select('mt_provinsi.id_provinsi', 'mt_provinsi.nama AS provinsi', 'mt_provinsi.stat')
                 ->where('mt_provinsi.stat', 1)->get();
-        if ($request->id == 0) {
-            $id_berita = 0;
-        } else {
-            $id_berita = UserHelper::dekrip($request->id);
-        }
-        $berita = OurCollection::where('id', $id_berita)->first();
+        $berita = OurCollection::where('id', $request->id)->first();
         if (!isset($berita)) {
             $berita = new OurCollection();
             $berita->id = 0;
@@ -201,8 +186,7 @@ class NewsController extends AuthController {
     }
     
     public function store(Request $request) {
-        $id_berita = UserHelper::dekrip($request->id);
-        $new = empty($id_berita) ? true : false;
+        $new = empty($request->id) ? true : false;
         ClassMenu::store($this, $new);
 
         $this->validate(
@@ -214,7 +198,7 @@ class NewsController extends AuthController {
                 ]
         );
 
-        $data = OurCollection::select('banner_path')->where('id', $id_berita)->first();
+        $data = OurCollection::select('banner_path')->where('id', $request->id)->first();
         $image_berita = isset($data) ? $data->banner_path : '';
         if ($request->hasfile('image_berita')) {
             $baseDir = public_path('images/berita/' . date('Y') . '/' . date('F'));
@@ -233,7 +217,7 @@ class NewsController extends AuthController {
             })->save($path . '/' . $image_berita);
         }
         $detail_berita = str_replace(['Powered by', 'Froala Editor', 'https://www.froala.com/wysiwyg-editor?pb=1'], '', $request->detail_berita);
-        $berita = $new ? new OurCollection() : OurCollection::find($id_berita);
+        $berita = $new ? new OurCollection() : OurCollection::find($request->id);
         $berita->id_category = $request->kategoritxt;
         $berita->nama = $request->nama_berita;
         $berita->slug = Str::slug($request->slugtxt);
