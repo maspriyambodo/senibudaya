@@ -119,26 +119,18 @@
                     <div class="card image-wrapper bg-full bg-image bg-overlay" data-image-src="{{ asset('/landing/img/photos/bg2.jpg');}}">
                         <div class="card-body p-9 p-xl-10">
                             <div class="row align-items-center counter-wrapper gy-4 text-center text-white">
-                                <div class="col-6 col-lg-3">
-                                    <h3 class="counter counter-lg text-white">{{ $total_our_collections }}</h3>
-                                    <p>Total Koleksi</p>
+                                @foreach($tot_collection as $dt_collection)
+                                <div class="col-lg-2">
+                                    @if($dt_collection->total_kategori <> 0)
+                                    <h3 class="counter counter-lg text-white">{{ $dt_collection->total_kategori }}</h3>
+                                    <p>{{ $dt_collection->nama }}</p>
+                                    @elseif($dt_collection->total_subkategori <> 0)
+                                    <h3 class="counter counter-lg text-white">{{ $dt_collection->total_subkategori }}</h3>
+                                    <p>{{ $dt_collection->nama }}</p>
+                                    @else
+                                    @endif
                                 </div>
-                                <div class="col-6 col-lg-2">
-                                    <h3 class="counter counter-lg text-white">{{ $total_audio }}</h3>
-                                    <p>Koleksi Audio</p>
-                                </div>
-                                <div class="col-6 col-lg-2">
-                                    <h3 class="counter counter-lg text-white">{{ $total_video }}</h3>
-                                    <p>Koleksi Video</p>
-                                </div>
-                                <div class="col-6 col-lg-2">
-                                    <h3 class="counter counter-lg text-white">{{ $total_photo }}</h3>
-                                    <p>Koleksi Gambar</p>
-                                </div>
-                                <div class="col-6 col-lg-2">
-                                    <h3 class="counter counter-lg text-white">{{ $total_document }}</h3>
-                                    <p>Koleksi Tulisan</p>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
