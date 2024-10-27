@@ -30,10 +30,27 @@
         <div class="col-4">
             <select id="categorytxt" name="categorytxt" class="form-control">
                 <option value="">-- pilih --</option>
-                <option value="1">Audio</option>
-                <option value="2">Video</option>
-                <option value="3">Gambar</option>
-                <option value="4">Tulisan</option>
+                @foreach($kategori as $dt_kategori)
+                @if($dt_kategori->id_sub_category == 0)
+                <option value="{{ $dt_kategori->id; }}">{{ $dt_kategori->nama; }}</option>
+                @endif
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="clearfix my-2"></div>
+    <div class="row g-3 align-items-center">
+        <div class="col-2">
+            <label for="category2txt" class="col-form-label form-label">Sub Kategori</label>
+        </div>
+        <div class="col-4">
+            <select id="category2txt" name="category2txt" class="form-control">
+                <option value="">-- pilih --</option>
+                @foreach($kategori as $dt_kategori2)
+                @if($dt_kategori2->id_sub_category == 1)
+                <option value="{{ $dt_kategori2->id; }}">{{ $dt_kategori2->nama; }}</option>
+                @endif
+                @endforeach
             </select>
         </div>
     </div>
@@ -142,6 +159,7 @@
                 data: function (d) {
                     d.keyword = $("#keyword").val();
                     d.kategori = $("#categorytxt").val();
+                    d.subkategori = $("#category2txt").val();
                     d.approval = $("#apprtxt").val();
                 }
             },
@@ -203,6 +221,12 @@
             }, 500)
         );
         $("#categorytxt").change(
+            delay(function (e) {
+                dTable.draw();
+                e.preventDefault();
+            }, 50)
+        );
+        $("#category2txt").change(
             delay(function (e) {
                 dTable.draw();
                 e.preventDefault();

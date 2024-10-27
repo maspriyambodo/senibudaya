@@ -9,6 +9,7 @@ use App\Helpers\User as UserHelper;
 use App\Models\OurCollection;
 use App\Models\Provinsi;
 use App\Models\KabupatenKota;
+use App\Models\CategoriesOurCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -28,6 +29,9 @@ class NewsController extends AuthController {
                     ->leftJoin('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten');
             if ($request->filled('kategori')) {
                 $exec->where('dta_our_collections.id_category', '=', $request->kategori);
+            }
+            if ($request->filled('subkategori')) {
+                $exec->where('dta_our_collections.sub_category', '=', $request->subkategori);
             }
             if ($request->filled('approval')) {
                 $exec->where('dta_our_collections.status_approval', '=', $request->approval);
@@ -112,7 +116,14 @@ class NewsController extends AuthController {
     }
 
     public function index() {
-        $data = array_merge(ClassMenu::view($this->target), array('filter' => array()));
+        $kategori = CategoriesOurCollection::select('id', 'id_sub_category', 'nama')->where('status', 1)->get();
+        $data = array_merge(
+                ClassMenu::view($this->target),
+                [
+                    'filter' => [],
+                    'kategori' => $kategori
+                ]
+        );
         $column = array(
             'id' => 'data',
             'align' => array('center', 'left'),
