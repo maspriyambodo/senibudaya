@@ -48,16 +48,21 @@ class LandingController extends Controller
             ];
             $query = OurCollection::select('dta_our_collections.*')
                     ->where([
-                ['status', '=', 1],
-                ['status_approval', '=', 2]
+                        ['status', '=', 1],
+                        ['status_approval', '=', 2]
             ]);
         } else {
             $categories_our_collection = CategoriesOurCollection::where('status', 1)->where('slug', $slug)->firstOrFail();
             $query = OurCollection::select('dta_our_collections.*')
                     ->where([
-                ['status', '=', 1],
-                ['status_approval', '=', 2],
-                ['id_category', '=', $categories_our_collection->id]
+                        ['status', '=', 1],
+                        ['status_approval', '=', 2],
+                        ['id_category', '=', $categories_our_collection->id]
+                    ])
+                    ->orWhere([
+                        ['status', '=', 1],
+                        ['status_approval', '=', 2],
+                        ['sub_category', '=', $categories_our_collection->id]
             ]);
         }
         if ($request->has('search')) {
