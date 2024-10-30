@@ -20,7 +20,7 @@
                           <li class="nav-item"><a class="nav-link{{ request()->routeIs('form-pengajuan.create') ? ' active' : '' }}" href="{{ route('form-pengajuan.create') }}">Form Pengajuan</a></li>
                           <li class="nav-item d-lg-none"><a class="nav-link{{ request()->routeIs('profile.edit') ? ' active' : '' }}" href="{{ route('profile.edit') }}">Profile</a></li>
                           <li class="nav-item d-lg-none"><a class="nav-link{{ request()->routeIs('form-pengajuan.index') ? ' active' : '' }}" href="{{ route('form-pengajuan.index') }}">List Pengajuan</a></li>
-                          <form method="POST" action="{{ route('logout') }}">
+                          <form method="GET" action="{{ route('logout') }}">
                               @csrf
                               <li class="nav-item d-lg-none">
                                   <button type="submit" class="nav-link">
@@ -58,7 +58,7 @@
                             <ul class="dropdown-menu">
                                 <li class="nav-item"><a class="dropdown-item{{ request()->routeIs('profile.edit') ? ' active' : '' }}" href="{{ route('profile.edit') }}">Profile</a></li>
                                 <li class="nav-item"><a class="dropdown-item{{ request()->routeIs('form-pengajuan.index') ? ' active' : '' }}" href="{{ route('form-pengajuan.index') }}">List Pengajuan</a></li>
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form method="GET" action="{{ route('logout') }}">
                                       @csrf
                                       <li class="nav-item">
                                           <button type="submit" class="dropdown-item">
