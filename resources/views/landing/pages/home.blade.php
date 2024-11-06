@@ -197,15 +197,7 @@
             </div>
         </div>
     </section>
-<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                <img src="{{ asset('images/popup1.png'); }}" alt="" class="img-fluid" onclick="close_Modal();"/>
-            </div>
-        </div>
-    </div>
-</div>
+
 @endsection
 @section('scripts')
     <script src="{{ asset('leaflet/leaflet.js'); }}" type="text/javascript"></script>
@@ -213,7 +205,7 @@
     <script src="{{ asset('leaflet/easy-button.js'); }}" type="text/javascript"></script>
     <script>
         $(document).ready(function() {
-            $('#imageModal').modal('show');
+            
           var url_geojson = '{{ route('landing.peta-sebaran') }}';
           var map = L.map('map', {
             closePopupOnClick: true,
@@ -268,8 +260,5 @@
 
           stateChangingButton.addTo(map);
         });
-        function close_Modal(){
-            $('#imageModal').modal('hide');
-        }
     </script>
 @endsection
