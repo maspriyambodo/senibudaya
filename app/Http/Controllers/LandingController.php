@@ -15,6 +15,7 @@ class LandingController extends Controller
         $param = Parameter::data();
         $main_our_collection_1 = OurCollection::where('status', 1)
                 ->where('status_approval', 2)
+                ->where('slug', '!=', 'about-us')
                 ->latest()
                 ->first();
         $main_our_collection_2 = OurCollection::where('status', 1)
@@ -82,7 +83,8 @@ class LandingController extends Controller
             $query = OurCollection::select('dta_our_collections.*')
                     ->where([
                         ['status', '=', 1],
-                        ['status_approval', '=', 2]
+                        ['status_approval', '=', 2],
+                        ['slug', '!=', 'about-us']
             ]);
         } else {
             $categories_our_collection = CategoriesOurCollection::where('status', 1)->where('slug', $slug)->firstOrFail();
@@ -128,7 +130,7 @@ class LandingController extends Controller
         $our_collections = $query->paginate(12);
         return view('landing.pages.our-collections.lists', compact('our_collections', 'categories_our_collection', 'param'));
     }
-
+    
     public function show_collection_detail($slug)
     {
         $param = Parameter::data();

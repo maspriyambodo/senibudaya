@@ -9,7 +9,9 @@
                 <div class="col-md-10 col-xl-8 mx-auto">
                     <div class="post-header">
                         <div class="post-category text-line">
+                            @if($our_collection->slug != 'about-us')
                             <a href="#" class="hover" rel="category">{{ $category->nama }}</a>
+                            @endif
                         </div>
                         <h1 class="display-1 mb-4">{{ $our_collection->nama }}</h1>
                     </div>
@@ -25,7 +27,7 @@
                     <div class="blog single mt-n17">
                         <div class="card">
                             <figure class="card-img-top">
-                                @if(file_exists(public_path($our_collection->banner_path)))
+                                @if($our_collection->banner_path and file_exists(public_path($our_collection->banner_path)))
                                     <img src="{{ asset($our_collection->banner_path) }}" alt="{{ $our_collection->nama }}" />
                                     @if($our_collection->banner_source)
                                         <p class="text-muted text-center">sumber: {{ $our_collection->banner_source; }}</p>

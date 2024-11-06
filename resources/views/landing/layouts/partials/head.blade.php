@@ -14,7 +14,7 @@
                 <div class="offcanvas-body ms-lg-auto d-flex flex-column h-100">
                     <ul class="navbar-nav">
                         <li class="nav-item"><a class="nav-link" href="{{ route('landing.home') }}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('landing.home') }}#about-us" data-scroll-to="#about-us">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('landing.show-collection-detail', 'about-us') }}">About Us</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('landing.home') }}#our-collections" data-scroll-to="#our-collections">Our Collections</a></li>
                         @auth
                           <li class="nav-item"><a class="nav-link{{ request()->routeIs('form-pengajuan.create') ? ' active' : '' }}" href="{{ route('form-pengajuan.create') }}">Form Pengajuan</a></li>
