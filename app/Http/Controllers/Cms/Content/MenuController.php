@@ -68,9 +68,6 @@ class MenuController extends AuthController
 						<i class=\"fas fa-ellipsis-v\"></i> 
 					</button>
 					<div class=\"dropdown-menu dropright\">";
-                if($this->input && $row->level_content < 3 && $row->id > 0) {
-                    $button.= "<a id=\"input\" class=\"dropdown-item has-icon\" href=\"".url('/'.$this->page.'/add/'.$row->id)."\" ><i class=\"fas fa-plus\"></i> Tambah Data</a>";
-                }
                 if($this->edit) {
                     $button.= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"".url('/'.$this->page.'/edit/'.$row->id)."\" ><i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
                 }
