@@ -1,0 +1,28 @@
+# .github/dependabot.yml
+
+version: 2
+updates:
+  # Monitor npm dependencies
+  - package-ecosystem: "npm" # Ecosystem type, e.g., npm, composer, maven, etc.
+    directory: "/"           # Directory in the repository
+    schedule:
+      interval: "weekly"      # Check for updates weekly; other options: daily, monthly
+    open-pull-requests-limit: 5 # Limit the number of open PRs for this ecosystem
+
+  # Monitor composer dependencies
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+  # Example: GitHub Actions updates
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+
+  # Configure branch names for updates
+  commit-message:
+    prefix: "chore(deps)"
+    prefix-development: "chore(dev-deps)"
