@@ -10,75 +10,90 @@ use Illuminate\Support\Facades\Session;
 class ClassMenu {
 
     public static function view($view, $title = "", $current = "", $icon = "") {
-        $status = array("view", "input", "edit", "delete");
+        // Define possible access statuses
+        $status = ["view", "input", "edit", "delete"];
+
+        // Fetch menus and access rights
         $menu = Menu::where('status_menu', 't')->orderBy('induk_menu')->orderBy('urutan_menu')->get();
         $akses = Akses::where('id_group', Session::get('group'))->orderBy('id_menu')->get();
-
+        
+        // Organize access rights into an associative array
+        $status_akses = [];
         foreach ($akses as $data) {
             $status_akses[$data->id_menu][$data->nama_akses] = $data->status_akses;
         }
 
-        foreach ($menu as $data) {
-            $akses_menu = array();
-            for ($i = 0; $i < count($status); $i++)
-                $akses_menu['' . $status[$i] . ''] = (isset($status_akses[$data->id]['' . $status[$i] . '']) && $status_akses[$data->id]['' . $status[$i] . ''] == "t") ?
-                        true : false;
+        $appAkses = [];
+        $top = [];
+        $child = [];
 
-            if (empty($data->induk_menu)) {
-                $appAkses[empty($data->folder_menu) ? 'cms.' . $data->target_menu : 'cms.' . $data->folder_menu . '.' . $data->target_menu] = array_merge(array(
+        foreach ($menu as $data) {
+            // Determine access rights for each menu item
+            $akses_menu = array_combine($status, array_map(function ($s) use ($data, $status_akses) {
+                        return isset($status_akses[$data->id][$s]) && $status_akses[$data->id][$s] == "t";
+                    }, $status));
+
+            $menuKey = empty($data->folder_menu) ? 'cms.' . $data->target_menu : 'cms.' . $data->folder_menu . '.' . $data->target_menu;
+
+            // Construct top-level menu items
+            if (empty($data->induk_menu) || $data->induk_menu == 0) {
+                $appAkses[$menuKey] = array_merge([
                     'parent' => '',
                     'title' => $data->nama_menu,
                     'current' => $data->target_menu,
                     'icon' => $data->icon_menu,
-                        ), $akses_menu);
+                        ], $akses_menu);
 
-                $top[$data->id] = array(
+                $top[$data->id] = [
                     'id' => $data->id,
                     'nama_menu' => $data->nama_menu,
                     'target_menu' => $data->target_menu,
-                    'icon_menu' => empty($data->icon_menu) ? "fas fa-angle-right" : $data->icon_menu,
-                );
+                    'icon_menu' => $data->icon_menu ?: "fas fa-angle-right",
+                ];
             } else {
-                $appAkses[empty($data->folder_menu) ? 'cms.' . $data->target_menu : 'cms.' . $data->folder_menu . '.' . $data->target_menu] = array_merge(array(
+                // Construct child menu items
+                $appAkses[$menuKey] = array_merge([
                     'parent' => $top[$data->induk_menu]['nama_menu'],
                     'title' => $data->nama_menu,
                     'current' => $data->target_menu,
                     'icon' => $data->icon_menu,
-                        ), $akses_menu);
+                        ], $akses_menu);
 
-                if (isset($status_akses[$data->id]['view']) && $status_akses[$data->id]['view'] == 't')
-                    $child[$data->induk_menu][] = array(
+                if (isset($status_akses[$data->id]['view']) && $status_akses[$data->id]['view'] == 't') {
+                    $child[$data->induk_menu][] = [
                         'id' => $data->id,
                         'nama_menu' => $data->nama_menu,
                         'target_menu' => $data->target_menu,
-                        'icon_menu' => empty($data->icon_menu) ? "fas fa-angle-right" : $data->icon_menu,
-                    );
+                        'icon_menu' => $data->icon_menu ?: "fas fa-angle-right",
+                    ];
+                }
             }
         }
 
-
+        // Build the final menu structure
+        $appMenu = [];
         foreach ($top as $id => $data) {
             $count = isset($child[$id]) ? count($child[$id]) : 0;
             if ((isset($status_akses[$id]['view']) && $status_akses[$id]['view'] == 't') || $count > 0) {
                 $appMenu[$id] = $data;
                 $appMenu[$id]['count_menu'] = $count;
                 if ($count > 0) {
-                    foreach ($child as $id => $value) {
-                        $appMenu[$id]['detail_menu'] = (object) $value;
-                    }
+                    $appMenu[$id]['detail_menu'] = (object) $child[$id];
                 }
             }
         }
-        if (isset($appMenu))
-            ksort($appMenu);
 
-        return isset($appAkses[$view]) ?
-                array_merge($appAkses[$view], array(
+        if (isset($appMenu)) {
+            ksort($appMenu);
+            $appMenu = array_values($appMenu); // Reset keys of $appMenu
+        }
+
+        // Return the final view configuration
+        return isset($appAkses[$view]) ? array_merge($appAkses[$view], [
                     'param' => Parameter::data(),
-                    'menu' => json_decode(json_encode(isset($appMenu) ? $appMenu : array())),
-                    'column' => array(),
-                )) :
-                array(
+                    'menu' => json_decode(json_encode(array_values($appMenu))), // Reset keys of $appAkses menu
+                    'column' => [],
+                ]) : [
             'parent' => '',
             'title' => $title,
             'current' => $current,
@@ -88,9 +103,9 @@ class ClassMenu {
             'edit' => false,
             'delete' => false,
             'param' => Parameter::data(),
-            'menu' => json_decode(json_encode(isset($appMenu) ? $appMenu : array())),
-            'column' => array(),
-        );
+            'menu' => json_decode(json_encode($appMenu)),
+            'column' => [],
+        ];
     }
 
     public static function group($id) {
