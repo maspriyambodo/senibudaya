@@ -20,92 +20,110 @@ use Image;
 class NewsController extends AuthController {
 
     private $target = 'cms.information.news';
-    
+
     public function json(Request $request) {
-        $exec = OurCollection::select('dta_our_collections.id', 'dta_our_collections.id_category', 'dta_our_collections.nama AS nama_berita', 'dta_our_collections.pencipta', 'dta_our_collections.status AS status_berita', 'dta_our_collections.status_approval', 'dta_our_collections.created_at', 'user_create.nama_user', 'user_approve.nama_user AS nama_approve', 'mt_provinsi.nama AS provinsi', 'mt_kabupaten.nama AS kabupaten')
-                    ->join('app_user AS user_create', 'dta_our_collections.created_by', '=', 'user_create.id')
-                    ->join('app_user AS user_approve', 'dta_our_collections.user_approval', '=', 'user_approve.id')
-                    ->leftJoin('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
-                    ->leftJoin('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten');
-            if ($request->filled('kategori')) {
-                $exec->where('dta_our_collections.id_category', '=', $request->kategori);
-            }
-            if ($request->filled('subkategori')) {
-                $exec->where('dta_our_collections.sub_category', '=', $request->subkategori);
-            }
-            if ($request->filled('approval')) {
-                $exec->where('dta_our_collections.status_approval', '=', $request->approval);
-            }
-            if ($request->filled('keyword')) {
-                $exec->where('dta_our_collections.nama', 'like', "%" . $request->keyword . "%");
-                                $exec->orWhere('dta_our_collections.pencipta', 'like', "%" . $request->keyword . "%");
-                                $exec->orWhere('user_create.nama_user', 'like', "%" . $request->keyword . "%");
-                                $exec->orWhere('mt_provinsi.nama', 'like', "%" . $request->keyword . "%");
-                                $exec->orWhere('mt_kabupaten.nama', 'like', "%" . $request->keyword . "%");
-            }
-            $berita = $exec->latest()->get();
+        $exec = OurCollection::select(
+                        'dta_our_collections.id',
+                        'dta_our_collections.id_category',
+                        'dta_our_collections.nama AS nama_berita',
+                        'dta_our_collections.pencipta',
+                        'dta_our_collections.status AS status_berita',
+                        'dta_our_collections.status_approval',
+                        'dta_our_collections.created_at',
+                        'user_create.nama_user',
+                        'user_approve.nama_user AS nama_approve',
+                        'mt_provinsi.nama AS provinsi',
+                        'mt_kabupaten.nama AS kabupaten'
+                )
+                ->join('app_user AS user_create', 'dta_our_collections.created_by', '=', 'user_create.id')
+                ->join('app_user AS user_approve', 'dta_our_collections.user_approval', '=', 'user_approve.id')
+                ->leftJoin('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
+                ->leftJoin('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten');
+
+        // Apply filters
+        $this->applyFilters($exec, $request);
+
+        $berita = $exec->latest()->get();
+
         return Datatables::of($berita)
-                        ->editColumn('created_at', function ($row) {
-                            return date('d/M/Y', strtotime($row->created_at));
-                        })
-                        ->addColumn('status_berita', function ($row) {
-                            return $row->status_berita == 1 ?
-                            "<span class=\"badge badge-success w-100\">Publish</span>" :
-                            "<span class=\"badge badge-light-dark  w-100\">Draft</span>";
-                        })
-                        ->addColumn('status_approval', function ($row) {
-                            $status_approval = $row->status_approval;
-                            $stat_ = '';
-                            if($status_approval == 0) {
-                                $stat_ = "<span class=\"badge badge-danger w-100\">ditolak</span>";
-                            } elseif ($status_approval == 1) {
-                                $stat_ = "<span class=\"badge badge-secondary w-100\">dalam review</span>";
-                            } elseif ($status_approval == 2) {
-                                $stat_ = "<span class=\"badge badge-success w-100\">disetujui</span>";
-                            } else {
-                                $stat_ = '';
-                            }
-                            return $stat_;
-                        })
-                        ->addColumn('button', function ($row) {
-                            $button = "";
-                            if ($this->edit || $this->delete) {
-                                $button .= "<div class=\"btn-group dropright\">
-					<button class=\"btn btn-sm btn-icon btn-secondary\" type=\"button\" data-toggle=\"dropdown\">
-						<i class=\"fas fa-bars\"></i>
-					</button>
-					<div class=\"dropdown-menu dropright\">";
-                                if ($this->edit) {
-                                    $button .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/form/' . $row->id) . "\" ><i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
-                                }
-                                if ($this->delete) {
-                                    $button .= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\"><i class=\"fas fa-trash\"></i> Hapus Data</a>";
-                                }
-                                if (Session::get('group') == 2 || Session::get('group') == 1) {
-                                    $button .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" onclick=\"Approval('" . $row->id . "','" . $row->nama_berita . "');\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
-                                }
-                                $button .= "</div>
-				</div>";
-                            }
-                            return $button;
-                        })
-                        ->rawColumns(
-                                    [
-                                        'status_berita',
-                                        'button',
-                                        'status_approval'
-                                    ]
-                                )
+                        ->editColumn('created_at', fn($row) => date('d/M/Y', strtotime($row->created_at)))
+                        ->addColumn('status_berita', fn($row) => $row->status_berita == 1 ? "<span class=\"badge badge-success w-100\">Publish</span>" : "<span class=\"badge badge-light-dark w-100\">Draft</span>")
+                        ->addColumn('status_approval', fn($row) => $this->getApprovalBadge($row->status_approval))
+                        ->addColumn('button', fn($row) => $this->getActionButtons($row))
+                        ->rawColumns(['status_berita', 'button', 'status_approval'])
                         ->make(true);
     }
-    
+
+    private function applyFilters($query, Request $request) {
+        if ($request->filled('kategori')) {
+            $query->where('dta_our_collections.id_category', $request->kategori);
+        }
+        if ($request->filled('subkategori')) {
+            $query->where('dta_our_collections.sub_category', $request->subkategori);
+        }
+        if ($request->filled('approval')) {
+            $query->where('dta_our_collections.status_approval', $request->approval);
+        }
+        if ($request->filled('keyword')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('dta_our_collections.nama', 'like', "%" . $request->keyword . "%")
+                        ->orWhere('dta_our_collections.pencipta', 'like', "%" . $request->keyword . "%")
+                        ->orWhere('user_create.nama_user', 'like', "%" . $request->keyword . "%")
+                        ->orWhere('mt_provinsi.nama', 'like', "%" . $request->keyword . "%")
+                        ->orWhere('mt_kabupaten.nama', 'like', "%" . $request->keyword . "%");
+            });
+        }
+    }
+
+    private function getApprovalBadge($status) {
+        switch ($status) {
+            case 0:
+                return "<span class=\"badge badge-danger w-100\">ditolak</span>";
+            case 1:
+                return "<span class=\"badge badge-secondary w-100\">dalam review</span>";
+            case 2:
+                return "<span class=\"badge badge-success w-100\">disetujui</span>";
+            default:
+                return '';
+        }
+    }
+
+    private function getActionButtons($row) {
+        if (!$this->edit && !$this->delete) {
+            return '';
+        }
+        $buttons = "<div class=\"btn-group dropright\">
+        <button class=\"btn btn-sm btn-icon btn-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
+            <i class=\"fas fa-ellipsis-v\"></i>
+        </button>
+        <div class=\"dropdown-menu dropright\">";
+
+        if ($this->edit) {
+            $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/edit/' . $row->id) . "\">
+            <i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
+        }
+
+        if ($this->delete) {
+            $buttons .= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\">
+            <i class=\"fas fa-trash\"></i> Hapus Data</a>";
+        }
+
+        if (Session::get('group') == 2 || Session::get('group') == 1) {
+            $buttons .= "<a id=\"btnapproval\" class=\"dropdown-item has-icon\" href=\"javascript:void(0)\" data-toggle=\"modal\" onclick=\"Approval('" . $row->id . "','" . $row->nama_berita . "');\" data-target=\"#approvalModal\"><i class=\"fas fa-check\"></i> Approval</a>";
+        }
+
+        $buttons .= "</div></div>";
+
+        return $buttons;
+    }
+
     public function news_approval(Request $request) {
         $id = UserHelper::dekrip($request->id_jurnal);
         $exec = OurCollection::where('id', $id)
                 ->update([
-            'status_approval' => $request->approvtxt,
-            'user_approval' => Session::get('uid'),
-            'date_approval' => date('Y-m-d H:i:s')
+                    'status_approval' => $request->approvtxt,
+                    'user_approval' => Session::get('uid'),
+                    'date_approval' => date('Y-m-d H:i:s')
         ]);
         if ($exec) {
             $response = redirect($this->page)->with('message', "Berhasil menyimpan data approval!");
@@ -137,7 +155,7 @@ class NewsController extends AuthController {
     public function form(Request $request) {
         $kategori = CategoriesOurCollection::select('id', 'id_sub_category', 'nama')->where('status', 1)->get();
         $provinsi = Provinsi::select('mt_provinsi.id_provinsi', 'mt_provinsi.nama AS provinsi', 'mt_provinsi.stat')
-                ->where('mt_provinsi.stat', 1)->get();
+                        ->where('mt_provinsi.stat', 1)->get();
         $berita = OurCollection::where('id', $request->id)->first();
         if (!isset($berita)) {
             $berita = new OurCollection();
@@ -159,7 +177,7 @@ class NewsController extends AuthController {
         );
         return view($this->target . '-form', $data);
     }
-    
+
     public function kabupaten(Request $request) {
         $id_provinsi = $request->id_prov;
         $kabupaten = KabupatenKota::select('mt_kabupaten.id_kabupaten', 'mt_kabupaten.nama AS kabupaten')
@@ -168,7 +186,7 @@ class NewsController extends AuthController {
                     'mt_kabupaten.stat' => 1
                 ])
                 ->get();
-        if(count($kabupaten) > 0){
+        if (count($kabupaten) > 0) {
             $response = [
                 'stat' => true,
                 'kabupaten' => $kabupaten
@@ -181,7 +199,7 @@ class NewsController extends AuthController {
         }
         return response()->json($response);
     }
-    
+
     public function check_slug(Request $request) {
         $id_berita = $request->id_berita;
         $slug = $request->slug;
@@ -256,7 +274,7 @@ class NewsController extends AuthController {
         $berita->date_approval = date('Y-m-d H:i:s');
         $berita->created_at = date('Y-m-d H:i:s');
         $berita->updated_at = date('Y-m-d H:i:s');
-        if($request->file('image_berita')){
+        if ($request->file('image_berita')) {
             $berita->banner_path = $path . '/' . $image_berita;
             $berita->banner_source = $request->srcpicttxt;
         }
