@@ -147,97 +147,84 @@
 </div>
 <script>
     $(function () {
-        var dTable = $("#data").DataTable({
-            processing: true,
-            serverSide: true,
-            paging: true,
-            ordering: true,
-            deferRender: true,
-            info: true,
-            ajax: {
-                url: "news/json",
-                data: function (d) {
-                    d.keyword = $("#keyword").val();
-                    d.kategori = $("#categorytxt").val();
-                    d.subkategori = $("#category2txt").val();
-                    d.approval = $("#apprtxt").val();
+    var dTable = $("#data").DataTable({
+        processing: true,
+        serverSide: true,
+        paging: true,
+        ordering: true,
+        deferRender: true,
+        info: true,
+        ajax: {
+            url: "news/json",
+            data: function (d) {
+                d.keyword = $("#keyword").val();
+                d.kategori = $("#categorytxt").val();
+                d.subkategori = $("#category2txt").val();
+                d.approval = $("#apprtxt").val();
+            }
+        },
+        order: [[0, "asc"]],
+        columnDefs: [
+            { className: "text-center text-nowrap", targets: [0] },
+            { className: "text-right text-nowrap", targets: [] },
+            { orderable: false, targets: [1, 2, 3] }
+        ],
+        columns: [
+            {
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            order: [[0, "asc"]],
-            columnDefs: [
-                { className: "text-center text-nowrap", targets: [0] },
-                { className: "text-right text-nowrap", targets: [] },
-                { orderable: false, targets: [1,2,3] }
-            ],
-            columns: [
-                {
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                },
-                { data: "button" },
-                { data: "nama_berita" },
-                { data: "pencipta" },
-                { data: "provinsi" },
-                { data: "kabupaten" },
-                { data: "created_at" },
-                { data: "nama_user" },
-                { data: "status_berita" },
-                { data: "status_approval" }
-            ],
-            displayStart: 0,
-            pageLength: 10,
-            rowCallback: function (row, data) {
-                $(row).unbind("click");
-                $(row).on("click", "#edit", function () {
-                    $.fn.start_length(dTable.page.info()["start"], dTable.page.info()["length"]);
+            { data: "button" },
+            { data: "nama_berita" },
+            { data: "pencipta" },
+            { data: "provinsi" },
+            { data: "kabupaten" },
+            { data: "created_at" },
+            { data: "nama_user" },
+            { data: "status_berita" },
+            { data: "status_approval" }
+        ],
+        displayStart: 0,
+        pageLength: 10,
+        rowCallback: function (row, data) {
+            $(row).off("click").on("click", function (e) {
+                if ($(e.target).is("#edit")) {
+                    $.fn.start_length(dTable.page.info().start, dTable.page.info().length);
                     $.fn.edit(data);
-                });
-                $(row).on("click", "#update", function () {
-                    $.fn.start_length(dTable.page.info()["start"], dTable.page.info()["length"]);
+                } else if ($(e.target).is("#update")) {
+                    $.fn.start_length(dTable.page.info().start, dTable.page.info().length);
                     $.fn.update(data.id);
-                });
-                $(row).on("click", "#del", function () {
-                    $.fn.start_length(dTable.page.info()["start"], dTable.page.info()["length"]);
+                } else if ($(e.target).is("#del")) {
+                    $.fn.start_length(dTable.page.info().start, dTable.page.info().length);
                     $.fn.del(data.id);
-                });
-            },
-            drawCallback: function () {
-                $('[data-toggle="popover"]').popover({ container: "body" });
-                $("#input").on("click", function () {
-                    $.fn.start_length(dTable.page.info()["start"], dTable.page.info()["length"]);
-                    $.fn.input();
-                });
-            },
-            initComplete: function () {
-                $.fn.start_length(0, 0, "", "");
-            },
-            dom: `<'row'<'col-sm-6 text-left'><'col-sm-6 text-right'B>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`
-        });
-        $("#keyword").keyup(
-            delay(function (e) {
-                dTable.draw();
-                e.preventDefault();
-            }, 500)
-        );
-        $("#categorytxt").change(
-            delay(function (e) {
-                dTable.draw();
-                e.preventDefault();
-            }, 50)
-        );
-        $("#category2txt").change(
-            delay(function (e) {
-                dTable.draw();
-                e.preventDefault();
-            }, 50)
-        );
-        $("#apprtxt").change(
-            delay(function (e) {
-                dTable.draw();
-                e.preventDefault();
-            }, 50)
-        );
+                }
+            });
+        },
+        drawCallback: function () {
+            $('[data-toggle="popover"]').popover({ container: "body" });
+            $("#input").off("click").on("click", function () {
+                $.fn.start_length(dTable.page.info().start, dTable.page.info().length);
+                $.fn.input();
+            });
+        },
+        initComplete: function () {
+            $.fn.start_length(0, 0, "", "");
+        },
+        dom: `<'row'<'col-sm-6 text-left'><'col-sm-6 text-right'B>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`
     });
+
+    // Consolidate filter change events
+    const filterChangeHandler = delay(function () {
+        dTable.draw();
+    }, 50);
+
+    $("#keyword").keyup(delay(function (e) {
+        dTable.draw();
+        e.preventDefault();
+    }, 500));
+
+    $("#categorytxt, #category2txt, #apprtxt").change(filterChangeHandler);
+});
 </script>
 @include('cms.footer')
