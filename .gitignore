@@ -26,6 +26,7 @@ composer.lock
 access_log
 error_log
 storage/logs-*
+package-lock.json
 /nbproject/*
 /public/cms/images/user/
 public/images/berita/
