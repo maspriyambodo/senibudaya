@@ -17,76 +17,92 @@ class MenuController extends AuthController
     private $target = 'cms.content.menu';
 
     public function json()
-    {
-        $content = Content::select('dta_content.*')
+{
+    // Fetch content with necessary joins
+    $content = Content::select('dta_content.*')
         ->leftJoin('dta_content as dta_induk', 'dta_induk.id', '=', 'dta_content.induk_content')
         ->leftJoin('dta_content as dta_parent', 'dta_parent.id', '=', 'dta_induk.induk_content')
-        ->orderByRaw("concat(
-				length(
-					case when dta_content.level_content = 1 then dta_content.urutan_content else
-						case when dta_content.level_content = 2 then dta_induk.urutan_content else dta_parent.urutan_content end
-					end
-				),
-				case when dta_content.level_content = 1 then dta_content.urutan_content else
-					case when dta_content.level_content = 2 then dta_induk.urutan_content else dta_parent.urutan_content end
-				end,
-				length(
-					case when dta_content.level_content = 1 then 0 else
-						case when dta_content.level_content = 2 then dta_content.urutan_content else dta_induk.urutan_content end
-					end
-				),
-				case when dta_content.level_content = 1 then 0 else
-					case when dta_content.level_content = 2 then dta_content.urutan_content else dta_induk.urutan_content end
-				end,
-				length(
-					case when dta_content.level_content = 1 then 0 else
-						case when dta_content.level_content = 2 then 0 else dta_content.urutan_content end
-					end
-				),
-				case when dta_content.level_content = 1 then 0 else
-					case when dta_content.level_content = 2 then 0 else dta_content.urutan_content end
-				end
-			)");
+        ->orderByRaw($this->getOrderByRawClause());
 
-        return Datatables::of($content)
-        ->addColumn('display', function ($row) {
-            return $row->status_content == "t" ?
-            "<span class=\"badge badge-success w-100\">Aktif</span>" :
-            "<span class=\"badge badge-light-dark  w-100\">Tidak Aktif</span>";
-        })
-        ->addColumn('name', function ($row) {
-            $padding = $row->level_content > 2 ? 'pl-4' : 'pl-2';
-            return $row->level_content > 1 ?
-            "<span class=\"".$padding."\">".$row->nama_content."</span>" :
-            "<span>".$row->nama_content."</span>";
-        })
-        ->addColumn('button', function ($row) {
-            $button = "";
-            if($this->edit || $this->delete) {
-                $button.= "<div class=\"btn-group dropright\">
-					<button class=\"btn btn-sm btn-icon btn-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
-						<i class=\"fas fa-ellipsis-v\"></i> 
-					</button>
-					<div class=\"dropdown-menu dropright\">";
-                if($this->edit) {
-                    $button.= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"".url('/'.$this->page.'/edit/'.$row->id)."\" ><i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
-                }
-                if($this->delete) {
-                    $button.= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\"><i class=\"fas fa-trash\"></i> Hapus Data</a>";
-                }
-                $button.= "</div>
-				</div>";
-            }
-            return $button;
-        })
-        ->filter(function ($query) {
-            if (request()->has('keyword')) {
-                $query->where('dta_content.nama_content', 'like', "%" . request('keyword') . "%");
-            }
-        })
+    return Datatables::of($content)
+        ->addColumn('display', fn($row) => $this->getDisplayBadge($row->status_content))
+        ->addColumn('name', fn($row) => $this->getIndentedName($row))
+        ->addColumn('button', fn($row) => $this->getActionButtons($row))
+        ->filter(fn($query) => $this->applyKeywordFilter($query))
         ->rawColumns(['display', 'name', 'button'])
         ->toJson();
+}
+
+private function getOrderByRawClause()
+{
+    return "concat(
+        length(case when dta_content.level_content = 1 then dta_content.urutan_content else 
+            case when dta_content.level_content = 2 then dta_induk.urutan_content else dta_parent.urutan_content end
+        end),
+        case when dta_content.level_content = 1 then dta_content.urutan_content else 
+            case when dta_content.level_content = 2 then dta_induk.urutan_content else dta_parent.urutan_content end
+        end,
+        length(case when dta_content.level_content = 1 then 0 else 
+            case when dta_content.level_content = 2 then dta_content.urutan_content else dta_induk.urutan_content end
+        end),
+        case when dta_content.level_content = 1 then 0 else 
+            case when dta_content.level_content = 2 then dta_content.urutan_content else dta_induk.urutan_content end
+        end,
+        length(case when dta_content.level_content = 1 then 0 else 
+            case when dta_content.level_content = 2 then 0 else dta_content.urutan_content end
+        end),
+        case when dta_content.level_content = 1 then 0 else 
+            case when dta_content.level_content = 2 then 0 else dta_content.urutan_content end
+        end
+    )";
+}
+
+private function getDisplayBadge($status)
+{
+    return $status === "t" 
+        ? "<span class=\"badge badge-success w-100\">Aktif</span>" 
+        : "<span class=\"badge badge-light-dark w-100\">Tidak Aktif</span>";
+}
+
+private function getIndentedName($row)
+{
+    $padding = $row->level_content > 2 ? 'pl-4' : 'pl-2';
+    return "<span class=\"{$padding}\">{$row->nama_content}</span>";
+}
+
+private function getActionButtons($row)
+{
+    if (!$this->edit && !$this->delete) {
+        return '';
     }
+
+    $buttons = "<div class=\"btn-group dropright\">
+        <button class=\"btn btn-sm btn-icon btn-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
+            <i class=\"fas fa-ellipsis-v\"></i>
+        </button>
+        <div class=\"dropdown-menu dropright\">";
+
+    if ($this->edit) {
+        $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/edit/' . $row->id) . "\">
+            <i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
+    }
+
+    if ($this->delete) {
+        $buttons .= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\">
+            <i class=\"fas fa-trash\"></i> Hapus Data</a>";
+    }
+
+    $buttons .= "</div></div>";
+
+    return $buttons;
+}
+
+private function applyKeywordFilter($query)
+{
+    if (request()->has('keyword')) {
+        $query->where('dta_content.nama_content', 'like', "%" . request('keyword') . "%");
+    }
+}
 
     public function index()
     {
