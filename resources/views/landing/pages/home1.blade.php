@@ -132,7 +132,7 @@
                     </div>
                     <div class="col-md-6 image-section text-center">
                         <img src="{{ asset('images/person.png'); }}" alt="Seni Budaya Islam" class="main-image"/>
-                        <button class="cta-button mt-4">Lestarikan Seni Budaya Islam</button>
+                        <button class="cta-button">Lestarikan Seni Budaya Islam</button>
                     </div>
                 </div>
             </div>
