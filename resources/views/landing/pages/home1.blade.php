@@ -128,7 +128,7 @@
                         <form class="search-form" method="GET" action="{{ route('landing.search') }}">
                             <input type="text" class="placeholder-input form-control" placeholder="Cari..." name="q" value="{{ request('search') }}">
                         </form>
-                        <h1 class="mt-3 text-muted">Kementerian Agama RI</h1>
+                        <h1 class="mt-3">Kementerian Agama RI</h1>
                     </div>
                     <div class="col-md-6 image-section text-center">
                         <img src="{{ asset('images/person.png'); }}" alt="Seni Budaya Islam" class="main-image"/>
