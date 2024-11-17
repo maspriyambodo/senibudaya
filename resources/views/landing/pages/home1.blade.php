@@ -67,8 +67,8 @@
             .image-section .main-image {
                 position: relative;
                 z-index: 1;
-                width: 547px;
-                height: 508px;
+                width: 90%;
+                height: auto;
             }
 
             .info-badge {
