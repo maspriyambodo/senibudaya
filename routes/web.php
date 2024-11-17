@@ -14,6 +14,7 @@ use App\Http\Controllers\Cms\Information\VideosController;
 use App\Http\Controllers\Cms\Information\BannerController;
 use App\Http\Controllers\Cms\Contact\ContactController;
 use App\Http\Controllers\Cms\Setting\UserController;
+use App\Http\Controllers\Cms\Setting\PegawaiController;
 use App\Http\Controllers\Cms\Setting\GroupController;
 use App\Http\Controllers\FormPengajuanController;
 use App\Http\Controllers\PHPMailerController;
@@ -22,7 +23,8 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 
 //front
-Route::get('/', [LandingController::class, 'index'])->name('landing.home');
+Route::get('/', [LandingController::class, 'index'])->name('landing.index');
+Route::get('/home', [LandingController::class, 'home2'])->name('landing.home');
 Route::get('/show-collections/{slug}', [LandingController::class, 'show_collections'])->name('landing.show-collections');
 Route::get('/search', [LandingController::class, 'search'])->name('landing.search');
 Route::get('/show-collection-detail/{slug}', [LandingController::class, 'show_collection_detail'])->name('landing.show-collection-detail');
@@ -140,8 +142,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/user/store', [UserController::class, 'store']);
     Route::post('/user/destroy', [UserController::class, 'destroy']);
     Route::post('/user/change', [UserController::class, 'change']);
-
-    //group
+    
+    Route::get('/pegawai', [PegawaiController::class, 'index']);
+    Route::get('/pegawai/json', [PegawaiController::class, 'json']);
+    
+//group
     Route::get('/group', [GroupController::class, 'index']);
     Route::get('/group/json', [GroupController::class, 'json']);
     Route::get('/group/show/{id}', [GroupController::class, 'show']);

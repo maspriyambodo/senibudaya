@@ -13,7 +13,7 @@
                 </div>
                 <div class="offcanvas-body ms-lg-auto d-flex flex-column h-100">
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('landing.home') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('landing.index') }}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('landing.show-collection-detail', 'about-us') }}">About Us</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('landing.home') }}#our-collections" data-scroll-to="#our-collections">Our Collections</a></li>
                         @auth

@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\DB;
 class LandingController extends Controller
 {
     public function index() {
+        
+        return view('landing.pages.home1');
+    }
+    
+    public function home2() {
         $param = Parameter::data();
         $main_our_collection_1 = OurCollection::where('status', 1)
                 ->where('status_approval', 2)
