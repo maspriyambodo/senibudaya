@@ -119,10 +119,10 @@
                 <div class="clearfix" style="margin-top: 10%;"></div>
                 <div class="row align-items-center">
                     <div class="col-md-6 content">
-                        <h4 class="explore-title">EKSPOR</h4>
+                        <h4 class="explore-title">EKSPLOR</h4>
                         <h1 class="main-title">SENI BUDAYA ISLAM DI INDONESIA</h1>
                         <p class="sub-text text-black">
-                            Indonesia merupakan negara yang sangat kaya akan ragam seni Budaya Islam. Mulai dari seni suara,
+                            Indonesia merupakan negara yang sangat kaya akan ragam Seni Budaya Islam. Mulai dari seni suara,
                             seni tari, tradisi, ritual, instrumen, gambar, lukisan, pahatan, tulisan dan lain sebagainya.
                         </p>
                         <form class="search-form" method="GET" action="{{ route('landing.search') }}">
