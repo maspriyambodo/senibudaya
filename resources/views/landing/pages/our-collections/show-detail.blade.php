@@ -33,7 +33,10 @@
                                         <p class="text-muted text-center">sumber: {{ $our_collection->banner_source; }}</p>
                                     @endif
                                 @else
+                                    @if(request()->route('slug') <> 'about-us')
                                     <div style="width: 100%; height: 600px; background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px;"></div>
+                                    @else
+                                    @endif
                                 @endif
                             </figure>
                             <div class="card-body">
