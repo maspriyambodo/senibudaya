@@ -111,6 +111,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('landing.home') }}" data-scroll-to="#our-collections">Our Collection</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}" data-scroll-to="#our-collections">Login</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
