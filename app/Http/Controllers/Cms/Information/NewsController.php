@@ -12,6 +12,7 @@ use App\Models\KabupatenKota;
 use App\Models\CategoriesOurCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use DataTables;
@@ -230,67 +231,93 @@ class NewsController extends AuthController {
     public function store(Request $request) {
         $new = empty($request->id) ? true : false;
         ClassMenu::store($this, $new);
+        // Validate request
+        $this->validateRequest($request);
+        // Handle image upload if exists
+        $imagePath = $this->handleImageUpload($request);
+        // Prepare the data for saving
+        $berita = $new ? new OurCollection() : OurCollection::find($request->id);
+        $this->populateBeritaData($berita, $request, $imagePath, $new);
+        // Save or update the berita
+        $new ? $berita->save() : $berita->update();
+        // Set success message and redirect
+        $message = $new ? "Tambah data berhasil." : "Ubah data berhasil.";
+        return redirect($this->page)->with('message', $message);
+    }
 
-        $this->validate(
-                $request,
-                ['image_berita' => 'image|mimes:jpeg,png,jpg,gif,svg|max:12288'],
+    private function validateRequest($request) {
+        $request->validate(
+                [
+                    'image_berita' => 'image|mimes:jpeg,png,jpg,gif,svg|max:12288',
+                ],
                 [
                     'image_berita.image' => 'Proses gagal, File IMAGE harus berupa gambar.',
                     'image_berita.max' => 'Proses gagal, Ukuran IMAGE tidak boleh lebih dari 12 MB.'
                 ]
         );
+    }
 
-        $data = OurCollection::select('banner_path')->where('id', $request->id)->first();
-        $image_berita = isset($data) ? $data->banner_path : '';
-        if ($request->hasfile('image_berita')) {
-            $baseDir = public_path('images/berita/' . date('Y') . '/' . date('F'));
-            if (!file_exists($baseDir)) {
-                mkdir($baseDir, 0755, true);
-            }
-            $image = $request->file('image_berita');
-            $image_berita = 'img_' . round(microtime(true) * 1000) . '.' . $image->getClientOriginalExtension();
-            $path = 'images/berita/' . date('Y') . '/' . date('F');
-
-            $width = $height = 800;
-            $img_file = Image::make($image->getRealPath());
-            $img_file->height() > $img_file->width() ? $width = null : $height = null;
-            $img_file->resize($width, $height, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($path . '/' . $image_berita);
+    private function handleImageUpload($request) {
+        // Check if the file exists and is valid
+        if (!$request->hasFile('image_berita') || !$request->file('image_berita')->isValid()) {
+            return null; // No valid file to process
         }
-        $detail_berita = str_replace(['Powered by', 'Froala Editor', 'https://www.froala.com/wysiwyg-editor?pb=1'], '', $request->detail_berita);
-        $berita = $new ? new OurCollection() : OurCollection::find($request->id);
+        $image = $request->file('image_berita');
+        $mimeType = $image->getMimeType();
+        // Validate the MIME type of the uploaded file
+        if (!in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'])) {
+            Log::error('Invalid image type: ' . $mimeType);
+            return null; // Invalid image type
+        }
+        // Create the base directory if it does not exist
+        $baseDir = public_path('/images/berita/' . date('Y') . '/' . date('F'));
+        if (!file_exists($baseDir)) {
+            mkdir($baseDir, 0755, true);
+        }
+        // Generate a unique image name
+        $imageName = 'img_' . round(microtime(true) * 1000) . '.' . $image->getClientOriginalExtension();
+        $imagePath = 'images/berita/' . date('Y') . '/' . date('F');
+        try {
+            $image->move($baseDir, $imageName);
+            return $imagePath . '/' . $imageName; // Return the path to the saved image
+        } catch (\Exception $e) {
+            // Log the error if image processing fails
+            Log::error('Image processing error: ' . $e->getMessage());
+            return null; // Return null if there was an error
+        }
+    }
+
+    private function populateBeritaData($berita, $request, $imagePath, $new) {
         $berita->id_category = $request->kategoritxt;
         $berita->nama = $request->nama_berita;
         $berita->slug = Str::slug($request->slugtxt);
-        $berita->body = $request->detail_berita;
+        $berita->body = $this->sanitizeDetailBerita($request->detail_berita);
         $berita->sub_category = $request->kategori2txt;
         $berita->pencipta = $request->penciptatxt;
         $berita->kd_prov = $request->provtxt;
         $berita->kd_kabkota = $request->kabtxt;
-        $berita->status = $request->status_berita == "on" ? 1 : 0;
+        $berita->status = $request->status_berita === "on" ? 1 : 0;
         $berita->status_approval = 2;
         $berita->user_approval = Session::get('uid');
-        $berita->date_approval = date('Y-m-d H:i:s');
-        $berita->created_at = date('Y-m-d H:i:s');
-        $berita->updated_at = date('Y-m-d H:i:s');
-        if ($request->file('image_berita')) {
-            $berita->banner_path = $path . '/' . $image_berita;
+        $berita->date_approval = now();
+        $berita->created_at = now();
+        $berita->updated_at = now();
+        $berita->updated_by = Session::get('uid');
+        if ($imagePath) {
+            $berita->banner_path = $imagePath;
             $berita->banner_source = $request->srcpicttxt;
         }
         if ($new) {
             $berita->created_by = Session::get('uid');
         }
-        $berita->updated_by = Session::get('uid');
+    }
 
-        if ($new) {
-            $berita->save();
-        } else {
-            $berita->update();
-        }
-
-        $message = $new ? "Tambah data berhasil." : "Ubah data berhasil.";
-        return redirect($this->page)->with('message', $message);
+    private function sanitizeDetailBerita($detail) {
+        return str_replace(
+                ['Powered by', 'Froala Editor', 'https://www.froala.com/wysiwyg-editor?pb=1'],
+                '',
+                $detail
+        );
     }
 
     public function destroy(Request $request) {
