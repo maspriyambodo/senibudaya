@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Cms;
 
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
@@ -170,49 +171,44 @@ class LoginController extends Controller {
         return response()->json($response);
     }
 
-    public function auth(Request $request) {
+    public function auth(Request $request): JsonResponse {
+        // Validate the request inputs
         $validator = Validator::make($request->all(), [
             'username' => 'required',
             'password' => 'required',
-//            'g-recaptcha-response' => 'recaptcha'
+            'g-recaptcha-response' => 'recaptcha'
         ]);
+
         if ($validator->fails()) {
-            $response = [ 'error' => ['stat' => false, 'msgtxt' => 'kesalah sistem, errcode: 19081422'] ];
-            return response()->json($response, 401);
+            return response()->json(['error' => ['stat' => false, 'msgtxt' => 'Invalid input.']], 400); // Use 400 for bad request
         }
+
+        // Retrieve the user by username
+        $user = User::where('id_user', $request->username)->first();
         $credentials = [
             'id_user' => $request->username,
             'status_user' => 't',
             'password' => md5($request->password),
         ];
-
+        // Check if user exists and verify password
         if (Auth::attempt($credentials)) {
-            $user = User::where('id_user', $request->username)->first();
+            // Regenerate session ID for security
+            Session::regenerate();
+
+            // Store user information in session
             Session::put('uid', $user->id);
             Session::put('user', $user->id_user);
             Session::put('group', $user->id_group);
             Session::put('nama_user', $user->nama_user);
+            Session::put('foto_user', File::exists(public_path('cms/images/user/' . $user->foto_user)) ? $user->foto_user : "default.png");
 
-            $foto_user = public_path('cms/images/user/' . $user->foto_user);
-            Session::put('foto_user', (File::exists($foto_user) && !empty($user->foto_user)) ? $user->foto_user : "default.png");
-            if ($user->id_group == 5) {
-                $output = [
-                    'stat' => true,
-                    'url_direct' => url('/profile')
-                ];
-            } else {
-                $output = [
-                    'stat' => true,
-                    'url_direct' => url('/dashboard')
-                ];
-            }
+            // Redirect based on user group
+            $url = $user->id_group == 5 ? route('profile') : route('dashboard');
+            return response()->json(['stat' => true, 'url_direct' => $url]);
         } else {
-            $output = [
-                'stat' => false,
-                'msgtxt' => 'Username password tidak sesuai.'
-            ];
+            // Return a generic error message
+            return response()->json(['stat' => false, 'msgtxt' => 'Invalid credentials.'], 401);
         }
-        return response()->json($output);
     }
 
     public function logout(Request $request) {
