@@ -10,5 +10,5 @@ class OurCollection extends Model
     use HasFactory;
 
     protected $table = 'dta_our_collections';
-    protected $fillable = ['nama', 'pencipta', 'id_category', 'banner_path', 'body', 'kd_prov', 'kd_kabkota', 'status', 'slug', 'status_approval', 'user_approval', 'date_approval', 'created_by'];
+    protected $fillable = ['nama', 'pencipta', 'id_category', 'banner_path', 'sub_category', 'banner_source', 'body', 'kd_prov', 'kd_kabkota', 'status', 'slug', 'status_approval', 'user_approval', 'date_approval', 'created_by'];
 }

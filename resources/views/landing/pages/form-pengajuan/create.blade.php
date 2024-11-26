@@ -32,27 +32,37 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                 @endif
-                                @if (session()->has('error'))
+                                @if ($errors->any())
                                     <div class="alert alert-danger alert-icon alert-dismissible fade show" role="alert">
-                                        <i class="uil uil-times-circle"></i> {{ session()->get('error') }}.
+                                        @foreach ($errors->all() as $error)
+                                        <i class="uil uil-times-circle"></i> {{ $error }}.
+                                        @endforeach
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                 @endif
-
                                 <form id="pengajuanForm" action="{{ route('form-pengajuan.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-floating mb-4">
                                         <input name="nama" id="nama" type="text" class="form-control" placeholder="Nama" value="{{ old('nama') }}" autocomplete="off" required>
-                                        <label for="nama">Nama</label>
+                                        <label for="nama">Judul</label>
+                                        @if ($errors->has('nama'))
+                                        <span class="text-danger">{{ $errors->first('nama') }}</span>
+                                        @endif
                                     </div>
 
                                     <div class="form-floating mb-4">
                                         <textarea id="body" name="body"></textarea>
+                                        @if ($errors->has('body'))
+                                        <span class="text-danger">{{ $errors->first('body') }}</span>
+                                        @endif
                                     </div>
 
                                     <div class="form-floating mb-4">
                                         <input name="pencipta" id="pencipta" type="text" class="form-control" placeholder="Pencipta" value="{{ old('pencipta') }}" autocomplete="off" required>
                                         <label for="pencipta">Pencipta</label>
+                                        @if ($errors->has('pencipta'))
+                                        <span class="text-danger">{{ $errors->first('pencipta') }}</span>
+                                        @endif
                                     </div>
 
                                     <div class="form-select-wrapper mb-4">
@@ -62,11 +72,37 @@
                                                 <option value="{{ $item->id }}" {{ old('id_category') == $item->id ? 'selected' : '' }}>{{ $item->nama }}</option>
                                             @endforeach
                                         </select>
+                                        @if ($errors->has('id_category'))
+                                        <span class="text-danger">{{ $errors->first('id_category') }}</span>
+                                        @endif
+                                    </div>
+                                    
+                                    <div class="form-select-wrapper mb-4">
+                                        <select name="sub_category" class="form-select select2" aria-label="Pilih Kategori" required>
+                                            <option value="" selected disabled hidden>Pilih Sub Kategori</option>
+                                            @foreach($sub_category as $item2)
+                                                <option value="{{ $item2->id }}" {{ old('sub_category') == $item2->id ? 'selected' : '' }}>{{ $item2->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('sub_category'))
+                                        <span class="text-danger">{{ $errors->first('sub_category') }}</span>
+                                        @endif
                                     </div>
 
                                     <div class="form-control mb-4">
                                         <label for="banner_path">Thumbnail <span id="form-pendaftaran"></span></label>
                                         <input name="banner_path" id="banner_path" type="file" class="form-control" accept="image/*" placeholder="Thumbnail" required>
+                                        @if ($errors->has('banner_path'))
+                                        <span class="text-danger">{{ $errors->first('banner_path') }}</span>
+                                        @endif
+                                    </div>
+                                    
+                                    <div class="form-floating mb-4">
+                                        <input name="banner_source" id="sumber_pict" type="text" class="form-control" placeholder="Sumber gambar" value="{{ old('banner_source') }}" autocomplete="off" required>
+                                        <label for="pencipta">Sumber gambar</label>
+                                        @if ($errors->has('banner_source'))
+                                        <span class="text-danger">{{ $errors->first('banner_source') }}</span>
+                                        @endif
                                     </div>
 
                                     <div class="form-select-wrapper mb-4">
@@ -76,12 +112,18 @@
                                                 <option value="{{ $item->id_provinsi }}" {{ old('kd_prov') == $item->id_provinsi ? 'selected' : '' }}>{{ $item->nama }}</option>
                                             @endforeach
                                         </select>
+                                        @if ($errors->has('kd_prov'))
+                                        <span class="text-danger">{{ $errors->first('kd_prov') }}</span>
+                                        @endif
                                     </div>
 
                                     <div class="form-select-wrapper mb-4">
                                         <select name="kd_kabkota" id="kd_kabkota" class="form-select select2" aria-label="Pilih Kabupaten/Kota">
                                             <option value="" selected disabled hidden>Pilih Kabupaten/Kota</option>
                                         </select>
+                                        @if ($errors->has('kd_kabkota'))
+                                        <span class="text-danger">{{ $errors->first('kd_kabkota') }}</span>
+                                        @endif
                                     </div>
 
                                     <button type="submit" class="btn btn-primary rounded-pill">Submit</button>

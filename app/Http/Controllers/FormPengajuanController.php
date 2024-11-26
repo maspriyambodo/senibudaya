@@ -10,6 +10,7 @@ use App\Models\CategoriesOurCollection;
 use App\Models\OurCollection;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class FormPengajuanController extends Controller
 {
@@ -25,56 +26,72 @@ class FormPengajuanController extends Controller
       $param = Parameter::data();
       $provinsis = Provinsi::where('stat', 1)->select('id_provinsi', 'nama')->get();
       $kabupatenKotas = KabupatenKota::where('stat', 1)->select('id_kabupaten', 'nama')->get();
-      $categories_our_collection = CategoriesOurCollection::where('status', 1)->orderBy('urutan')->get();
+      $categories_our_collection = CategoriesOurCollection::where('status', 1)->where('id_sub_category', 0)->orderBy('urutan')->get();
+      $sub_category = CategoriesOurCollection::where('id_sub_category', 1)->where('slug', '!=', 'about-us')->orderBy('urutan')->get();
 
-      return view('landing.pages.form-pengajuan.create', compact('param', 'provinsis', 'kabupatenKotas', 'categories_our_collection'));
+      return view('landing.pages.form-pengajuan.create', compact('param', 'provinsis', 'kabupatenKotas', 'categories_our_collection', 'sub_category'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'pencipta' => 'required|string|max:255',
-            'id_category' => 'required',
-            'banner_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'body' => 'required',
-        ]);
+    public function store(Request $request) {
+        
+        try {
+            $request->validate([
+                'nama' => 'required|string|max:255',
+                'pencipta' => 'required|string|max:255',
+                'id_category' => 'required|integer|exists:dta_categories_our_collection,id',
+                'sub_category' => 'required|integer|exists:dta_categories_our_collection,id',
+                'banner_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'banner_source' => 'required|string|max:255', // Perbaiki penulisan di sini
+                'body' => 'required|string',
+                'kd_prov' => 'nullable|integer',
+                'kd_kabkota' => 'nullable|integer',
+            ]);
 
-        $formPengajuan = OurCollection::create([
-            'nama' => $request->nama,
-            'slug' => Str::slug($request->nama),
-            'pencipta' => $request->pencipta,
-            'id_category' => $request->id_category,
-            'kd_prov' => $request->kd_prov,
-            'kd_kabkota' => $request->kd_kabkota,
-            'status' => 1,
-            'status_approval' => 1, // 0. ditolak 1. menunggu persetujuan 2. disetujui
-            'created_by' => Session::get('uid'),
-            'body' => $request->body,
-        ]);
+            $formPengajuan = OurCollection::create([
+                'nama' => $request->nama,
+                'slug' => Str::slug($request->nama),
+                'pencipta' => $request->pencipta,
+                'id_category' => $request->id_category,
+                'sub_category' => $request->sub_category,
+                'banner_source' => $request->banner_source,
+                'kd_prov' => $request->kd_prov,
+                'kd_kabkota' => $request->kd_kabkota,
+                'status' => 1,
+                'status_approval' => 1, // 0. ditolak 1. menunggu persetujuan 2. disetujui
+                'created_by' => Session::get('uid'),
+                'body' => $request->body,
+            ]);
+            
+            // Proses penyimpanan file dan lainnya...
+            $baseDir = public_path('form-pengajuan/' . $formPengajuan->id);
+            if (!file_exists($baseDir)) {
+                mkdir($baseDir, 0755, true);
+                mkdir($baseDir . '/banner_path', 0755, true);
+                mkdir($baseDir . '/media', 0755, true);
+            }
 
-        $baseDir = public_path('form-pengajuan/' . $formPengajuan->id);
-        if (!file_exists($baseDir)) {
-            mkdir($baseDir, 0755, true);
-            mkdir($baseDir . '/banner_path', 0755, true);
-            mkdir($baseDir . '/media', 0755, true);
+            $bannerFile = $request->file('banner_path');
+            $bannerFileName = 'banner.' . $bannerFile->getClientOriginalExtension();
+            $bannerFile->move($baseDir . '/banner_path', $bannerFileName);
+            $formPengajuan->banner_path = 'form-pengajuan/' . $formPengajuan->id . '/banner_path/' . $bannerFileName;
+
+            $body = $formPengajuan->body;
+            $tempDir = public_path('form-pengajuan/temp');
+            $mediaDir = $baseDir . '/media';
+
+            $body = $this->moveMediaFilesAndUpdateBody($body, $tempDir, $mediaDir, $formPengajuan->id);
+
+            $formPengajuan->body = $body;
+            $formPengajuan->save();
+
+            return redirect()->route('form-pengajuan.create')->with('success', 'Form pengajuan berhasil disimpan.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Menangkap pesan error dari validasi
+            $errors = $e->validator->errors()->all();
+
+            // Menyimpan pesan error ke session flash
+            return redirect()->back()->withErrors($errors)->withInput();
         }
-
-        $bannerFile = $request->file('banner_path');
-        $bannerFileName = 'banner.' . $bannerFile->getClientOriginalExtension();
-        $bannerFile->move($baseDir . '/banner_path', $bannerFileName);
-        $formPengajuan->banner_path = 'form-pengajuan/' . $formPengajuan->id . '/banner_path/' . $bannerFileName;
-
-        $body = $formPengajuan->body;
-        $tempDir = public_path('form-pengajuan/temp');
-        $mediaDir = $baseDir . '/media';
-
-        $body = $this->moveMediaFilesAndUpdateBody($body, $tempDir, $mediaDir, $formPengajuan->id);
-
-        $formPengajuan->body = $body;
-        $formPengajuan->save();
-
-        return redirect()->route('form-pengajuan.create')->with('success', 'Form pengajuan berhasil disimpan.');
     }
 
     public function uploadMedia(Request $request)
