@@ -76,66 +76,82 @@ class LandingController extends Controller
         return view('landing.pages.home', compact('param', 'categories_our_collection', 'total_our_collections', 'tot_collection', 'main_our_collection_1', 'main_our_collection_2', 'dta_our_collection'));
     }
 
-    public function show_collections(Request $request, $slug)
-    {
+    public function show_collections(Request $request, $slug) {
         $param = Parameter::data();
-        if ($slug == 'all') {
-            $categories_our_collection = (object) [
+
+        // Define the categories for collections
+        $categories_our_collection = $this->getCategoryCollection($slug);
+
+        // Build the base query for our collections
+        $query = $this->buildCollectionQuery($slug, $categories_our_collection);
+
+        // Apply search filters if provided
+        if ($request->has('search')) {
+            $this->applySearchFilters($query, $request->search, $request->filter);
+        }
+
+        // Paginate the results
+        $our_collections = $query->paginate(12);
+
+        // Return the view with the data
+        return view('landing.pages.our-collections.lists', compact('our_collections', 'categories_our_collection', 'param'));
+    }
+
+    private function getCategoryCollection($slug) {
+        if ($slug === 'all') {
+            return (object) [
                         'nama' => 'Semua Koleksi',
                         'slug' => 'all',
                         'urutan' => 1
             ];
-            $query = OurCollection::select('dta_our_collections.*')
-                    ->where([
-                        ['status', '=', 1],
-                        ['status_approval', '=', 2],
-                        ['slug', '!=', 'about-us']
-            ]);
-        } else {
-            $categories_our_collection = CategoriesOurCollection::where('status', 1)->where('slug', $slug)->firstOrFail();
-            $query = OurCollection::select('dta_our_collections.*')
-                    ->where([
-                        ['status', '=', 1],
-                        ['status_approval', '=', 2],
-                        ['id_category', '=', $categories_our_collection->id]
-                    ])
-                    ->orWhere([
-                        ['status', '=', 1],
-                        ['status_approval', '=', 2],
-                        ['sub_category', '=', $categories_our_collection->id]
-            ]);
-        }
-        if ($request->has('search')) {
-            $search = $request->search;
-            $filter = $request->filter;
-
-            switch ($filter) {
-                case 'Judul':
-                    $query->where('nama', 'like', "%$search%");
-                    break;
-                case 'Pencipta':
-                    $query->where('pencipta', 'like', "%$search%");
-                    break;
-                case 'Kota/Kab':
-                    $query->join('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten')
-                          ->where('mt_kabupaten.nama', 'like', "%$search%");
-                    break;
-                case 'Provinsi':
-                    $query->join('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
-                          ->where('mt_provinsi.nama', 'like', "%$search%");
-                    break;
-                case 'Tahun':
-                    $query->whereYear('dta_our_collections.created_at', $search);
-                    break;
-                default:
-                    $query->where('dta_our_collections.nama', 'like', "%$search%");
-            }
         }
 
-        $our_collections = $query->paginate(12);
-        return view('landing.pages.our-collections.lists', compact('our_collections', 'categories_our_collection', 'param'));
+        return CategoriesOurCollection::where('status', 1)
+                        ->where('slug', $slug)
+                        ->firstOrFail();
     }
-    
+
+    private function buildCollectionQuery($slug, $categories_our_collection) {
+        $query = OurCollection::query()
+                ->where('status', 1)
+                ->where('status_approval', 2);
+
+        if ($slug !== 'all') {
+            $query->where(function ($query) use ($categories_our_collection) {
+                $query->where('id_category', $categories_our_collection->id)
+                        ->orWhere('sub_category', $categories_our_collection->id);
+            });
+        } else {
+            $query->where('slug', '!=', 'about-us');
+        }
+
+        return $query;
+    }
+
+    private function applySearchFilters($query, $search, $filter) {
+        switch ($filter) {
+            case 'Judul':
+                $query->where('nama', 'like', "%$search%");
+                break;
+            case 'Pencipta':
+                $query->where('pencipta', 'like', "%$search%");
+                break;
+            case 'Kota/Kab':
+                $query->join('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten')
+                        ->where('mt_kabupaten.nama', 'like', "%$search%");
+                break;
+            case 'Provinsi':
+                $query->join('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
+                        ->where('mt_provinsi.nama', 'like', "%$search%");
+                break;
+            case 'Tahun':
+                $query->whereYear('dta_our_collections.created_at', $search);
+                break;
+            default:
+                $query->where('dta_our_collections.nama', 'like', "%$search%");
+        }
+    }
+
     public function show_collection_detail($slug)
     {
         $param = Parameter::data();
