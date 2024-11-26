@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use DataTables;
 use Image;
 
@@ -23,21 +24,11 @@ class NewsController extends AuthController {
     private $target = 'cms.information.news';
 
     public function json(Request $request) {
-        $exec = OurCollection::select(
-                        'dta_our_collections.id',
-                        'dta_our_collections.id_category',
-                        'dta_our_collections.nama AS nama_berita',
-                        'dta_our_collections.pencipta',
-                        'dta_our_collections.status AS status_berita',
-                        'dta_our_collections.status_approval',
-                        'dta_our_collections.created_at',
-                        'user_create.nama_user',
-                        'user_approve.nama_user AS nama_approve',
-                        'mt_provinsi.nama AS provinsi',
-                        'mt_kabupaten.nama AS kabupaten'
-                )
-                ->join('app_user AS user_create', 'dta_our_collections.created_by', '=', 'user_create.id')
-                ->join('app_user AS user_approve', 'dta_our_collections.user_approval', '=', 'user_approve.id')
+        
+        DB::enableQueryLog();
+        $exec = OurCollection::select('dta_our_collections.id', 'dta_our_collections.id_category', 'dta_our_collections.nama AS nama_berita', 'dta_our_collections.pencipta', 'dta_our_collections.status AS status_berita', 'dta_our_collections.status_approval', 'dta_our_collections.created_at', 'user_create.nama_user', 'user_approve.nama_user AS nama_approve', 'mt_provinsi.nama AS provinsi', 'mt_kabupaten.nama AS kabupaten')
+                ->leftJoin('app_user AS user_create', 'dta_our_collections.created_by', '=', 'user_create.id')
+                ->leftJoin('app_user AS user_approve', 'dta_our_collections.user_approval', '=', 'user_approve.id')
                 ->leftJoin('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
                 ->leftJoin('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten');
 
@@ -45,7 +36,9 @@ class NewsController extends AuthController {
         $this->applyFilters($exec, $request);
 
         $berita = $exec->latest()->get();
-
+        $query = DB::getQueryLog();
+        $query = end($query);
+//        ddd($query);
         return Datatables::of($berita)
                         ->editColumn('created_at', fn($row) => date('d/M/Y', strtotime($row->created_at)))
                         ->addColumn('status_berita', fn($row) => $row->status_berita == 1 ? "<span class=\"badge badge-success w-100\">Publish</span>" : "<span class=\"badge badge-light-dark w-100\">Draft</span>")
@@ -57,13 +50,13 @@ class NewsController extends AuthController {
 
     private function applyFilters($query, Request $request) {
         if ($request->filled('kategori')) {
-            $query->where('dta_our_collections.id_category', $request->kategori);
+            $query->where('dta_our_collections.id_category', $request->kategori, false);
         }
         if ($request->filled('subkategori')) {
-            $query->where('dta_our_collections.sub_category', $request->subkategori);
+            $query->where('dta_our_collections.sub_category', $request->subkategori, false);
         }
         if ($request->filled('approval')) {
-            $query->where('dta_our_collections.status_approval', $request->approval);
+            $query->where('dta_our_collections.status_approval', $request->approval, false);
         }
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
