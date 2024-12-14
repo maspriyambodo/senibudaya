@@ -31,3 +31,4 @@ package-lock.json
 /public/cms/images/user/
 public/images/berita/
 public/form-pengajuan/*
+yarn.lock
