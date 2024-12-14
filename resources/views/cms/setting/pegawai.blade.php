@@ -33,9 +33,7 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header pb-0">
-                        @if(isset($filter))
-                        {{ searchFilter($filter) }}
-                        @endisset
+
                         <div class="card-header-right">
                             @if($input)
                             <button id="input" type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#addModal" data-backdrop="static"><i class="feather icon-plus"></i> Tambah Data</button>
@@ -44,8 +42,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="card-body p-0">
-                        <table width="100%" class="table table-striped table-responsive-xl" id="table-pegawai">
+                    <div class="card-body">
+                        <div class="clear mt-5"></div>
+                        <table class="table table-hover table-responsive-xl border" id="table-pegawai">
                             <thead>
                                 <tr>
                                     <th style="min-width:30px">No</th>
@@ -53,7 +52,7 @@
                                     <th style="min-width:30px">Nama</th>
                                     <th style="min-width:75px">NIP</th>
                                     <th style="min-width:125px">Email</th>
-                                    <th style="min-width:125px">Jabatan</th>
+                                    <th style="min-width:125px">Golongan</th>
                                 </tr>
                             </thead>
                         </table>
@@ -76,9 +75,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form id="form_add" action="#" method="post" autocomplete="off" class="form">
+            <form id="form_add" action="{{ url('pegawai/store/?q=add'); }}" method="post" autocomplete="off" class="form">
+                <div class="modal-body">
                     @csrf
+                    @method('POST')
                     <div class="fv-row my-4">
                         <label for="namatxt" class="required form-label">Nama:</label>
                         <input type="text" id="namatxt" name="namatxt" class="form-control" required=""/>
@@ -100,12 +100,12 @@
                             @endforeach
                         </select>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="submit_btn();">Save</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -118,15 +118,38 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form id="form_edit" action="#" method="post" autocomplete="off" class="form">
+            <form id="form_edit" action="{{ url('pegawai/store/?q=update'); }}" method="post" autocomplete="off" class="form">
+                <div class="modal-body">
                     @csrf
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Update</button>
-            </div>
+                    @method('POST')
+                    <div class="fv-row my-4">
+                        <label for="namatxt2" class="required form-label">Nama:</label>
+                        <input type="text" id="namatxt2" name="namatxt2" class="form-control" required=""/>
+                        <input type="hidden" name="e_id" id="e_id"/>
+                    </div>
+                    <div class="fv-row my-4">
+                        <label for="niptxt2" class="required form-label">N I P:</label>
+                        <input type="text" id="niptxt2" name="niptxt2" class="form-control" required=""/>
+                    </div>
+                    <div class="fv-row my-4">
+                        <label for="mailtxt2" class="required form-label">Email:</label>
+                        <input type="email" id="mailtxt2" name="mailtxt2" class="form-control" required=""/>
+                    </div>
+                    <div class="fv-row my-4">
+                        <label for="pangtxt2" class="required form-label">Golongan:</label>
+                        <select id="pangtxt2" name="pangtxt2" class="form-control" required="">
+                            <option value="">-- pilih --</option>
+                            @foreach($dt_gol as $golongan2)
+                            <option value="{{ $golongan2->id; }}">{{ $golongan2->pangkat . ' ' . $golongan2->golongan . ' ' . $golongan2->ruang; }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -139,15 +162,39 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <form id="form_delete" action="{{ url('pegawai/store/?q=delete'); }}" method="post" autocomplete="off" class="form">
             <div class="modal-body">
-                <form id="form_edit" action="#" method="post" autocomplete="off" class="form">
                     @csrf
-                </form>
+                    @method('POST')
+                    <div class="fv-row my-4">
+                        <label for="namatxt3" class="required form-label">Nama:</label>
+                        <input type="text" id="namatxt3" name="namatxt3" class="form-control" readonly=""/>
+                        <input type="hidden" name="d_id" id="d_id"/>
+                    </div>
+                    <div class="fv-row my-4">
+                        <label for="niptxt3" class="required form-label">N I P:</label>
+                        <input type="text" id="niptxt3" name="niptxt3" class="form-control" readonly=""/>
+                    </div>
+                    <div class="fv-row my-4">
+                        <label for="mailtxt3" class="required form-label">Email:</label>
+                        <input type="email" id="mailtxt3" name="mailtxt3" class="form-control" readonly=""/>
+                    </div>
+                    <div class="fv-row my-4">
+                        <label for="pangtxt3" class="required form-label">Golongan:</label>
+                        <select id="pangtxt3" name="pangtxt3" class="form-control" readonly>
+                            <option value="">-- pilih --</option>
+                            @foreach($dt_gol as $golongan2)
+                            <option value="{{ $golongan2->id; }}">{{ $golongan2->pangkat . ' ' . $golongan2->golongan . ' ' . $golongan2->ruang; }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -187,7 +234,6 @@
         const filterChangeHandler = delay(function () {
             dTable.draw();
         }, 50);
-
         $("#keyword").keyup(delay(function (e) {
             dTable.draw();
             e.preventDefault();
@@ -195,10 +241,95 @@
     });
 </script>
 <script>
-    function submit_btn() {
-        const form = document.getElementById('form_add');
-        const formData = new FormData(form);
-        
+    function editData(id_user) {
+        $.ajax({
+            url: 'pegawai-edit/' + id_user,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.success) {
+                    $('input[name="e_id"]').val(data.dt_user['id']);
+                    $('input[name="namatxt2"]').val(data.dt_user['nama']);
+                    $('input[name="niptxt2"]').val(data.dt_user['nip']);
+                    $('input[name="mailtxt2"]').val(data.dt_user['mail']);
+                    $("#pangtxt2").val(data.dt_user['jabatan']);
+                    $("#editModal").modal('show');
+                } else {
+                    Swal.fire({
+                        text: 'error while get data!',
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function () {
+                        window.location.reload();
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                Swal.fire({
+                    text: textStatus,
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function () {
+                    window.location.reload();
+                });
+            }
+        });
+    }
+</script>
+<script>
+    function deleteData(id_user) {
+        $.ajax({
+            url: 'pegawai-edit/' + id_user,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.success) {
+                    $('input[name="d_id"]').val(data.dt_user['id']);
+                    $('input[name="namatxt3"]').val(data.dt_user['nama']);
+                    $('input[name="niptxt3"]').val(data.dt_user['nip']);
+                    $('input[name="mailtxt3"]').val(data.dt_user['mail']);
+                    $("#pangtxt3").val(data.dt_user['jabatan']);
+                    $("#deleteModal").modal('show');
+                } else {
+                    Swal.fire({
+                        text: 'error while get data!',
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function () {
+                        window.location.reload();
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                Swal.fire({
+                    text: textStatus,
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function () {
+                    window.location.reload();
+                });
+            }
+        });
     }
 </script>
 @include('cms.footer')
