@@ -7,9 +7,11 @@ use App\Classes\ClassMenu;
 use App\Models\Pegawai;
 use App\Models\Golongan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use DataTables;
 use Image;
 
@@ -56,8 +58,7 @@ class PegawaiController extends AuthController {
         <div class=\"dropdown-menu dropright\">";
 
         if ($this->edit) {
-            $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/form/' . $row->id) . "\">
-            <i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
+            $buttons .= '<a id="edit" class="dropdown-item has-icon" href="javascript:void(0);" onclick="editData(' . $row->id . ');"><i class="fas fa-pencil-alt"></i> Ubah Data</a>';
         }
 
         if ($this->delete) {
@@ -71,7 +72,7 @@ class PegawaiController extends AuthController {
     }
 
     public function index() {
-        
+
         $filter = ['Nama', 'NIP', 'email', 'Jabatan'];
         $golongan = Golongan::where('stat', 1)->get();
         $data = array_merge(ClassMenu::view($this->target), [
@@ -93,5 +94,71 @@ class PegawaiController extends AuthController {
             'nosort' => [0, 1, 2],
         ];
         return $column;
+    }
+
+    public function edit(Request $request) {
+        $exec = Pegawai::where('id', $request->id)->first();
+        if ($exec) {
+            return response()->json([
+                        'success' => true,
+                        'dt_user' => $exec
+            ]);
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
+    }
+
+    public function store(Request $request) {
+        if ($request->q == 'add') {
+            $validator = Validator::make($request->all(), [
+                        'namatxt' => 'required|string|max:255',
+                        'niptxt' => 'required|integer|unique:dta_pegawai,nip',
+                        'mailtxt' => 'required|email|unique:dta_pegawai,mail',
+                        'pangtxt' => 'required|integer|exists:mt_golongan,id'
+            ]);
+        } elseif ($request->q == 'update') {
+            $validator = Validator::make($request->all(), [
+                        'e_id' => 'required|integer|exists:dta_pegawai,id',
+                        'namatxt2' => 'required|string|max:255',
+                        'niptxt2' => 'required|integer',
+                        'mailtxt2' => 'required|email',
+                        'pangtxt2' => 'required|integer|exists:mt_golongan,id'
+            ]);
+        }
+        if ($validator->fails()) {
+            return redirect($this->page)->with('message', $validator->errors());
+        }
+        DB::beginTransaction();
+        try {
+            if ($request->q == 'add') {
+                Pegawai::create([
+                    'nama' => $request->namatxt,
+                    'nip' => $request->niptxt,
+                    'mail' => $request->mailtxt,
+                    'jabatan' => $request->pangtxt,
+                    'stat' => 1,
+                    'created_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'update') {
+                Pegawai::where('id', $request->e_id)
+                        ->update([
+                            'nama' => $request->namatxt2,
+                            'nip' => $request->niptxt2,
+                            'mail' => $request->mailtxt2,
+                            'jabatan' => $request->pangtxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
+            }
+            DB::commit(); // Commit transaction
+            return redirect($this->page)->with('message', 'data pegawai berhasil disimpan!');
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to create or update user: ' . $e->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+        }
     }
 }
