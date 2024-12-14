@@ -145,6 +145,8 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::get('/pegawai', [PegawaiController::class, 'index']);
     Route::get('/pegawai/json', [PegawaiController::class, 'json']);
+    Route::post('/pegawai/store', [PegawaiController::class, 'store']);
+    Route::get('/pegawai-edit/{id}', [PegawaiController::class, 'edit']);
     
 //group
     Route::get('/group', [GroupController::class, 'index']);
