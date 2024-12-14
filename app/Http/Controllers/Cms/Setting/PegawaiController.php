@@ -62,8 +62,7 @@ class PegawaiController extends AuthController {
         }
 
         if ($this->delete) {
-            $buttons .= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\">
-            <i class=\"fas fa-trash\"></i> Hapus Data</a>";
+            $buttons .= '<a id="hapus" class="dropdown-item has-icon" href="javascript:void(0);" onclick="deleteData(' . $row->id . ');"><i class="fas fa-trash"></i> Hapus Data</a>';
         }
 
         $buttons .= "</div></div>";
@@ -126,6 +125,14 @@ class PegawaiController extends AuthController {
                         'mailtxt2' => 'required|email',
                         'pangtxt2' => 'required|integer|exists:mt_golongan,id'
             ]);
+        } elseif ($request->q == 'delete') {
+            $validator = Validator::make($request->all(), [
+                        'd_id' => 'required|integer|exists:dta_pegawai,id',
+                        'namatxt3' => 'required|string|max:255',
+                        'niptxt3' => 'required|integer',
+                        'mailtxt3' => 'required|email',
+                        'pangtxt3' => 'required|integer|exists:mt_golongan,id'
+            ]);
         }
         if ($validator->fails()) {
             return redirect($this->page)->with('message', $validator->errors());
@@ -148,6 +155,12 @@ class PegawaiController extends AuthController {
                             'nip' => $request->niptxt2,
                             'mail' => $request->mailtxt2,
                             'jabatan' => $request->pangtxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
+            } elseif ($request->q == 'delete') {
+                Pegawai::where('id', $request->d_id)
+                        ->update([
+                            'stat' => 0,
                             'updated_by' => auth()->user()->id
                 ]);
             }

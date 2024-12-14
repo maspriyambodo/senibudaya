@@ -162,15 +162,39 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <form id="form_delete" action="{{ url('pegawai/store/?q=delete'); }}" method="post" autocomplete="off" class="form">
             <div class="modal-body">
-                <form id="form_edit" action="#" method="post" autocomplete="off" class="form">
                     @csrf
-                </form>
+                    @method('POST')
+                    <div class="fv-row my-4">
+                        <label for="namatxt3" class="required form-label">Nama:</label>
+                        <input type="text" id="namatxt3" name="namatxt3" class="form-control" readonly=""/>
+                        <input type="hidden" name="d_id" id="d_id"/>
+                    </div>
+                    <div class="fv-row my-4">
+                        <label for="niptxt3" class="required form-label">N I P:</label>
+                        <input type="text" id="niptxt3" name="niptxt3" class="form-control" readonly=""/>
+                    </div>
+                    <div class="fv-row my-4">
+                        <label for="mailtxt3" class="required form-label">Email:</label>
+                        <input type="email" id="mailtxt3" name="mailtxt3" class="form-control" readonly=""/>
+                    </div>
+                    <div class="fv-row my-4">
+                        <label for="pangtxt3" class="required form-label">Golongan:</label>
+                        <select id="pangtxt3" name="pangtxt3" class="form-control" readonly>
+                            <option value="">-- pilih --</option>
+                            @foreach($dt_gol as $golongan2)
+                            <option value="{{ $golongan2->id; }}">{{ $golongan2->pangkat . ' ' . $golongan2->golongan . ' ' . $golongan2->ruang; }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -230,6 +254,52 @@
                     $('input[name="mailtxt2"]').val(data.dt_user['mail']);
                     $("#pangtxt2").val(data.dt_user['jabatan']);
                     $("#editModal").modal('show');
+                } else {
+                    Swal.fire({
+                        text: 'error while get data!',
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function () {
+                        window.location.reload();
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                Swal.fire({
+                    text: textStatus,
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function () {
+                    window.location.reload();
+                });
+            }
+        });
+    }
+</script>
+<script>
+    function deleteData(id_user) {
+        $.ajax({
+            url: 'pegawai-edit/' + id_user,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.success) {
+                    $('input[name="d_id"]').val(data.dt_user['id']);
+                    $('input[name="namatxt3"]').val(data.dt_user['nama']);
+                    $('input[name="niptxt3"]').val(data.dt_user['nip']);
+                    $('input[name="mailtxt3"]').val(data.dt_user['mail']);
+                    $("#pangtxt3").val(data.dt_user['jabatan']);
+                    $("#deleteModal").modal('show');
                 } else {
                     Swal.fire({
                         text: 'error while get data!',
