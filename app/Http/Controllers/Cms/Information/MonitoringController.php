@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 use App\Models\TrMonitoring;
 use App\Models\TrMonitoringPetugas;
 use App\Models\Pegawai;
@@ -53,16 +54,25 @@ class MonitoringController extends AuthController {
 //        $query = end($query);
 //        ddd($query);
         return Datatables::of($berita)
-                        ->editColumn('created_at', fn($row) => \Carbon\Carbon::parse($row->created_at)->format('d/M/Y'))
+                        ->editColumn('tgl_monitoring', fn($row) => Carbon::parse($row->tgl_monitoring)->translatedFormat('d/F/Y'))
                         ->addColumn('button', fn($row) => $this->getActionButtons($row))
                         ->rawColumns(['button'])
                         ->make(true);
     }
 
+    private function locale_id($row) {
+        $date = Carbon::parse($row->tgl_monitoring)->locale('id');
+
+        $date->settings(['formatFunction' => 'translatedFormat']);
+
+        echo $date->format('l, j F Y'); // Selasa, 16 Maret 2021 ; 08:27 pagi
+    }
+
     private function applyFilters($query, Request $request) {
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
-                $q->where('no_monitoring', $request->keyword);
+                $q->where('no_monitoring', $request->keyword)
+                        ->orWhere('tgl_monitoring', 'like', "%" . str_replace(['/', ' '], ['-', '-'], $request->keyword) . "%"); //format pencarian tanggal Y-m-d
             });
             $query->orWhereHas('provinsi', function ($q) use ($request) {
                 $q->where('nama', 'like', "%" . $request->keyword . "%");
@@ -111,7 +121,7 @@ class MonitoringController extends AuthController {
             ]);
         }
     }
-    
+
     public function provinsi() {
         $prov = Provinsi::all();
         if ($prov) {

@@ -149,11 +149,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/pegawai/store', [PegawaiController::class, 'store']);
     Route::get('/pegawai-edit/{id}', [PegawaiController::class, 'edit']);
     
-    Route::get('/monitoring', [MonitoringController::class, 'index']);
-    Route::get('/monitoring/json', [MonitoringController::class, 'json']);
-    Route::get('/monitoring/add', [MonitoringController::class, 'add']);
-    Route::get('/monitoring/pegawai', [MonitoringController::class, 'pegawai']);
-    Route::get('/monitoring/provinsi', [MonitoringController::class, 'provinsi']);
+    Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring');
+    Route::get('/monitoring/json', [MonitoringController::class, 'json'])->name('monitoring');
+    Route::get('/monitoring/add', [MonitoringController::class, 'add'])->name('monitoring');
+    Route::get('/monitoring/pegawai', [MonitoringController::class, 'pegawai'])->name('monitoring');
+    Route::get('/monitoring/provinsi', [MonitoringController::class, 'provinsi'])->name('monitoring');
     
 //group
     Route::get('/group', [GroupController::class, 'index']);

@@ -14,7 +14,7 @@
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="#!">Informasi</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Informasi</a></li>
                             <li class="breadcrumb-item"><a href="{{ url($current) }}">{{ $title }}</a></li>
                         </ul>
                     </div>
@@ -48,7 +48,7 @@
                             <th>Nomor Monitoring</th>
                             <th>provinsi</th>
                             <th>kabupaten</th>
-                            <th>Tanggal</th>
+                            <th>Tanggal Monitoring</th>
                         </tr>
                     </thead>
                 </table>
@@ -95,7 +95,7 @@
                             return row.kabupaten.nama;
                         }
                 },
-                {data: "created_at"},
+                {data: "tgl_monitoring"},
             ],
             displayStart: 0,
             pageLength: 10,
