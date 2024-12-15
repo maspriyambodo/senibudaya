@@ -17,8 +17,7 @@ class TrMonitoring extends Model {
     protected $primaryKey = 'id';
     public $timestamps = true;
     protected $fillable = [
-        'no_monitoring', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan',
-        'is_trash', 'created_at', 'created_by', 'updated_at', 'updated_by'
+        'no_monitoring', 'provinsi', 'kabupaten', 'is_trash', 'created_at', 'created_by', 'updated_at', 'updated_by'
     ];
 
     public function petugas() {
