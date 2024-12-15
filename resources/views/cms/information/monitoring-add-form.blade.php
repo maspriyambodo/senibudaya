@@ -207,9 +207,10 @@
                             <input type="text" id="orgsenbudtxt1" name="orgsenbudtxt[]" class="form-control"/>
                         </div>
                     </div>
+                    <div id="senElem"></div>
                 </div>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-success"><i class="feather icon-plus"></i> Tambah</button>
+                    <button type="button" class="btn btn-success" onclick="tambahSeniman();"><i class="feather icon-plus"></i> Tambah</button>
                 </div>
             </div>
             <div class="card">
@@ -252,9 +253,10 @@
                             <input type="text" id="prgpnytxt1" name="prgpnytxt[]" class="form-control"/>
                         </div>
                     </div>
+                    <div id="progElem"></div>
                 </div>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-success"><i class="feather icon-plus"></i> Tambah</button>
+                    <button type="button" class="btn btn-success" onclick="tambahProg();"><i class="feather icon-plus"></i> Tambah</button>
                 </div>
             </div>
             <div class="card">
@@ -274,6 +276,211 @@
         $('.form-select').select2();
         $("#tgltxt").datepicker();
     });
+</script>
+<script>
+    function tambahProg() {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
+        var progCount = $('#countprog').val();
+        var tot_Prog = parseInt(progCount, 10) + 1;
+        $('#countprog').val(tot_Prog);
+        $('#progElem').append(`<div id="progElem` + tot_Prog + `">
+                    <h5 class="card-title">Program Seni Budaya Islam ` + tot_Prog + `</h5>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Nama Kegiatan</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="prgnmtxt` + tot_Prog + `" name="prgnmtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Frekuensi</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="prgfretxt` + tot_Prog + `" name="prgfretxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Tujuan</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="prgtujtxt` + tot_Prog + `" name="prgtujtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Unsur Peserta</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="prgunstxt` + tot_Prog + `" name="prgtunstxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Waktu</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="prgwkttxt` + tot_Prog + `" name="prgwkttxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Penyelenggara</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="prgpnytxt` + tot_Prog + `" name="prgpnytxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <div class="text-right">
+                                <button type="button" class="btn btn-danger" onclick="removeProg(` + tot_Prog + `);"><i class="feather icon-trash"></i> Hapus Program Seni Budaya Islam ` + tot_Prog + `</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `);
+    Swal.close();
+    }
+    function removeProg(val){
+        $('#progElem' + val).remove();
+        $('#countprog').val(parseInt(val, 10) - 1);
+    }
+</script>
+<script>
+    function tambahSeniman() {
+        Swal.fire({
+            title: 'memuat data...',
+            html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onOpen: function () {
+                Swal.showLoading();
+            }
+        });
+        var senbudcount = $('#countsenbud').val();
+        var tot_Senbud = parseInt(senbudcount, 10) + 1;
+        $('#countsenbud').val(tot_Senbud);
+        $('#senElem').append(`<div id="senElem` + tot_Senbud + `">
+                <h5 class="card-title">Seniman & Budayawan Muslim ` + tot_Senbud + `</h5>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Nama</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="nmsenbudtxt` + tot_Senbud + `" name="nmsenbudtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Provinsi</label>
+                        <div class="col-sm-8">
+                            <select id="provsenbudtxt` + tot_Senbud + `" name="provsenbudtxt[]" class="form-control form-select">
+                                <option value="">pilih provinsi</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Kabupaten</label>
+                        <div class="col-sm-8">
+                            <select id="kabsenbudtxt` + tot_Senbud + `" name="kabsenbudtxt[]" class="form-control form-select"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Kecamatan</label>
+                        <div class="col-sm-8">
+                            <select id="kecsenbudtxt` + tot_Senbud + `" name="kecsenbudtxt[]" class="form-control form-select"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Kelurahan</label>
+                        <div class="col-sm-8">
+                            <select id="kelsenbudtxt` + tot_Senbud + `" name="kelsenbudtxt[]" class="form-control form-select"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Alamat</label>
+                        <div class="col-sm-8">
+                            <textarea id="addrsenbudtxt` + tot_Senbud + `" name="addrsenbudtxt[]" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Bidang</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="bidsenbudtxt` + tot_Senbud + `" name="bidsenbudtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Karya</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="karsenbudtxt` + tot_Senbud + `" name="karsenbudtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Lembaga/Organisasi</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="orgsenbudtxt` + tot_Senbud + `" name="orgsenbudtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <div class="text-right">
+                                <button type="button" class="btn btn-danger" onclick="removeSenbud(` + tot_Senbud + `);"><i class="feather icon-trash"></i> Hapus Seniman & Budayawan Islam ` + tot_Senbud + `</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `);
+        $.ajax({
+            url: "{{ url('monitoring/provinsi'); }}",
+            type: "GET",
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            success: function (data, textStatus, jqXHR) {
+                if (data.success) {
+                    var i;
+                    for (i = 0; i < data.dt_prov.length; i++) {
+                        var sel = document.getElementById("provsenbudtxt" + tot_Senbud);
+                        var opt = document.createElement("option");
+                        opt.value = data.dt_prov[i].id;
+                        opt.text = data.dt_prov[i].nama;
+                        sel.add(opt, sel.options[i]);
+                    }
+                    Swal.close();
+                    $('#provsenbudtxt' + tot_Senbud).select2({
+                        placeholder: "pilih provinsi"
+                    });
+                    $('#provsenbudtxt' + tot_Senbud).val('').trigger('change');
+                } else {
+                    Swal.fire({
+                        text: "error get data provinsi, errcode: 2358",
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                Swal.fire({
+                    text: "error get data provinsi, errcode: 2357",
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                });
+            }
+        });
+    }
+    function removeSenbud(val) {
+        $('#senElem' + val).remove();
+        $('#countsenbud').val(parseInt(val, 10) - 1);
+    }
 </script>
 <script>
     function tambahLembaga() {
@@ -349,7 +556,7 @@
                         <label class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-8">
                             <div class="text-right">
-                                <button type="button" class="btn btn-danger" onclick="removeLem(` + tot_lem + `);"><i class="feather icon-trash"></i> Hapus</button>
+                                <button type="button" class="btn btn-danger" onclick="removeLem(` + tot_lem + `);"><i class="feather icon-trash"></i> Hapus Lembaga Seni Budaya Islam ` + tot_lem + `</button>
                             </div>
                         </div>
                     </div>
@@ -434,7 +641,7 @@
                             <select name="petugastxt[]" id="petugastxt` + tot_peg + `" class="form-control form-select" required=""></select>
                         </div>
                         <div class="col-sm-3">
-                            <button type="button" class="btn btn-danger" onclick="removePegawai(` + tot_peg + `)"><i class="feather icon-trash"></i>Hapus Petugas</button>
+                            <button type="button" class="btn btn-danger" onclick="removePegawai(` + tot_peg + `)"><i class="feather icon-trash"></i>Hapus Petugas ` + tot_peg + `</button>
                         </div>
                     </div>
         `);
