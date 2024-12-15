@@ -21,6 +21,7 @@ use App\Http\Controllers\PHPMailerController;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Cms\Information\MonitoringController;
 
 //front
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
@@ -147,6 +148,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/pegawai/json', [PegawaiController::class, 'json']);
     Route::post('/pegawai/store', [PegawaiController::class, 'store']);
     Route::get('/pegawai-edit/{id}', [PegawaiController::class, 'edit']);
+    
+    Route::get('/monitoring', [MonitoringController::class, 'index']);
+    Route::get('/monitoring/json', [MonitoringController::class, 'json']);
+    Route::get('/monitoring/add', [MonitoringController::class, 'add']);
     
 //group
     Route::get('/group', [GroupController::class, 'index']);
