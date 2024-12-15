@@ -152,6 +152,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/monitoring', [MonitoringController::class, 'index']);
     Route::get('/monitoring/json', [MonitoringController::class, 'json']);
     Route::get('/monitoring/add', [MonitoringController::class, 'add']);
+    Route::get('/monitoring/pegawai', [MonitoringController::class, 'pegawai']);
     
 //group
     Route::get('/group', [GroupController::class, 'index']);
