@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use App\Models\TrMonitoring;
 use App\Models\TrMonitoringPetugas;
-use App\Models\DtaPegawai;
-use App\Models\MtProvinsi;
-use App\Models\MtKabupaten;
+use App\Models\Pegawai;
+use App\Models\Provinsi;
+use App\Models\KabupatenKota;
 use App\Models\TrMonitoringHasil;
 use App\Models\DtaLembagaSeni;
 use App\Models\DtaSeniman;
@@ -29,7 +29,7 @@ class MonitoringController extends AuthController {
         $data = array_merge(
                 ClassMenu::view($this->target),
                 [
-                    'filter' => [],
+                    'filter' => []
                 ]
         );
         $column = array(
@@ -43,11 +43,14 @@ class MonitoringController extends AuthController {
     }
 
     public function json(Request $request) {
+//        DB::enableQueryLog();
         $exec = TrMonitoring::with('provinsi', 'kabupaten');
 
         $this->applyFilters($exec, $request);
 
         $berita = $exec->get();
+//        $query = DB::getQueryLog();
+//        $query = end($query);
 //        ddd($query);
         return Datatables::of($berita)
                         ->editColumn('created_at', fn($row) => \Carbon\Carbon::parse($row->created_at)->format('d/M/Y'))
@@ -62,10 +65,10 @@ class MonitoringController extends AuthController {
                 $q->where('no_monitoring', $request->keyword);
             });
             $query->orWhereHas('provinsi', function ($q) use ($request) {
-                $q->where('nama', $request->keyword);
+                $q->where('nama', 'like', "%" . $request->keyword . "%");
             });
             $query->orWhereHas('kabupaten', function ($q) use ($request) {
-                $q->where('nama', $request->keyword);
+                $q->where('nama', 'like', "%" . $request->keyword . "%");
             });
         }
     }
@@ -93,5 +96,33 @@ class MonitoringController extends AuthController {
         $buttons .= "</div></div>";
 
         return $buttons;
+    }
+
+    public function pegawai() {
+        $pegawai = Pegawai::where('stat', 1)->get();
+        if ($pegawai) {
+            return response()->json([
+                        'success' => true,
+                        'dt_pegawai' => $pegawai
+            ]);
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
+    }
+
+    public function add() {
+        $provinsi = Provinsi::select('mt_provinsi.id_provinsi', 'mt_provinsi.nama AS provinsi', 'mt_provinsi.stat')
+                        ->where('mt_provinsi.stat', 1)->get();
+        $pegawai = Pegawai::where('stat', 1)->get();
+        $data = array_merge(
+                ClassMenu::view($this->target),
+                [
+                    'provinsi' => $provinsi,
+                    'pegawai' => $pegawai
+                ]
+        );
+        return view($this->target . '-add-form', $data);
     }
 }
