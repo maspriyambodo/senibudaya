@@ -111,6 +111,20 @@ class MonitoringController extends AuthController {
             ]);
         }
     }
+    
+    public function provinsi() {
+        $prov = Provinsi::all();
+        if ($prov) {
+            return response()->json([
+                        'success' => true,
+                        'dt_prov' => $prov
+            ]);
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
+    }
 
     public function add() {
         $provinsi = Provinsi::select('mt_provinsi.id_provinsi', 'mt_provinsi.nama AS provinsi', 'mt_provinsi.stat')
