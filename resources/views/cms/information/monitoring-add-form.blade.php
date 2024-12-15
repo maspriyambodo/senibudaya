@@ -272,10 +272,10 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    $(document).ready(function () {
-        $('.form-select').select2();
-        $("#tgltxt").datepicker();
-    });
+                        $(document).ready(function () {
+                            $('.form-select').select2();
+                            $("#tgltxt").datepicker();
+                        });
 </script>
 <script>
     function tambahProg() {
@@ -339,9 +339,12 @@
                     </div>
                 </div>
                 `);
-    Swal.close();
+        $('html, body').animate({
+            scrollTop: $("#progElem" + tot_Prog).offset().top-72
+        }, 2000);
+        Swal.close();
     }
-    function removeProg(val){
+    function removeProg(val) {
         $('#progElem' + val).remove();
         $('#countprog').val(parseInt(val, 10) - 1);
     }
@@ -450,6 +453,9 @@
                         placeholder: "pilih provinsi"
                     });
                     $('#provsenbudtxt' + tot_Senbud).val('').trigger('change');
+                    $('html, body').animate({
+                        scrollTop: $("#senElem" + tot_Senbud).offset().top-72
+                    }, 2000);
                 } else {
                     Swal.fire({
                         text: "error get data provinsi, errcode: 2358",
@@ -584,6 +590,9 @@
                         placeholder: "pilih provinsi"
                     });
                     $('#provlemtxt' + tot_lem).val('').trigger('change');
+                    $('html, body').animate({
+                        scrollTop: $("#lemelem" + tot_lem).offset().top-72
+                    }, 2000);
                 } else {
                     Swal.fire({
                         text: "error get data provinsi, errcode: 2228",
