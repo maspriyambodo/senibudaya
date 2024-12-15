@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 14/12/2024 14:53:03
+ Date: 15/12/2024 21:48:28
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `app_akses`  (
   `updated_by` int NULL DEFAULT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 125 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '~ hak akses group per menu' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 137 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '~ hak akses group per menu' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of app_akses
@@ -133,6 +133,18 @@ INSERT INTO `app_akses` VALUES (121, 2, 30, 'view', 't', 1, '2022-12-11 03:59:18
 INSERT INTO `app_akses` VALUES (122, 2, 30, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 INSERT INTO `app_akses` VALUES (123, 2, 30, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 INSERT INTO `app_akses` VALUES (124, 2, 30, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (125, 2, 31, 'view', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (126, 2, 31, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (127, 2, 31, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (128, 2, 31, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (129, 5, 31, 'view', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (130, 5, 31, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (131, 5, 31, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (132, 5, 31, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (133, 7, 31, 'view', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (134, 7, 31, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (135, 7, 31, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (136, 7, 31, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 
 -- ----------------------------
 -- Table structure for app_group
@@ -180,7 +192,7 @@ CREATE TABLE `app_menu`  (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `target_menu`(`target_menu` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '~ data menu aplikasi' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '~ data menu aplikasi' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of app_menu
@@ -198,6 +210,7 @@ INSERT INTO `app_menu` VALUES (24, 22, 'Group User', '', 'setting', 'group', '',
 INSERT INTO `app_menu` VALUES (25, 4, 'Banner', '', 'information', 'banner', '', 1111, 0, 't', 1, '2022-10-02 10:43:25', 1, '2023-12-14 10:49:09');
 INSERT INTO `app_menu` VALUES (29, 1, 'Admin Menu', '', 'content', 'menu-admin', '', 1111, 3, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (30, 22, 'Pegawai', '', 'setting', 'pegawai', '', 1111, 3, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
+INSERT INTO `app_menu` VALUES (31, 4, 'Monitoring', NULL, 'information', 'monitoring', NULL, 1111, 3, 't', 1, '2024-12-15 14:37:17', NULL, '0000-00-00 00:00:00');
 
 -- ----------------------------
 -- Table structure for app_parameter
@@ -432,7 +445,7 @@ CREATE TABLE `dta_foto`  (
   `updated_by` int NULL DEFAULT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dta_foto
@@ -523,10 +536,37 @@ CREATE TABLE `dta_kontak`  (
   `updated_by` int NULL DEFAULT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dta_kontak
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for dta_lembaga_seni
+-- ----------------------------
+DROP TABLE IF EXISTS `dta_lembaga_seni`;
+CREATE TABLE `dta_lembaga_seni`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `provinsi` int NULL DEFAULT NULL,
+  `kabupaten` int NULL DEFAULT NULL,
+  `kecamatan` int NULL DEFAULT NULL,
+  `kelurahan` bigint NULL DEFAULT NULL,
+  `alamat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `fokus` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `tingkat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `program` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `stat` tinyint NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `created_by` int NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dta_lembaga_seni
 -- ----------------------------
 
 -- ----------------------------
@@ -1109,12 +1149,64 @@ CREATE TABLE `dta_pegawai`  (
   `updated_by` int NULL DEFAULT NULL,
   `updated_at` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dta_pegawai
 -- ----------------------------
 INSERT INTO `dta_pegawai` VALUES (1, 'priyambodo', '19941234567', 'maspriyambodo@gmail.com', 9, 1, 1, '2024-11-09 01:57:03', 1, '2024-11-09 01:57:08');
+INSERT INTO `dta_pegawai` VALUES (2, 'bodos', '102392', 'masbdoi@gmail.com', 12, 0, 64, '2024-12-14 17:53:12', 64, '2024-12-14 20:29:51');
+
+-- ----------------------------
+-- Table structure for dta_program_seni
+-- ----------------------------
+DROP TABLE IF EXISTS `dta_program_seni`;
+CREATE TABLE `dta_program_seni`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `frekuensi` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `tujuan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `unsur` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `waktu` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `penyelenggara` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `stat` tinyint NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `created_by` int NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dta_program_seni
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for dta_seniman
+-- ----------------------------
+DROP TABLE IF EXISTS `dta_seniman`;
+CREATE TABLE `dta_seniman`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `provinsi` int NULL DEFAULT NULL,
+  `kabupaten` int NULL DEFAULT NULL,
+  `kecamatan` int NULL DEFAULT NULL,
+  `kelurahan` bigint NULL DEFAULT NULL,
+  `alamat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `bidang` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `karya` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `lembaga` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `stat` tinyint NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `created_by` int NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dta_seniman
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for dta_video
@@ -1176,7 +1268,7 @@ CREATE TABLE `mt_golongan`  (
   `updated_by` int NULL DEFAULT NULL,
   `updated_at` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of mt_golongan
@@ -1739,6 +1831,52 @@ INSERT INTO `mt_kabupaten` VALUES (9605, 96, 'KAB. MAYBRAT', 1, 132.904765322, -
 INSERT INTO `mt_kabupaten` VALUES (9671, 96, 'KOTA SORONG', 1, 131.355889327, -0.78199004799995, 1, '2024-01-12 08:50:02', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
+-- Table structure for mt_kecamatan
+-- ----------------------------
+DROP TABLE IF EXISTS `mt_kecamatan`;
+CREATE TABLE `mt_kecamatan`  (
+  `id_kecamatan` int NOT NULL,
+  `id_kabupaten` int NOT NULL,
+  `nama` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `is_trash` int NOT NULL DEFAULT 0 COMMENT '0. aktif 1. deleted',
+  `latitude` double NULL DEFAULT 0,
+  `longitude` double NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_by` int NULL DEFAULT NULL,
+  `updated_by` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id_kecamatan`) USING BTREE,
+  INDEX `mt_kecamatan_id_kabupaten_index`(`id_kabupaten` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of mt_kecamatan
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for mt_kelurahan
+-- ----------------------------
+DROP TABLE IF EXISTS `mt_kelurahan`;
+CREATE TABLE `mt_kelurahan`  (
+  `id_kelurahan` bigint NOT NULL,
+  `id_kecamatan` int NOT NULL,
+  `nama` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `is_trash` int NOT NULL DEFAULT 0 COMMENT '0. aktif 1. deleted',
+  `latitude` double NULL DEFAULT 0,
+  `longitude` double NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_by` int NULL DEFAULT NULL,
+  `updated_by` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id_kelurahan`) USING BTREE,
+  INDEX `mt_kelurahan_id_kecamatan_index`(`id_kecamatan` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of mt_kelurahan
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for mt_provinsi
 -- ----------------------------
 DROP TABLE IF EXISTS `mt_provinsi`;
@@ -1799,6 +1937,69 @@ INSERT INTO `mt_provinsi` VALUES (93, 'PAPUA SELATAN', 1, 137.876018865, -4.5718
 INSERT INTO `mt_provinsi` VALUES (94, 'PAPUA TENGAH', 1, 136.019727337, -2.7118504449999, 1, '2024-01-12 08:43:04', NULL, NULL, NULL, NULL);
 INSERT INTO `mt_provinsi` VALUES (95, 'PAPUA PEGUNUNGAN', 1, 138.17845364, -3.1107957959999, 1, '2024-01-12 08:43:04', NULL, NULL, NULL, NULL);
 INSERT INTO `mt_provinsi` VALUES (96, 'PAPUA BARAT DAYA', 1, 132.598825601, -2.1988046119999, 1, '2024-01-12 08:43:04', NULL, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for tr_monitoring
+-- ----------------------------
+DROP TABLE IF EXISTS `tr_monitoring`;
+CREATE TABLE `tr_monitoring`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `no_monitoring` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `provinsi` int NULL DEFAULT NULL,
+  `kabupaten` int NULL DEFAULT NULL,
+  `is_trash` int NULL DEFAULT NULL COMMENT '1. aktif 0. deleted',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `created_by` tinyint NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` tinyint NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tr_monitoring
+-- ----------------------------
+INSERT INTO `tr_monitoring` VALUES (1, '31751304240001', 31, 3175, 1, '2024-12-15 15:33:04', NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for tr_monitoring_hasil
+-- ----------------------------
+DROP TABLE IF EXISTS `tr_monitoring_hasil`;
+CREATE TABLE `tr_monitoring_hasil`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_monitoring` int NULL DEFAULT NULL,
+  `id_content` int NULL DEFAULT NULL,
+  `jenis` int NULL DEFAULT NULL COMMENT '1. lembaga seni budaya\r\n2. seniman & budayawan muslim\r\n3. program senibudaya islam',
+  `is_trash` tinyint NULL DEFAULT NULL COMMENT '0. deleted 1. aktif',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `created_by` int NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tr_monitoring_hasil
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tr_monitoring_petugas
+-- ----------------------------
+DROP TABLE IF EXISTS `tr_monitoring_petugas`;
+CREATE TABLE `tr_monitoring_petugas`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_monitoring` int NULL DEFAULT NULL,
+  `id_pegawai` int NULL DEFAULT NULL,
+  `is_trash` tinyint NULL DEFAULT NULL COMMENT '0. deleted 1. aktif',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `created_by` int NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tr_monitoring_petugas
+-- ----------------------------
 
 -- ----------------------------
 -- View structure for sebaran_provinsi
