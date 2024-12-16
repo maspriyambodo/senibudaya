@@ -87,7 +87,9 @@ class MonitoringController extends AuthController {
         <div class=\"dropdown-menu dropright\">";
 
         if ($this->edit) {
-            $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/form/' . $row->id) . "\">
+            $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/lihat/' . $row->id) . "\">
+            <i class=\"fas fa-eye\"></i> Lihat Data</a>";
+            $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/ubah/' . $row->id) . "\">
             <i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
         }
 
