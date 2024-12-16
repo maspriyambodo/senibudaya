@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="clear" style="margin-top:5%;"></div>
-        <form id="form_monitoring" action="{{ url($current) }}/store" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="">
+        <form id="form_monitoring" action="{{ url($current) }}/store" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="" autocomplete="off">
             @csrf
             @method('POST')
             <div class="card">
