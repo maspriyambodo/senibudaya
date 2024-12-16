@@ -114,18 +114,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Kecamatan</label>
-                        <div class="col-sm-8">
-                            <select id="keclemtxt1" name="keclemtxt[]" class="form-control form-select"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Kelurahan</label>
-                        <div class="col-sm-8">
-                            <select id="kellemtxt1" name="kellemtxt[]" class="form-control form-select"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Alamat</label>
                         <div class="col-sm-8">
                             <textarea id="addrlemtxt1" name="addrlemtxt[]" class="form-control"></textarea>
@@ -180,18 +168,6 @@
                         <label class="col-sm-2 col-form-label">Kabupaten</label>
                         <div class="col-sm-8">
                             <select id="kabsenbudtxt1" name="kabsenbudtxt[]" class="form-control form-select"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Kecamatan</label>
-                        <div class="col-sm-8">
-                            <select id="kecsenbudtxt1" name="kecsenbudtxt[]" class="form-control form-select"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Kelurahan</label>
-                        <div class="col-sm-8">
-                            <select id="kelsenbudtxt1" name="kelsenbudtxt[]" class="form-control form-select"></select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -397,18 +373,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Kecamatan</label>
-                        <div class="col-sm-8">
-                            <select id="kecsenbudtxt` + tot_Senbud + `" name="kecsenbudtxt[]" class="form-control form-select"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Kelurahan</label>
-                        <div class="col-sm-8">
-                            <select id="kelsenbudtxt` + tot_Senbud + `" name="kelsenbudtxt[]" class="form-control form-select"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Alamat</label>
                         <div class="col-sm-8">
                             <textarea id="addrsenbudtxt` + tot_Senbud + `" name="addrsenbudtxt[]" class="form-control"></textarea>
@@ -530,18 +494,6 @@
                         <label class="col-sm-2 col-form-label">Kabupaten</label>
                         <div class="col-sm-8">
                             <select id="kablemtxt` + tot_lem + `" name="kablemtxt[]" class="form-control form-select"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Kecamatan</label>
-                        <div class="col-sm-8">
-                            <select id="keclemtxt` + tot_lem + `" name="keclemtxt[]" class="form-control form-select"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Kelurahan</label>
-                        <div class="col-sm-8">
-                            <select id="kellemtxt` + tot_lem + `" name="kellemtxt[]" class="form-control form-select"></select>
                         </div>
                     </div>
                     <div class="form-group row">

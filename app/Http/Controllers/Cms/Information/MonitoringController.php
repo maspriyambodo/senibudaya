@@ -46,7 +46,7 @@ class MonitoringController extends AuthController {
 
     public function json(Request $request) {
 //        DB::enableQueryLog();
-        $exec = TrMonitoring::with('provinsi', 'kabupaten');
+        $exec = TrMonitoring::with('provinsi', 'kabupaten', 'hasil', 'hasil.lembagaSeni', 'hasil.seniman', 'hasil.programSeni');
 
         $this->applyFilters($exec, $request);
 
@@ -270,7 +270,7 @@ class MonitoringController extends AuthController {
             TrMonitoringHasil::create([// insert data table tr_monitoring_hasil
                 'id_monitoring' => $idMonitoring,
                 'id_content' => $lastInsertedId,
-                'jenis' => 2,
+                'jenis' => 1,
                 'created_by' => auth()->user()->id
             ]);
         }

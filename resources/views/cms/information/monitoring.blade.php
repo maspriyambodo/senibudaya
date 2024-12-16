@@ -15,7 +15,7 @@
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}"><i class="feather icon-home"></i></a></li>
                             <li class="breadcrumb-item"><a href="javascript:void(0);">Informasi</a></li>
-                            <li class="breadcrumb-item"><a href="{{ url($current) }}">{{ $title }}</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{ $title }}</a></li>
                         </ul>
                     </div>
                 </div>
