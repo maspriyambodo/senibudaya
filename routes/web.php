@@ -154,6 +154,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/monitoring/add', [MonitoringController::class, 'add'])->name('monitoring');
     Route::get('/monitoring/pegawai', [MonitoringController::class, 'pegawai'])->name('monitoring');
     Route::get('/monitoring/provinsi', [MonitoringController::class, 'provinsi'])->name('monitoring');
+    Route::post('/monitoring/store', [MonitoringController::class, 'store'])->name('monitoring');
     
 //group
     Route::get('/group', [GroupController::class, 'index']);
