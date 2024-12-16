@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 17/12/2024 01:07:05
+ Date: 17/12/2024 01:26:02
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `app_akses`  (
   `updated_by` int NULL DEFAULT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 137 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '~ hak akses group per menu' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 153 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '~ hak akses group per menu' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of app_akses
@@ -145,6 +145,18 @@ INSERT INTO `app_akses` VALUES (133, 7, 31, 'view', 't', 1, '2022-12-11 03:59:18
 INSERT INTO `app_akses` VALUES (134, 7, 31, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 INSERT INTO `app_akses` VALUES (135, 7, 31, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 INSERT INTO `app_akses` VALUES (136, 7, 31, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (141, 2, 32, 'view', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (142, 2, 32, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (143, 2, 32, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (144, 2, 32, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (145, 2, 33, 'view', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (146, 2, 33, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (147, 2, 33, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (148, 2, 33, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (149, 2, 34, 'view', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (150, 2, 34, 'input', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (151, 2, 34, 'edit', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
+INSERT INTO `app_akses` VALUES (152, 2, 34, 'delete', 't', 1, '2022-12-11 03:59:18', 1, '2023-07-11 12:00:44');
 
 -- ----------------------------
 -- Table structure for app_group
@@ -192,7 +204,7 @@ CREATE TABLE `app_menu`  (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `target_menu`(`target_menu` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '~ data menu aplikasi' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '~ data menu aplikasi' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of app_menu
@@ -211,6 +223,9 @@ INSERT INTO `app_menu` VALUES (25, 4, 'Banner', '', 'information', 'banner', '',
 INSERT INTO `app_menu` VALUES (29, 1, 'Admin Menu', '', 'content', 'menu-admin', '', 1111, 3, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (30, 22, 'Pegawai', '', 'setting', 'pegawai', '', 1111, 3, 't', 1, '2022-10-02 10:43:25', 1, '2022-10-02 10:43:25');
 INSERT INTO `app_menu` VALUES (31, 4, 'Monitoring', NULL, 'information', 'monitoring', NULL, 1111, 3, 't', 1, '2024-12-15 14:37:17', NULL, '0000-00-00 00:00:00');
+INSERT INTO `app_menu` VALUES (32, 4, 'Lembaga Seni Budaya', NULL, 'information', 'lembaga', NULL, 1111, 4, 't', 1, '2024-12-17 01:14:51', NULL, '0000-00-00 00:00:00');
+INSERT INTO `app_menu` VALUES (33, 4, 'Seniman & Budayawan', NULL, 'information', 'seniman', NULL, 1111, 5, 't', 1, '2024-12-17 01:15:28', NULL, '0000-00-00 00:00:00');
+INSERT INTO `app_menu` VALUES (34, 4, 'Program Seni Budaya', NULL, 'information', 'program-seni', NULL, 1111, 6, 't', 1, '2024-12-17 01:16:09', NULL, '0000-00-00 00:00:00');
 
 -- ----------------------------
 -- Table structure for app_parameter
