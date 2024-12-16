@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 15/12/2024 21:48:28
+ Date: 16/12/2024 23:47:28
 */
 
 SET NAMES utf8mb4;
@@ -445,7 +445,7 @@ CREATE TABLE `dta_foto`  (
   `updated_by` int NULL DEFAULT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dta_foto
@@ -536,7 +536,7 @@ CREATE TABLE `dta_kontak`  (
   `updated_by` int NULL DEFAULT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dta_kontak
@@ -558,9 +558,9 @@ CREATE TABLE `dta_lembaga_seni`  (
   `tingkat` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `program` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `stat` tinyint NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -1145,9 +1145,9 @@ CREATE TABLE `dta_pegawai`  (
   `jabatan` int NULL DEFAULT NULL,
   `stat` int NULL DEFAULT NULL COMMENT '1. aktif 0. delete',
   `created_by` int NULL DEFAULT NULL,
-  `created_at` datetime NULL DEFAULT NULL,
+  `created_at` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int NULL DEFAULT NULL,
-  `updated_at` datetime NULL DEFAULT NULL,
+  `updated_at` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
@@ -1170,9 +1170,9 @@ CREATE TABLE `dta_program_seni`  (
   `waktu` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `penyelenggara` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `stat` tinyint NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -1197,9 +1197,9 @@ CREATE TABLE `dta_seniman`  (
   `karya` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `lembaga` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `stat` tinyint NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -1945,20 +1945,21 @@ DROP TABLE IF EXISTS `tr_monitoring`;
 CREATE TABLE `tr_monitoring`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `no_monitoring` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `tgl_monitoring` datetime NULL DEFAULT NULL,
   `provinsi` int NULL DEFAULT NULL,
   `kabupaten` int NULL DEFAULT NULL,
-  `is_trash` int NULL DEFAULT NULL COMMENT '1. aktif 0. deleted',
-  `created_at` timestamp NULL DEFAULT NULL,
+  `is_trash` int NULL DEFAULT 1 COMMENT '1. aktif 0. deleted',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` tinyint NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` tinyint NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tr_monitoring
 -- ----------------------------
-INSERT INTO `tr_monitoring` VALUES (1, '31751304240001', 31, 3175, 1, '2024-12-15 15:33:04', NULL, NULL, NULL);
+INSERT INTO `tr_monitoring` VALUES (1, '31751304240001', '2024-12-15 00:00:00', 31, 3175, 1, '2024-12-15 15:33:04', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tr_monitoring_hasil
@@ -1970,9 +1971,9 @@ CREATE TABLE `tr_monitoring_hasil`  (
   `id_content` int NULL DEFAULT NULL,
   `jenis` int NULL DEFAULT NULL COMMENT '1. lembaga seni budaya\r\n2. seniman & budayawan muslim\r\n3. program senibudaya islam',
   `is_trash` tinyint NULL DEFAULT NULL COMMENT '0. deleted 1. aktif',
-  `created_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -1989,10 +1990,10 @@ CREATE TABLE `tr_monitoring_petugas`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_monitoring` int NULL DEFAULT NULL,
   `id_pegawai` int NULL DEFAULT NULL,
-  `is_trash` tinyint NULL DEFAULT NULL COMMENT '0. deleted 1. aktif',
-  `created_at` timestamp NULL DEFAULT NULL,
+  `is_trash` tinyint NULL DEFAULT 1 COMMENT '0. deleted 1. aktif',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
