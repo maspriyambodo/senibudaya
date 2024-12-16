@@ -11,7 +11,7 @@
  Target Server Version : 80030 (8.0.30)
  File Encoding         : 65001
 
- Date: 16/12/2024 23:47:28
+ Date: 17/12/2024 01:07:05
 */
 
 SET NAMES utf8mb4;
@@ -563,11 +563,13 @@ CREATE TABLE `dta_lembaga_seni`  (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dta_lembaga_seni
 -- ----------------------------
+INSERT INTO `dta_lembaga_seni` VALUES (1, 'lembaga seni dummy', 11, 1101, NULL, NULL, 'asdnasdn', 'a dasdedqwe sacacs', 'ascasdq ewqdas', 'qdq qw dwdq', NULL, '2024-12-17 01:00:07', 64, '2024-12-17 01:00:07', NULL);
+INSERT INTO `dta_lembaga_seni` VALUES (2, 'lembaga seni dummy', 11, 1102, NULL, NULL, 'aposdqwdo', 'qwcdw cqweqw', 'cqweqec', 'tnertmert', NULL, '2024-12-17 01:06:13', 64, '2024-12-17 01:06:13', NULL);
 
 -- ----------------------------
 -- Table structure for dta_our_collections
@@ -1149,13 +1151,73 @@ CREATE TABLE `dta_pegawai`  (
   `updated_by` int NULL DEFAULT NULL,
   `updated_at` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 63 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dta_pegawai
 -- ----------------------------
 INSERT INTO `dta_pegawai` VALUES (1, 'priyambodo', '19941234567', 'maspriyambodo@gmail.com', 9, 1, 1, '2024-11-09 01:57:03', 1, '2024-11-09 01:57:08');
 INSERT INTO `dta_pegawai` VALUES (2, 'bodos', '102392', 'masbdoi@gmail.com', 12, 0, 64, '2024-12-14 17:53:12', 64, '2024-12-14 20:29:51');
+INSERT INTO `dta_pegawai` VALUES (3, 'John Doe', '1234567890', 'john.doe@example.com', 1, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (4, 'Jane Smith', '1234567891', 'jane.smith@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (5, 'Alice Johnson', '1234567892', 'alice.johnson@example.com', 3, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (6, 'Bob Brown', '1234567893', 'bob.brown@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (7, 'Charlie White', '1234567894', 'charlie.white@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (8, 'David Green', '1234567895', 'david.green@example.com', 1, 0, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (9, 'Eva Black', '1234567896', 'eva.black@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (10, 'Frank Yellow', '1234567897', 'frank.yellow@example.com', 3, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (11, 'Grace Blue', '1234567898', 'grace.blue@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (12, 'Hannah Red', '1234567899', 'hannah.red@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (13, 'Irene Purple', '1234567900', 'irene.purple@example.com', 1, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (14, 'Jack Orange', '1234567901', 'jack.orange@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (15, 'Kim Brown', '1234567902', 'kim.brown@example.com', 3, 0, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (16, 'Leo Grey', '1234567903', 'leo.grey@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (17, 'Mona Gold', '1234567904', 'mona.gold@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (18, 'Nathan Copper', '1234567905', 'nathan.copper@example.com', 1, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (19, 'Olivia Silver', '1234567906', 'olivia.silver@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (20, 'Paul Steel', '1234567907', 'paul.steel@example.com', 3, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (21, 'Quinn Bronze', '1234567908', 'quinn.bronze@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (22, 'Rachel Copper', '1234567909', 'rachel.copper@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (23, 'Samuel Iron', '1234567910', 'samuel.iron@example.com', 1, 0, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (24, 'Tina Tin', '1234567911', 'tina.tin@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (25, 'Ursula Zinc', '1234567912', 'ursula.zinc@example.com', 3, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (26, 'Victor Lead', '1234567913', 'victor.lead@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (27, 'Wendy Nickel', '1234567914', 'wendy.nickel@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (28, 'Xander Platinum', '1234567915', 'xander.platinum@example.com', 1, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (29, 'Yvonne Diamond', '1234567916', 'yvonne.diamond@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (30, 'Zachary Ruby', '1234567917', 'zachary.ruby@example.com', 3, 0, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (31, 'Alice Maroon', '1234567918', 'alice.maroon@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (32, 'Bob Charcoal', '1234567919', 'bob.charcoal@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (33, 'Clara Emerald', '1234567920', 'clara.emerald@example.com', 1, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (34, 'Dylan Sapphire', '1234567921', 'dylan.sapphire@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (35, 'Evan Topaz', '1234567922', 'evan.topaz@example.com', 3, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (36, 'Fiona Jade', '1234567923', 'fiona.jade@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (37, 'Gabriel Onyx', '1234567924', 'gabriel.onyx@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (38, 'Harriet Ruby', '1234567925', 'harriet.ruby@example.com', 1, 0, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (39, 'Ian Pearl', '1234567926', 'ian.pearl@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (40, 'Jackie Amethyst', '1234567927', 'jackie.amethyst@example.com', 3, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (41, 'Ken Citrine', '1234567928', 'ken.citrine@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (42, 'Lily Peridot', '1234567929', 'lily.peridot@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (43, 'Mark Garnet', '1234567930', 'mark.garnet@example.com', 1, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (44, 'Nina Aquamarine', '1234567931', 'nina.aquamarine@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (45, 'Oscar Turquoise', '1234567932', 'oscar.turquoise@example.com', 3, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (46, 'Penny Topaz', '1234567933', 'penny.topaz@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (47, 'Quinn Opal', '1234567934', 'quinn.opal@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (48, 'Rachel Jasper', '1234567935', 'rachel.jasper@example.com', 1, 0, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (49, 'Sam Quartz', '1234567936', 'sam.quartz@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (50, 'Tina Spinel', '1234567937', 'tina.spinel@example.com', 3, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (51, 'Ursula Fluorite', '1234567938', 'ursula.fluorite@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (52, 'Victor Kyanite', '1234567939', 'victor.kyanite@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (53, 'Wendy Larimar', '1234567940', 'wendy.larimar@example.com', 1, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (54, 'Xander Moonstone', '1234567941', 'xander.moonstone@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (55, 'Yvonne Sunstone', '1234567942', 'yvonne.sunstone@example.com', 3, 0, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (56, 'Zachary Aquamarine', '1234567943', 'zachary.aquamarine@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (57, 'Alice Peridot', '1234567944', 'alice.peridot@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (58, 'Bob Emerald', '1234567945', 'bob.emerald@example.com', 1, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (59, 'Clara Sapphire', '1234567946', 'clara.sapphire@example.com', 2, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (60, 'Dylan Onyx', '1234567947', 'dylan.onyx@example.com', 3, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (61, 'Evan Ruby', '1234567948', 'evan.ruby@example.com', 4, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
+INSERT INTO `dta_pegawai` VALUES (62, 'Fiona Jade', '1234567949', 'fiona.jade@example.com', 5, 1, 1, '2024-12-17 01:03:56', 1, '2024-12-17 01:03:56');
 
 -- ----------------------------
 -- Table structure for dta_program_seni
@@ -1202,11 +1264,12 @@ CREATE TABLE `dta_seniman`  (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dta_seniman
 -- ----------------------------
+INSERT INTO `dta_seniman` VALUES (1, 'rbwarw rrwaerc', 11, 1102, NULL, NULL, 't weatyear werwcbzdf', 'ewava wefw', 'hfsd bhjtttrs', 'aer yery aerrg', NULL, '2024-12-17 01:06:13', 64, '2024-12-17 01:06:13', NULL);
 
 -- ----------------------------
 -- Table structure for dta_video
@@ -1959,7 +2022,8 @@ CREATE TABLE `tr_monitoring`  (
 -- ----------------------------
 -- Records of tr_monitoring
 -- ----------------------------
-INSERT INTO `tr_monitoring` VALUES (1, '31751304240001', '2024-12-15 00:00:00', 31, 3175, 1, '2024-12-15 15:33:04', NULL, NULL, NULL);
+INSERT INTO `tr_monitoring` VALUES (1, '1111021211240001', '2024-12-11 00:00:00', 11, 1102, 1, '2024-12-17 01:00:07', 64, '2024-12-17 01:00:07', NULL);
+INSERT INTO `tr_monitoring` VALUES (2, '1414021202240001', '2024-12-02 00:00:00', 14, 1402, 1, '2024-12-17 01:06:13', 64, '2024-12-17 01:06:13', NULL);
 
 -- ----------------------------
 -- Table structure for tr_monitoring_hasil
@@ -1976,11 +2040,14 @@ CREATE TABLE `tr_monitoring_hasil`  (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tr_monitoring_hasil
 -- ----------------------------
+INSERT INTO `tr_monitoring_hasil` VALUES (1, 1, 1, 1, NULL, '2024-12-17 01:00:07', 64, '2024-12-17 01:00:07', NULL);
+INSERT INTO `tr_monitoring_hasil` VALUES (2, 2, 2, 1, NULL, '2024-12-17 01:06:13', 64, '2024-12-17 01:06:13', NULL);
+INSERT INTO `tr_monitoring_hasil` VALUES (3, 2, 1, 2, NULL, '2024-12-17 01:06:13', 64, '2024-12-17 01:06:13', NULL);
 
 -- ----------------------------
 -- Table structure for tr_monitoring_petugas
@@ -1996,11 +2063,13 @@ CREATE TABLE `tr_monitoring_petugas`  (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_by` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tr_monitoring_petugas
 -- ----------------------------
+INSERT INTO `tr_monitoring_petugas` VALUES (1, 1, 1, 1, '2024-12-17 01:00:07', 64, '2024-12-17 01:00:07', NULL);
+INSERT INTO `tr_monitoring_petugas` VALUES (2, 2, 4, 1, '2024-12-17 01:06:13', 64, '2024-12-17 01:06:13', NULL);
 
 -- ----------------------------
 -- View structure for sebaran_provinsi
