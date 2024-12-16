@@ -43,7 +43,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Provinsi</label>
                         <div class="col-sm-8">
-                            <select name="provtxt" id="provtxt" class="form-control form-select" required="" onchange="provinsi(this.value)">
+                            <select name="provtxt" id="provtxt" class="form-control form-select" required="" onchange="provinsi(this.value, 'provtxt', 1)">
                                 <option value="">pilih provinsi</option>
                                 @foreach($provinsi as $dt_prov)
                                 <option value="{{ $dt_prov->id_provinsi }}">{{ $dt_prov->provinsi }}</option>
@@ -88,7 +88,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Provinsi</label>
                         <div class="col-sm-8">
-                            <select id="provlemtxt1" name="provlemtxt[]" class="form-control form-select">
+                            <select id="provlemtxt1" name="provlemtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provlemtxt1', 1)">
                                 <option value="">pilih provinsi</option>
                                 @foreach($provinsi as $dt_prov2)
                                 <option value="{{ $dt_prov2->id_provinsi }}">{{ $dt_prov2->provinsi }}</option>
@@ -99,7 +99,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Kabupaten</label>
                         <div class="col-sm-8">
-                            <select id="kablemtxt1" name="kablemtxt[]" class="form-control form-select"></select>
+                            <select id="kablemtxt1" name="kablemtxt[]" class="form-control form-select" required=""></select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -157,7 +157,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Provinsi</label>
                         <div class="col-sm-8">
-                            <select id="provsenbudtxt1" name="provsenbudtxt[]" class="form-control form-select">
+                            <select id="provsenbudtxt1" name="provsenbudtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provsenbudtxt1', 1)">
                                 <option value="">pilih provinsi</option>
                                 @foreach($provinsi as $dt_prov3)
                                 <option value="{{ $dt_prov3->id_provinsi }}">{{ $dt_prov3->provinsi }}</option>
@@ -272,10 +272,10 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-                        $(document).ready(function () {
-                            $('.form-select').select2();
-                            $("#tgltxt").datepicker();
-                        });
+    $(document).ready(function () {
+        $('.form-select').select2();
+        $("#tgltxt").datepicker();
+    });
 </script>
 <script>
     function tambahProg() {
@@ -340,7 +340,7 @@
                 </div>
                 `);
         $('html, body').animate({
-            scrollTop: $("#progElem" + tot_Prog).offset().top-72
+            scrollTop: $("#progElem" + tot_Prog).offset().top - 72
         }, 2000);
         Swal.close();
     }
@@ -374,7 +374,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Provinsi</label>
                         <div class="col-sm-8">
-                            <select id="provsenbudtxt` + tot_Senbud + `" name="provsenbudtxt[]" class="form-control form-select">
+                            <select id="provsenbudtxt` + tot_Senbud + `" name="provsenbudtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provsenbudtxt` + tot_Senbud + `', ` + tot_Senbud + `)">
                                 <option value="">pilih provinsi</option>
                             </select>
                         </div>
@@ -454,7 +454,7 @@
                     });
                     $('#provsenbudtxt' + tot_Senbud).val('').trigger('change');
                     $('html, body').animate({
-                        scrollTop: $("#senElem" + tot_Senbud).offset().top-72
+                        scrollTop: $("#senElem" + tot_Senbud).offset().top - 72
                     }, 2000);
                 } else {
                     Swal.fire({
@@ -511,7 +511,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Provinsi</label>
                         <div class="col-sm-8">
-                            <select id="provlemtxt` + tot_lem + `" name="provlemtxt[]" class="form-control form-select">
+                            <select id="provlemtxt` + tot_lem + `" name="provlemtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provlemtxt` + tot_lem + `', ` + tot_lem + `)">
                                 <option value="">pilih provinsi</option>
                             </select>
                         </div>
@@ -591,7 +591,7 @@
                     });
                     $('#provlemtxt' + tot_lem).val('').trigger('change');
                     $('html, body').animate({
-                        scrollTop: $("#lemelem" + tot_lem).offset().top-72
+                        scrollTop: $("#lemelem" + tot_lem).offset().top - 72
                     }, 2000);
                 } else {
                     Swal.fire({
@@ -710,7 +710,7 @@
     }
 </script>
 <script>
-    function provinsi(id_prov) {
+    function provinsi(id_prov, provtxt, idtxt) {
         Swal.fire({
             title: 'memuat data...',
             html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
@@ -720,7 +720,20 @@
                 Swal.showLoading();
             }
         });
-        $('#kabtxt').children('option').remove();
+        var kabtxt = '';
+        if (provtxt === 'provtxt') {
+            kabtxt = 'kabtxt';
+            $('#' + kabtxt).children('option').remove();
+            console.log(kabtxt);
+        } else if (provtxt === 'provlemtxt' + idtxt) {
+            kabtxt = 'kablemtxt' + idtxt;
+            console.log(kabtxt);
+            $('#' + kabtxt).children('option').remove();
+        } else if (provtxt === 'provsenbudtxt' + idtxt) {
+            kabtxt = 'kabsenbudtxt' + idtxt;
+            console.log(kabtxt);
+            $('#' + kabtxt).children('option').remove();
+        }
         if (id_prov !== '') {
             $.ajax({
                 url: "{{ url('news/kabupaten?id_prov='); }}" + id_prov,
@@ -730,23 +743,17 @@
                 processData: false,
                 dataType: "JSON",
                 success: function (data) {
-                    var id_kab = $('#kotkabtxt').val();
                     if (data.stat) {
                         var i;
                         for (i = 0; i < data.kabupaten.length; i++) {
-                            var sel = document.getElementById("kabtxt");
+                            var sel = document.getElementById(kabtxt);
                             var opt = document.createElement("option");
                             opt.value = data.kabupaten[i].id_kabupaten;
                             opt.text = data.kabupaten[i].kabupaten;
                             sel.add(opt, sel.options[i]);
                         }
-                        if (id_kab !== '') {
-                            $('#kabtxt').val(id_kab);
-                            $('#kabtxt').trigger('change');
-                        } else {
-                            $('#kabtxt').val('');
-                            $('#kabtxt').trigger('change');
-                        }
+                        $('#' + kabtxt).val('');
+                        $('#' + kabtxt).trigger('change');
                         Swal.close();
                     } else {
                         Swal.fire({
@@ -776,17 +783,6 @@
                     }).then(function () {
                         window.location.reload();
                     });
-                }
-            });
-        } else {
-            Swal.fire({
-                text: "pilih provinsi",
-                icon: "error",
-                buttonsStyling: !1,
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                customClass: {
-                    confirmButton: "btn btn-primary"
                 }
             });
         }
