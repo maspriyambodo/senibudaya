@@ -25,17 +25,10 @@
         </div>
         <div class="clear" style="margin-top:5%;"></div>
         <form id="form_monitoring" action="{{ url($current) }}/store" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="">
+            @csrf
+            @method('POST')
             <div class="card">
                 <div class="card-body">
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
                     <h5 class="card-title">Data Monitoring</h5>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Nomor Monitoring</label>
@@ -46,7 +39,10 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Tanggal Monitoring</label>
                         <div class="col-sm-8">
-                            <input id="tgltxt" type="text" name="tgltxt" class="form-control" required="" readonly=""/>
+                            <input id="tgltxt" type="text" name="tgltxt" class="form-control" readonly="" required=""/>
+                            @if($errors->has('tgltxt'))
+                            <div class="alert alert-danger" role="alert">tanggal monitoring tidak boleh kosong</div>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group row">
@@ -58,12 +54,18 @@
                                 <option value="{{ $dt_prov->id_provinsi }}">{{ $dt_prov->provinsi }}</option>
                                 @endforeach
                             </select>
+                            @if($errors->has('provtxt'))
+                            <div class="alert alert-danger" role="alert">provinsi tidak boleh kosong</div>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Kabupaten</label>
                         <div class="col-sm-8">
                             <select name="kabtxt" id="kabtxt" class="form-control form-select" required=""></select>
+                            @if($errors->has('kabtxt'))
+                            <div class="alert alert-danger" role="alert">kabupaten tidak boleh kosong</div>
+                            @endif
                         </div>
                     </div>
                     <div id="pegclone" class="form-group row">
@@ -108,7 +110,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Kabupaten</label>
                         <div class="col-sm-8">
-                            <select id="kablemtxt1" name="kablemtxt[]" class="form-control form-select" required=""></select>
+                            <select id="kablemtxt1" name="kablemtxt[]" class="form-control form-select"></select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -654,7 +656,7 @@
             <div id="pegelem` + tot_peg + `" class="form-group row">
                         <label class="col-sm-2 col-form-label">Petugas Monitoring ` + tot_peg + `</label>
                         <div class="col-sm-6">
-                            <select name="petugastxt[]" id="petugastxt` + tot_peg + `" class="form-control form-select" required=""></select>
+                            <select name="petugastxt[]" id="petugastxt` + tot_peg + `" class="form-control form-select"></select>
                         </div>
                         <div class="col-sm-3">
                             <button type="button" class="btn btn-danger" onclick="removePegawai(` + tot_peg + `)"><i class="feather icon-trash"></i>Hapus Petugas ` + tot_peg + `</button>
