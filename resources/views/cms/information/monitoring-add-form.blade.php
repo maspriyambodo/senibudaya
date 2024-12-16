@@ -24,9 +24,18 @@
             </div>
         </div>
         <div class="clear" style="margin-top:5%;"></div>
-        <form id="form_monitoring" action="{{ url($current) }}/store/?q=add" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="">
+        <form id="form_monitoring" action="{{ url($current) }}/store" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="">
             <div class="card">
                 <div class="card-body">
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                     <h5 class="card-title">Data Monitoring</h5>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Nomor Monitoring</label>
@@ -272,10 +281,10 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    $(document).ready(function () {
-        $('.form-select').select2();
-        $("#tgltxt").datepicker();
-    });
+                        $(document).ready(function () {
+                            $('.form-select').select2();
+                            $("#tgltxt").datepicker();
+                        });
 </script>
 <script>
     function tambahProg() {
@@ -448,14 +457,13 @@
                         opt.text = data.dt_prov[i].nama;
                         sel.add(opt, sel.options[i]);
                     }
-                    Swal.close();
                     $('#provsenbudtxt' + tot_Senbud).select2({
                         placeholder: "pilih provinsi"
                     });
-                    $('#provsenbudtxt' + tot_Senbud).val('').trigger('change');
                     $('html, body').animate({
                         scrollTop: $("#senElem" + tot_Senbud).offset().top - 72
                     }, 2000);
+                    Swal.close();
                 } else {
                     Swal.fire({
                         text: "error get data provinsi, errcode: 2358",
@@ -589,7 +597,6 @@
                     $('#provlemtxt' + tot_lem).select2({
                         placeholder: "pilih provinsi"
                     });
-                    $('#provlemtxt' + tot_lem).val('').trigger('change');
                     $('html, body').animate({
                         scrollTop: $("#lemelem" + tot_lem).offset().top - 72
                     }, 2000);
@@ -724,14 +731,11 @@
         if (provtxt === 'provtxt') {
             kabtxt = 'kabtxt';
             $('#' + kabtxt).children('option').remove();
-            console.log(kabtxt);
         } else if (provtxt === 'provlemtxt' + idtxt) {
             kabtxt = 'kablemtxt' + idtxt;
-            console.log(kabtxt);
             $('#' + kabtxt).children('option').remove();
         } else if (provtxt === 'provsenbudtxt' + idtxt) {
             kabtxt = 'kabsenbudtxt' + idtxt;
-            console.log(kabtxt);
             $('#' + kabtxt).children('option').remove();
         }
         if (id_prov !== '') {
