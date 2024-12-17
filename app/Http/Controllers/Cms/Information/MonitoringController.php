@@ -45,7 +45,7 @@ class MonitoringController extends AuthController {
     }
 
     public function json(Request $request) {
-        $exec = TrMonitoring::with('provinsi', 'kabupaten', 'hasil', 'hasil.lembagaSeni', 'hasil.seniman', 'hasil.programSeni');
+        $exec = TrMonitoring::with('provinsi', 'kabupaten', 'hasil', 'petugas', 'petugas.pegawai', 'hasil.lembagaSeni', 'hasil.seniman', 'hasil.programSeni');
 
         $this->applyFilters($exec, $request);
 
@@ -307,6 +307,23 @@ class MonitoringController extends AuthController {
         $data = array_merge(
                 ClassMenu::view($this->target),
                 [
+                    'provinsi' => $provinsi,
+                    'pegawai' => $pegawai
+                ]
+        );
+        return view($this->target . '-add-form', $data);
+    }
+
+    public function ubah(Request $request) {
+        $exec = TrMonitoring::with('provinsi', 'kabupaten', 'hasil', 'petugas', 'petugas.pegawai', 'hasil.lembagaSeni', 'hasil.seniman', 'hasil.programSeni')
+                        ->where('id', $request->id)->first();
+        $provinsi = Provinsi::select('mt_provinsi.id_provinsi', 'mt_provinsi.nama AS provinsi', 'mt_provinsi.stat')
+                        ->where('mt_provinsi.stat', 1)->get();
+        $pegawai = Pegawai::where('stat', 1)->get();
+        $data = array_merge(
+                ClassMenu::view($this->target),
+                [
+                    'data' => $exec,
                     'provinsi' => $provinsi,
                     'pegawai' => $pegawai
                 ]
