@@ -75,7 +75,7 @@
             columnDefs: [
                 {className: "text-center text-nowrap", targets: [0]},
                 {className: "text-right text-nowrap", targets: []},
-                {orderable: false, targets: [1, 2, 3]}
+                {orderable: false, targets: [1]}
             ],
             columns: [
                 {

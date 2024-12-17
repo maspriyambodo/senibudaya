@@ -45,15 +45,11 @@ class MonitoringController extends AuthController {
     }
 
     public function json(Request $request) {
-//        DB::enableQueryLog();
         $exec = TrMonitoring::with('provinsi', 'kabupaten', 'hasil', 'hasil.lembagaSeni', 'hasil.seniman', 'hasil.programSeni');
 
         $this->applyFilters($exec, $request);
 
-        $berita = $exec->get();
-//        $query = DB::getQueryLog();
-//        $query = end($query);
-//        ddd($query);
+        $berita = $exec->orderBy('kabupaten')->get();
         return Datatables::of($berita)
                         ->editColumn('tgl_monitoring', fn($row) => Carbon::parse($row->tgl_monitoring)->translatedFormat('d/F/Y'))
                         ->addColumn('button', fn($row) => $this->getActionButtons($row))
@@ -143,7 +139,7 @@ class MonitoringController extends AuthController {
                             ->withInput();
         } else {
             $data_monitoring = [
-                'no_monitoring' => $this->generate_noMonitoring($request),
+                'no_monitoring' => $this->generateNoMonitoring($request),
                 'tgl_monitoring' => Carbon::parse($request->tgltxt)->format('Y-m-d'),
                 'provinsi' => $request->provtxt,
                 'kabupaten' => $request->kabtxt,
@@ -153,15 +149,17 @@ class MonitoringController extends AuthController {
             try {
                 $exec = TrMonitoring::create($data_monitoring);
                 $lastInsertedId = $exec->id;
-                $this->insert_petugas($request, $lastInsertedId);
+
+                // Insert related data
+                $this->insertPetugas($request, $lastInsertedId);
                 if ($request->nmlemtxt[0]) {
-                    $this->insert_lembagaseni($request, $lastInsertedId);
+                    $this->insertLembagaSeni($request, $lastInsertedId);
                 }
                 if ($request->nmsenbudtxt[0]) {
-                    $this->insert_seniman($request, $lastInsertedId);
+                    $this->insertSeniman($request, $lastInsertedId);
                 }
                 if ($request->prgnmtxt[0]) {
-                    $this->insert_progseni($request, $lastInsertedId);
+                    $this->insertProgramSeni($request, $lastInsertedId);
                 }
                 DB::commit(); // Commit transaction
                 return redirect($this->page)->with('message', "Berhasil menyimpan data monitoring!");
@@ -176,10 +174,11 @@ class MonitoringController extends AuthController {
         }
     }
 
-    private function insert_progseni($request, $idMonitoring) {// insert data table dta_program_seni
-        for ($index = 0; $index < count($request->prgnmtxt); $index++) {
-            $data_programseni[$index] = [
-                'nama' => $request->prgnmtxt[$index],
+    private function insertProgramSeni($request, $idMonitoring) {
+        $data_programseni = [];
+        foreach ($request->prgnmtxt as $index => $program) {
+            $data_programseni[] = [
+                'nama' => $program,
                 'frekuensi' => $request->prgfretxt[$index],
                 'tujuan' => $request->prgtujtxt[$index],
                 'unsur' => $request->prgtunstxt[$index],
@@ -188,31 +187,28 @@ class MonitoringController extends AuthController {
                 'created_by' => auth()->user()->id
             ];
         }
-        foreach ($data_programseni as $dt_programseni) {
-            $exec = DtaProgramSeni::create([
-                        'nama' => $dt_programseni['nama'],
-                        'frekuensi' => $dt_programseni['frekuensi'],
-                        'tujuan' => $dt_programseni['tujuan'],
-                        'unsur' => $dt_programseni['unsur'],
-                        'waktu' => $dt_programseni['waktu'],
-                        'penyelenggara' => $dt_programseni['penyelenggara'],
-                        'created_by' => auth()->user()->id
-            ]);
-            $lastInsertedId = $exec->id;
-            TrMonitoringHasil::create([// insert data table tr_monitoring_hasil
+
+        // Insert data in bulk
+        DtaProgramSeni::insert($data_programseni);
+
+        // Link data with monitoring
+        foreach ($data_programseni as $dt) {
+            $lastInsertedId = DtaProgramSeni::where('nama', $dt['nama'])->latest()->first()->id;
+            TrMonitoringHasil::create([
                 'id_monitoring' => $idMonitoring,
                 'id_content' => $lastInsertedId,
                 'jenis' => 3,
                 'created_by' => auth()->user()->id
             ]);
         }
-        return true;
     }
 
-    private function insert_seniman($request, $idMonitoring) {// insert data table dta_seniman
-        for ($index = 0; $index < count($request->nmsenbudtxt); $index++) {
-            $data_seniman[$index] = [
-                'nama' => $request->nmsenbudtxt[$index],
+    // Insert multiple records into DtaSeniman and TrMonitoringHasil
+    private function insertSeniman($request, $idMonitoring) {
+        $data_seniman = [];
+        foreach ($request->nmsenbudtxt as $index => $seniman) {
+            $data_seniman[] = [
+                'nama' => $seniman,
                 'provinsi' => $request->provsenbudtxt[$index],
                 'kabupaten' => $request->kabsenbudtxt[$index],
                 'alamat' => $request->addrsenbudtxt[$index],
@@ -222,32 +218,28 @@ class MonitoringController extends AuthController {
                 'created_by' => auth()->user()->id
             ];
         }
-        foreach ($data_seniman as $dt_seniman) {
-            $exec = DtaSeniman::create([
-                        'nama' => $dt_seniman['nama'],
-                        'provinsi' => $dt_seniman['provinsi'],
-                        'kabupaten' => $dt_seniman['kabupaten'],
-                        'alamat' => $dt_seniman['alamat'],
-                        'bidang' => $dt_seniman['bidang'],
-                        'karya' => $dt_seniman['karya'],
-                        'lembaga' => $dt_seniman['lembaga'],
-                        'created_by' => auth()->user()->id
-            ]);
-            $lastInsertedId = $exec->id;
-            TrMonitoringHasil::create([// insert data table tr_monitoring_hasil
+
+        // Insert data in bulk
+        DtaSeniman::insert($data_seniman);
+
+        // Link data with monitoring
+        foreach ($data_seniman as $dt) {
+            $lastInsertedId = DtaSeniman::where('nama', $dt['nama'])->latest()->first()->id;
+            TrMonitoringHasil::create([
                 'id_monitoring' => $idMonitoring,
                 'id_content' => $lastInsertedId,
                 'jenis' => 2,
                 'created_by' => auth()->user()->id
             ]);
         }
-        return true;
     }
 
-    private function insert_lembagaseni($request, $idMonitoring) {// insert data table dta_lembaga_seni
-        for ($index = 0; $index < count($request->nmlemtxt); $index++) {
-            $data_senbud[$index] = [
-                'nama' => $request->nmlemtxt[$index],
+    // Insert multiple records into DtaLembagaSeni and TrMonitoringHasil
+    private function insertLembagaSeni($request, $idMonitoring) {
+        $data_senbud = [];
+        foreach ($request->nmlemtxt as $index => $lembaga) {
+            $data_senbud[] = [
+                'nama' => $lembaga,
                 'provinsi' => $request->provlemtxt[$index],
                 'kabupaten' => $request->kablemtxt[$index],
                 'alamat' => $request->addrlemtxt[$index],
@@ -257,60 +249,54 @@ class MonitoringController extends AuthController {
                 'created_by' => auth()->user()->id
             ];
         }
-        foreach ($data_senbud as $dt_senbud) {
-            $exec = DtaLembagaSeni::create([
-                        'nama' => $dt_senbud['nama'],
-                        'provinsi' => $dt_senbud['provinsi'],
-                        'kabupaten' => $dt_senbud['kabupaten'], //kurang kecamatan dan kelurahan
-                        'alamat' => $dt_senbud['alamat'],
-                        'fokus' => $dt_senbud['fokus'],
-                        'tingkat' => $dt_senbud['tingkat'],
-                        'program' => $dt_senbud['program'],
-                        'created_by' => auth()->user()->id
-            ]);
-            $lastInsertedId = $exec->id;
-            TrMonitoringHasil::create([// insert data table tr_monitoring_hasil
+
+        // Insert data in bulk
+        DtaLembagaSeni::insert($data_senbud);
+
+        // Link data with monitoring
+        foreach ($data_senbud as $dt) {
+            $lastInsertedId = DtaLembagaSeni::where('nama', $dt['nama'])->latest()->first()->id;
+            TrMonitoringHasil::create([
                 'id_monitoring' => $idMonitoring,
                 'id_content' => $lastInsertedId,
                 'jenis' => 1,
                 'created_by' => auth()->user()->id
             ]);
         }
-        return true;
     }
 
-    private function insert_petugas($request, $idMonitoring) {
-        for ($index = 0; $index < count($request->petugastxt); $index++) {
-            $data_petugas[$index] = [
+    // Insert petugas data
+    private function insertPetugas($request, $idMonitoring) {
+        $data_petugas = [];
+        foreach ($request->petugastxt as $petugas) {
+            $data_petugas[] = [
                 'id_monitoring' => $idMonitoring,
-                'id_pegawai' => $request->petugastxt[$index]
+                'id_pegawai' => $petugas
             ];
         }
-        foreach ($data_petugas as $dt_petugas) {
-            TrMonitoringPetugas::create([
-                'id_monitoring' => $idMonitoring,
-                'id_pegawai' => $dt_petugas['id_pegawai'],
-                'created_by' => auth()->user()->id
-            ]);
-        }
-        return true;
+
+        // Insert data in bulk
+        TrMonitoringPetugas::insert($data_petugas);
     }
 
-    private function generate_noMonitoring($request) {
-        //format nomor monitoring 31 7513 01 01 24 0001 = 2 digit kode provinsi, 4 digit kode kabupaten, 2 digit tanggal input, 2 digit bulan input, 2 digit tahun input, 4 digit nomor urut
+    // Generate unique monitoring number
+    private function generateNoMonitoring($request) {
         $tgl_monitoring = explode('/', $request->tgltxt);
         $tgl = $tgl_monitoring[0];
         $bulan = $tgl_monitoring[1];
         $tahun = substr($tgl_monitoring[2], 2);
+
         $last_num = TrMonitoring::where([
                     'provinsi' => $request->provtxt,
                     'kabupaten' => $request->kabtxt
                 ])->orderBy('no_monitoring', 'desc')->first();
+
         if ($last_num) {
-            $currnum = (int) substr($last_num, 10) + 1;
+            $currnum = (int) substr($last_num->no_monitoring, 10) + 1;
         } else {
             $currnum = $request->provtxt . $request->kabtxt . $tgl . $bulan . $tahun . str_pad(1, 4, 0, STR_PAD_LEFT);
         }
+
         return $currnum;
     }
 
