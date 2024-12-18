@@ -22,18 +22,18 @@ class TrMonitoringHasil extends Model {
     ];
 
     public function monitoring() {
-        return $this->belongsTo(TrMonitoring::class, 'id_monitoring');
+        return $this->belongsTo(TrMonitoring::class, 'id_monitoring', 'id');
     }
 
     public function lembagaSeni() {
-        return $this->belongsTo(DtaLembagaSeni::class, 'id_content');
+        return $this->belongsTo(DtaLembagaSeni::class, 'id_content', 'id');
     }
 
     public function seniman() {
-        return $this->belongsTo(DtaSeniman::class, 'id_content');
+        return $this->belongsTo(DtaSeniman::class, 'id_content', 'id');
     }
 
     public function programSeni() {
-        return $this->belongsTo(DtaProgramSeni::class, 'id_content');
+        return $this->belongsTo(DtaProgramSeni::class, 'id_content', 'id');
     }
 }
