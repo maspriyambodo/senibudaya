@@ -316,7 +316,18 @@ class MonitoringController extends AuthController {
 
     public function ubah(Request $request) {
         $exec = TrMonitoring::with('provinsi', 'kabupaten', 'hasil', 'petugas', 'petugas.pegawai', 'hasil.lembagaSeni', 'hasil.seniman', 'hasil.programSeni')
-                        ->where('id', $request->id)->first();
+                ->where('id', $request->id)
+                ->orWhereHas('hasil.lembagaSeni', function ($q) {
+                    $q->where('jenis', 1);
+                })
+                ->orWhereHas('hasil.seniman', function ($q) {
+                    $q->where('jenis', 2);
+                })
+                ->orWhereHas('hasil.programSeni', function ($q) {
+                    $q->where('jenis', 3);
+                })
+                ->first();
+//                        dd($exec);
         $provinsi = Provinsi::select('mt_provinsi.id_provinsi', 'mt_provinsi.nama AS provinsi', 'mt_provinsi.stat')
                         ->where('mt_provinsi.stat', 1)->get();
         $pegawai = Pegawai::where('stat', 1)->get();

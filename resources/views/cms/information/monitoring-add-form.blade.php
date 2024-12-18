@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="clear" style="margin-top:5%;"></div>
-        <form id="form_monitoring" action="{{ url($current) }}/store" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="" autocomplete="off">
+        <form id="form_monitoring" action="@isset($q){{ url($current . '/update') }}@else{{ url($current . '/store') }}@endisset" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="" autocomplete="off">
             @csrf
             @method('POST')
             <div class="card">
@@ -130,57 +130,74 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Lembaga Seni Budaya Islam</h5>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Nama Lembaga/Sanggar</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="nmlemtxt1" name="nmlemtxt[]" class="form-control"/>
-                            <input type="hidden" name="countlem" id="countlem" value="1"/>
+                <div id="lemelem" class="card-body">
+                    @foreach($data->hasil as $key => $dt_lembagaSeni)
+                    @isset($dt_lembagaSeni->lembagaSeni)
+                    <div id="lemelem{{ ($key+1) }}">
+                        <h5 class="card-title">Lembaga Seni Budaya Islam {{ ($key+1) }}</h5>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Nama Lembaga/Sanggar</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="nmlemtxt1" name="nmlemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->nama }}"/>
+                                @if($key == 0)
+                                <input type="hidden" name="countlem" id="countlem" value="{{ count($data->hasil) }}"/>
+                                @endif
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Provinsi</label>
-                        <div class="col-sm-8">
-                            <select id="provlemtxt1" name="provlemtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provlemtxt1', 1)">
-                                <option value="">pilih provinsi</option>
-                                @foreach($provinsi as $dt_prov2)
-                                <option value="{{ $dt_prov2->id_provinsi }}">{{ $dt_prov2->provinsi }}</option>
-                                @endforeach
-                            </select>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Provinsi</label>
+                            <div class="col-sm-8">
+                                <select id="provlemtxt1" name="provlemtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provlemtxt1', 1)">
+                                    <option value="">pilih provinsi</option>
+                                    @foreach($provinsi as $dt_prov2)
+                                    <option value="{{ $dt_prov2->id_provinsi }}">{{ $dt_prov2->provinsi }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Kabupaten</label>
-                        <div class="col-sm-8">
-                            <select id="kablemtxt1" name="kablemtxt[]" class="form-control form-select"></select>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Kabupaten</label>
+                            <div class="col-sm-8">
+                                <select id="kablemtxt1" name="kablemtxt[]" class="form-control form-select"></select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Alamat</label>
-                        <div class="col-sm-8">
-                            <textarea id="addrlemtxt1" name="addrlemtxt[]" class="form-control"></textarea>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Alamat</label>
+                            <div class="col-sm-8">
+                                <textarea id="addrlemtxt1" name="addrlemtxt[]" class="form-control">{{ $dt_lembagaSeni->lembagaSeni->alamat }}</textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Fokus</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="foclemtxt1" name="foclemtxt[]" class="form-control"/>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Fokus</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="foclemtxt1" name="foclemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->fokus }}"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Tingkat</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="tinlemtxt1" name="tinlemtxt[]" class="form-control"/>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Tingkat</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="tinlemtxt1" name="tinlemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->tingkat }}"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Program</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="prolemtxt1" name="prolemtxt[]" class="form-control"/>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Program</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prolemtxt1" name="prolemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->program }}"/>
+                            </div>
                         </div>
+                        @if($key > 0)
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-danger" onclick="removeLem({{ ($key+1) }});"><i class="feather icon-trash"></i> Hapus Lembaga Seni Budaya Islam {{ ($key+1) }}</button>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
-                    <div id="lemelem"></div>
+                    @endisset
+                    @endforeach
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-success" onclick="tambahLembaga()"><i class="feather icon-plus"></i> Tambah</button>
@@ -188,7 +205,9 @@
             </div>
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Seniman & Budayawan Muslim</h5>
+                    @foreach($data->hasil as $key_seniman => $dt_seniman)
+                    @isset($dt_seniman->seniman)
+                    <h5 class="card-title">Seniman & Budayawan Muslim {{ $key_seniman }}</h5>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Nama</label>
                         <div class="col-sm-8">
@@ -237,6 +256,8 @@
                             <input type="text" id="orgsenbudtxt1" name="orgsenbudtxt[]" class="form-control"/>
                         </div>
                     </div>
+                    @endisset
+                    @endforeach
                     <div id="senElem"></div>
                 </div>
                 <div class="card-footer">
@@ -302,15 +323,14 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    $(document).ready(function () {
-    $('.form-select').select2();
-    $("#tgltxt").datepicker();
-    var provtxt = $('#provtxt').val();
-    if (provtxt != '') {
-    provinsi(provtxt, 'provtxt', 1);
-    }
-    });
-</script>
+                        $(document).ready(function () {
+                        $('.form-select').select2();
+                        $("#tgltxt").datepicker();
+                        var provtxt = $('#provtxt').val();
+                        if (provtxt != '') {
+                        provinsi(provtxt, 'provtxt', 1);
+                        }
+                        });</script>
 <script>
     function tambahProg() {
     Swal.fire({
