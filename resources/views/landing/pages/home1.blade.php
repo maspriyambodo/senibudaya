@@ -111,9 +111,21 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('landing.home') }}" data-scroll-to="#our-collections">Our Collection</a>
                             </li>
+                            @auth
+                            @if(auth()->user()->id_group == 5)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('form-pengajuan.create') }}" data-scroll-to="#our-collections">Form Pengajuan</a>
+                            </li>
+                            @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('dashboard') }}" data-scroll-to="#our-collections">Dashboard</a>
+                            </li>
+                            @endif
+                            @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}" data-scroll-to="#our-collections">Login</a>
                             </li>
+                            @endauth
                         </ul>
                     </div>
                 </div>
