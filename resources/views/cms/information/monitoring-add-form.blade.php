@@ -91,9 +91,13 @@
                                 @endforeach
                             </select>
                         </div>
+                        @isset($data)
                         @if(count($data->petugas) <= 1)
                         <input id="countpeg" type="hidden" name="countpeg" value="1"/>
                         @endif
+                        @else
+                        <input id="countpeg" type="hidden" name="countpeg" value="1"/>
+                        @endisset
                         <div class="col-sm-3">
                             <button type="button" class="btn btn-primary" onclick="tambahPegawai()"><i class="feather icon-plus"></i> Tambah Petugas</button>
                         </div>
@@ -131,6 +135,7 @@
             </div>
             <div class="card">
                 <div id="lemelem" class="card-body">
+                    @isset($data)
                     @foreach($data->hasil as $key => $dt_lembagaSeni)
                     @isset($dt_lembagaSeni->lembagaSeni)
                     <div id="lemelem{{ ($key+1) }}">
@@ -198,16 +203,68 @@
                     </div>
                     @endisset
                     @endforeach
+                    @else
+                    <h5 class="card-title">Lembaga Seni Budaya Islam</h5>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Nama Lembaga/Sanggar</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="nmlemtxt1" name="nmlemtxt[]" class="form-control"/>
+                            <input type="hidden" name="countlem" id="countlem" value="1"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Provinsi</label>
+                        <div class="col-sm-8">
+                            <select id="provlemtxt1" name="provlemtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provlemtxt1', 1)">
+                                <option value="">pilih provinsi</option>
+                                @foreach($provinsi as $dt_prov2)
+                                <option value="{{ $dt_prov2->id_provinsi }}">{{ $dt_prov2->provinsi }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Kabupaten</label>
+                        <div class="col-sm-8">
+                            <select id="kablemtxt1" name="kablemtxt[]" class="form-control form-select"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Alamat</label>
+                        <div class="col-sm-8">
+                            <textarea id="addrlemtxt1" name="addrlemtxt[]" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Fokus</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="foclemtxt1" name="foclemtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Tingkat</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="tinlemtxt1" name="tinlemtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Program</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="prolemtxt1" name="prolemtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    @endisset
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-success" onclick="tambahLembaga()"><i class="feather icon-plus"></i> Tambah</button>
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div id="senElem" class="card-body">
+                    @isset($data)
                     @foreach($data->hasil as $key_seniman => $dt_seniman)
                     @isset($dt_seniman->seniman)
-                    <h5 class="card-title">Seniman & Budayawan Muslim {{ $key_seniman }}</h5>
+                    <h5 class="card-title">Seniman & Budayawan Muslim {{ ($key_seniman+1) }}</h5>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Nama</label>
                         <div class="col-sm-8">
@@ -258,7 +315,57 @@
                     </div>
                     @endisset
                     @endforeach
-                    <div id="senElem"></div>
+                    @else
+                    <h5 class="card-title">Seniman & Budayawan Muslim</h5>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Nama</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="nmsenbudtxt1" name="nmsenbudtxt[]" class="form-control"/>
+                            <input type="hidden" name="countsenbud" id="countsenbud" value="1"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Provinsi</label>
+                        <div class="col-sm-8">
+                            <select id="provsenbudtxt1" name="provsenbudtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provsenbudtxt1', 1)">
+                                <option value="">pilih provinsi</option>
+                                @foreach($provinsi as $dt_prov3)
+                                <option value="{{ $dt_prov3->id_provinsi }}">{{ $dt_prov3->provinsi }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Kabupaten</label>
+                        <div class="col-sm-8">
+                            <select id="kabsenbudtxt1" name="kabsenbudtxt[]" class="form-control form-select"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Alamat</label>
+                        <div class="col-sm-8">
+                            <textarea id="addrsenbudtxt1" name="addrsenbudtxt[]" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Bidang</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="bidsenbudtxt1" name="bidsenbudtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Karya</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="karsenbudtxt1" name="karsenbudtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Lembaga/Organisasi</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="orgsenbudtxt1" name="orgsenbudtxt[]" class="form-control"/>
+                        </div>
+                    </div>
+                    @endisset
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-success" onclick="tambahSeniman();"><i class="feather icon-plus"></i> Tambah</button>
