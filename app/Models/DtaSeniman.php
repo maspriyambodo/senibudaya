@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\TrMonitoringHasil;
+use App\Models\Provinsi;
+use App\Models\KabupatenKota;
 
 class DtaSeniman extends Model {
 
@@ -20,5 +22,13 @@ class DtaSeniman extends Model {
 
     public function hasil() {
         return $this->hasMany(TrMonitoringHasil::class, 'id_content');
+    }
+
+    public function provinsi() {
+        return $this->belongsTo(Provinsi::class, 'provinsi', 'id_provinsi');
+    }
+
+    public function kabupaten() {
+        return $this->belongsTo(KabupatenKota::class, 'kabupaten', 'id_kabupaten');
     }
 }

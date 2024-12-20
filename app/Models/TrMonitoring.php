@@ -21,11 +21,11 @@ class TrMonitoring extends Model {
     ];
 
     public function petugas() {
-        return $this->hasMany(TrMonitoringPetugas::class, 'id_monitoring');
+        return $this->hasMany(TrMonitoringPetugas::class, 'id_monitoring', 'id');
     }
 
     public function hasil() {
-        return $this->hasMany(TrMonitoringHasil::class, 'id_monitoring');
+        return $this->hasMany(TrMonitoringHasil::class, 'id_monitoring', 'id');
     }
 
     public function provinsi() {
