@@ -33,6 +33,9 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Nomor Monitoring</label>
                         <div class="col-sm-8">
+                            @isset($data)
+                            <input type="hidden" id="idMonitoring" name="idMonitoring" value="{{$data->id;}}"/>
+                            @endisset
                             <input id="notxt" type="text" name="notxt" class="form-control" placeholder="otomatis by system" value="@isset($data->no_monitoring) {{ $data->no_monitoring; }} @endisset" readonly=""/>
                         </div>
                     </div>
