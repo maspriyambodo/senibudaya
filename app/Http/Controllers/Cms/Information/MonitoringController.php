@@ -129,9 +129,9 @@ class MonitoringController extends AuthController {
 
     public function store(Request $request) {
         $validator = Validator::make($request->all(), [
-                    'tgltxt' => 'required|date',
-                    'provtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
-                    'kabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten'
+            'tgltxt' => 'required|date',
+            'provtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
+            'kabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten'
         ]);
         if ($validator->fails()) {
             return redirect('monitoring/add')
@@ -315,19 +315,32 @@ class MonitoringController extends AuthController {
     }
 
     public function ubah(Request $request) {
-        $exec = TrMonitoring::with('provinsi', 'kabupaten', 'hasil', 'petugas', 'petugas.pegawai', 'hasil.lembagaSeni', 'hasil.seniman', 'hasil.programSeni')
-                ->where('id', $request->id)
-                ->orWhereHas('hasil.lembagaSeni', function ($q) {
-                    $q->where('jenis', 1);
-                })
-                ->orWhereHas('hasil.seniman', function ($q) {
-                    $q->where('jenis', 2);
-                })
-                ->orWhereHas('hasil.programSeni', function ($q) {
-                    $q->where('jenis', 3);
+        $exec = TrMonitoring::with('provinsi', 'kabupaten', 'hasil', 'petugas', 'petugas.pegawai')
+                ->where('tr_monitoring.id', $request->id)
+                ->orWhereHas('petugas', function ($q) use ($request) {
+                    $q->where('tr_monitoring_petugas.id_monitoring', $request->id);
                 })
                 ->first();
-//                        dd($exec);
+//        dd($exec);
+//        return response()->json($exec);
+        $lembaga_seni = TrMonitoringHasil::with(['lembagaSeni.provinsi', 'lembagaSeni.kabupaten'])
+                ->where([
+                    'id_monitoring' => $request->id,
+                    'jenis' => 1
+                ])
+                ->get();
+        $seniman = TrMonitoringHasil::with(['seniman.provinsi', 'seniman.kabupaten'])
+                ->where([
+                    'id_monitoring' => $request->id,
+                    'jenis' => 2
+                ])
+                ->get();
+        $programSeni = TrMonitoringHasil::with(['programSeni.provinsi', 'programSeni.kabupaten'])
+                ->where([
+                    'id_monitoring' => $request->id,
+                    'jenis' => 3
+                ])
+                ->get();
         $provinsi = Provinsi::select('mt_provinsi.id_provinsi', 'mt_provinsi.nama AS provinsi', 'mt_provinsi.stat')
                         ->where('mt_provinsi.stat', 1)->get();
         $pegawai = Pegawai::where('stat', 1)->get();
@@ -335,6 +348,9 @@ class MonitoringController extends AuthController {
                 ClassMenu::view($this->target),
                 [
                     'data' => $exec,
+                    'lembaga_seni' => $lembaga_seni,
+                    'seniman' => $seniman,
+                    'programSeni' => $programSeni,
                     'provinsi' => $provinsi,
                     'pegawai' => $pegawai
                 ]

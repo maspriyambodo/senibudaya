@@ -135,24 +135,23 @@
             </div>
             <div class="card">
                 <div id="lemelem" class="card-body">
-                    @isset($data)
-                    @foreach($data->hasil as $key => $dt_lembagaSeni)
-                    @isset($dt_lembagaSeni->lembagaSeni)
-                    <div id="lemelem{{ ($key+1) }}">
-                        <h5 class="card-title">Lembaga Seni Budaya Islam {{ ($key+1) }}</h5>
+                    @if(isset($lembaga_seni) && count($lembaga_seni) <> 0)
+                    @foreach($lembaga_seni as $key_lembagaSeni => $dt_lembagaSeni)
+                    <div id="lemelem{{ ($key_lembagaSeni+1) }}">
+                        <h5 class="card-title">Lembaga Seni Budaya Islam {{ ($key_lembagaSeni+1) }}</h5>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Nama Lembaga/Sanggar</label>
                             <div class="col-sm-8">
-                                <input type="text" id="nmlemtxt1" name="nmlemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->nama }}"/>
-                                @if($key == 0)
-                                <input type="hidden" name="countlem" id="countlem" value="{{ count($data->hasil) }}"/>
+                                <input type="text" id="nmlemtxt{{ ($key_lembagaSeni+1) }}" name="nmlemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->nama }}"/>
+                                @if($key_lembagaSeni == 0)
+                                <input type="hidden" name="countlem" id="countlem" value="{{ count($lembaga_seni) }}"/>
                                 @endif
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Provinsi</label>
                             <div class="col-sm-8">
-                                <select id="provlemtxt1" name="provlemtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provlemtxt1', 1)">
+                                <select id="provlemtxt{{ ($key_lembagaSeni+1) }}" name="provlemtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provlemtxt1', 1)">
                                     <option value="">pilih provinsi</option>
                                     @foreach($provinsi as $dt_prov2)
                                     <option value="{{ $dt_prov2->id_provinsi }}">{{ $dt_prov2->provinsi }}</option>
@@ -163,45 +162,44 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Kabupaten</label>
                             <div class="col-sm-8">
-                                <select id="kablemtxt1" name="kablemtxt[]" class="form-control form-select"></select>
+                                <select id="kablemtxt{{ ($key_lembagaSeni+1) }}" name="kablemtxt[]" class="form-control form-select"></select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Alamat</label>
                             <div class="col-sm-8">
-                                <textarea id="addrlemtxt1" name="addrlemtxt[]" class="form-control">{{ $dt_lembagaSeni->lembagaSeni->alamat }}</textarea>
+                                <textarea id="addrlemtxt{{ ($key_lembagaSeni+1) }}" name="addrlemtxt[]" class="form-control">{{ $dt_lembagaSeni->lembagaSeni->alamat }}</textarea>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Fokus</label>
                             <div class="col-sm-8">
-                                <input type="text" id="foclemtxt1" name="foclemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->fokus }}"/>
+                                <input type="text" id="foclemtxt{{ ($key_lembagaSeni+1) }}" name="foclemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->fokus }}"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Tingkat</label>
                             <div class="col-sm-8">
-                                <input type="text" id="tinlemtxt1" name="tinlemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->tingkat }}"/>
+                                <input type="text" id="tinlemtxt{{ ($key_lembagaSeni+1) }}" name="tinlemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->tingkat }}"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Program</label>
                             <div class="col-sm-8">
-                                <input type="text" id="prolemtxt1" name="prolemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->program }}"/>
+                                <input type="text" id="prolemtxt{{ ($key_lembagaSeni+1) }}" name="prolemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->program }}"/>
                             </div>
                         </div>
-                        @if($key > 0)
+                        @if($key_lembagaSeni > 0)
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label"></label>
                             <div class="col-sm-8">
                                 <div class="text-right">
-                                    <button type="button" class="btn btn-danger" onclick="removeLem({{ ($key+1) }});"><i class="feather icon-trash"></i> Hapus Lembaga Seni Budaya Islam {{ ($key+1) }}</button>
+                                    <button type="button" class="btn btn-danger" onclick="removeLem({{ ($key_lembagaSeni+1) }});"><i class="feather icon-trash"></i> Hapus Lembaga Seni Budaya Islam {{ ($key_lembagaSeni+1) }}</button>
                                 </div>
                             </div>
                         </div>
                         @endif
                     </div>
-                    @endisset
                     @endforeach
                     @else
                     <h5 class="card-title">Lembaga Seni Budaya Islam</h5>
@@ -253,7 +251,7 @@
                             <input type="text" id="prolemtxt1" name="prolemtxt[]" class="form-control"/>
                         </div>
                     </div>
-                    @endisset
+                    @endif
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-success" onclick="tambahLembaga()"><i class="feather icon-plus"></i> Tambah</button>
@@ -261,59 +259,71 @@
             </div>
             <div class="card">
                 <div id="senElem" class="card-body">
-                    @isset($data)
-                    @foreach($data->hasil as $key_seniman => $dt_seniman)
-                    @isset($dt_seniman->seniman)
-                    <h5 class="card-title">Seniman & Budayawan Muslim {{ ($key_seniman+1) }}</h5>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Nama</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="nmsenbudtxt1" name="nmsenbudtxt[]" class="form-control"/>
-                            <input type="hidden" name="countsenbud" id="countsenbud" value="1"/>
+                    @if(isset($seniman) && count($seniman) <> 0)
+                    @foreach($seniman as $key_seniman => $dt_seniman)
+                    <div id="senElem{{ ($key_seniman+1) }}">
+                        <h5 class="card-title">Seniman & Budayawan Muslim {{ ($key_seniman+1) }}</h5>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Nama</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="nmsenbudtxt{{ ($key_seniman+1) }}" name="nmsenbudtxt[]" class="form-control"/>
+                                @if($key_seniman == 0)
+                                <input type="hidden" name="countsenbud" id="countsenbud" value="{{ count($seniman); }}"/>
+                                @endif
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Provinsi</label>
-                        <div class="col-sm-8">
-                            <select id="provsenbudtxt1" name="provsenbudtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provsenbudtxt1', 1)">
-                                <option value="">pilih provinsi</option>
-                                @foreach($provinsi as $dt_prov3)
-                                <option value="{{ $dt_prov3->id_provinsi }}">{{ $dt_prov3->provinsi }}</option>
-                                @endforeach
-                            </select>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Provinsi</label>
+                            <div class="col-sm-8">
+                                <select id="provsenbudtxt{{ ($key_seniman+1) }}" name="provsenbudtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provsenbudtxt{{ ($key_seniman+1) }}', {{ ($key_seniman+1) }})">
+                                    <option value="">pilih provinsi</option>
+                                    @foreach($provinsi as $dt_prov3)
+                                    <option value="{{ $dt_prov3->id_provinsi }}">{{ $dt_prov3->provinsi }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Kabupaten</label>
-                        <div class="col-sm-8">
-                            <select id="kabsenbudtxt1" name="kabsenbudtxt[]" class="form-control form-select"></select>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Kabupaten</label>
+                            <div class="col-sm-8">
+                                <select id="kabsenbudtxt{{ ($key_seniman+1) }}" name="kabsenbudtxt[]" class="form-control form-select"></select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Alamat</label>
-                        <div class="col-sm-8">
-                            <textarea id="addrsenbudtxt1" name="addrsenbudtxt[]" class="form-control"></textarea>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Alamat</label>
+                            <div class="col-sm-8">
+                                <textarea id="addrsenbudtxt{{ ($key_seniman+1) }}" name="addrsenbudtxt[]" class="form-control"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Bidang</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="bidsenbudtxt1" name="bidsenbudtxt[]" class="form-control"/>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Bidang</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="bidsenbudtxt{{ ($key_seniman+1) }}" name="bidsenbudtxt[]" class="form-control"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Karya</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="karsenbudtxt1" name="karsenbudtxt[]" class="form-control"/>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Karya</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="karsenbudtxt{{ ($key_seniman+1) }}" name="karsenbudtxt[]" class="form-control"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Lembaga/Organisasi</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="orgsenbudtxt1" name="orgsenbudtxt[]" class="form-control"/>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Lembaga/Organisasi</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="orgsenbudtxt{{ ($key_seniman+1) }}" name="orgsenbudtxt[]" class="form-control"/>
+                            </div>
                         </div>
+                        @if($key_seniman > 0)
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-danger" onclick="removeSenbud({{ ($key_seniman+1) }});"><i class="feather icon-trash"></i> Hapus Seniman &amp; Budayawan Islam {{ ($key_seniman+1) }}</button>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
-                    @endisset
                     @endforeach
                     @else
                     <h5 class="card-title">Seniman & Budayawan Muslim</h5>
@@ -365,14 +375,70 @@
                             <input type="text" id="orgsenbudtxt1" name="orgsenbudtxt[]" class="form-control"/>
                         </div>
                     </div>
-                    @endisset
+                    @endif
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-success" onclick="tambahSeniman();"><i class="feather icon-plus"></i> Tambah</button>
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div id="progElem" class="card-body">
+                    @if(isset($programSeni) && count($programSeni) <> 0)
+                    @foreach($programSeni as $key_programSeni => $dt_programSeni)
+                    <div id="progElem{{ ($key_programSeni+1); }}">
+                        <h5 class="card-title">Program Seni Budaya Islam (Pembinaan/Festival, dan sejenisnya) {{ ($key_programSeni+1); }}</h5>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Nama Kegiatan</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgnmtxt{{ ($key_programSeni+1); }}" name="prgnmtxt[]" class="form-control"/>
+                                @if($key_programSeni == 0)
+                                <input type="hidden" name="countprog" id="countprog" value="{{ count($programSeni); }}"/>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Frekuensi</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgfretxt{{ ($key_programSeni+1); }}" name="prgfretxt[]" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Tujuan</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgtujtxt{{ ($key_programSeni+1); }}" name="prgtujtxt[]" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Unsur Peserta</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgunstxt{{ ($key_programSeni+1); }}" name="prgtunstxt[]" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Waktu</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgwkttxt{{ ($key_programSeni+1); }}" name="prgwkttxt[]" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Penyelenggara</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgpnytxt{{ ($key_programSeni+1); }}" name="prgpnytxt[]" class="form-control"/>
+                            </div>
+                        </div>
+                        @if($key_programSeni > 0)
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-danger" onclick="removeProg({{ ($key_programSeni+1); }});"><i class="feather icon-trash"></i> Hapus Program Seni Budaya Islam {{ ($key_programSeni+1); }}</button>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @endforeach
+                    @else
                     <h5 class="card-title">Program Seni Budaya Islam (Pembinaan/Festival, dan sejenisnya)</h5>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Nama Kegiatan</label>
@@ -411,7 +477,7 @@
                             <input type="text" id="prgpnytxt1" name="prgpnytxt[]" class="form-control"/>
                         </div>
                     </div>
-                    <div id="progElem"></div>
+                    @endif
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-success" onclick="tambahProg();"><i class="feather icon-plus"></i> Tambah</button>
