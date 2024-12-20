@@ -341,6 +341,7 @@ class MonitoringController extends AuthController {
                     'jenis' => 3
                 ])
                 ->get();
+//        dd($lembaga_seni);
         $provinsi = Provinsi::select('mt_provinsi.id_provinsi', 'mt_provinsi.nama AS provinsi', 'mt_provinsi.stat')
                         ->where('mt_provinsi.stat', 1)->get();
         $pegawai = Pegawai::where('stat', 1)->get();
