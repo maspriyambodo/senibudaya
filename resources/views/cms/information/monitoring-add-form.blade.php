@@ -157,6 +157,7 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Provinsi</label>
                             <div class="col-sm-8">
+                                <input type="hidden" id="idprovlev{{ ($key_lembagaSeni+1) }}" name="idprovlev[]" value="{{$dt_lembagaSeni->lembagaSeni->provinsi}}"/>
                                 <select id="provlemtxt{{ ($key_lembagaSeni+1) }}" name="provlemtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provlemtxt{{ ($key_lembagaSeni+1) }}', {{ ($key_lembagaSeni+1) }})">
                                     <option value="">pilih provinsi</option>
                                     @foreach($provinsi as $dt_prov2)
@@ -287,6 +288,7 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Provinsi</label>
                             <div class="col-sm-8">
+                                <input type="hidden" name="idprovsenbud" id="idprovsenbud{{ ($key_seniman+1) }}" value="{{ $dt_seniman->seniman->provinsi }}"/>
                                 <select id="provsenbudtxt{{ ($key_seniman+1) }}" name="provsenbudtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provsenbudtxt{{ ($key_seniman+1) }}', {{ ($key_seniman+1) }})">
                                     <option value="">pilih provinsi</option>
                                     @foreach($provinsi as $dt_prov3)
@@ -302,6 +304,7 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Kabupaten</label>
                             <div class="col-sm-8">
+                                <input type="hidden" name="idkabsen[]" id="idkabsen{{ ($key_seniman+1) }}" value="{{ $dt_seniman->seniman->kabupaten }}"/>
                                 <select id="kabsenbudtxt{{ ($key_seniman+1) }}" name="kabsenbudtxt[]" class="form-control form-select"></select>
                             </div>
                         </div>
@@ -513,14 +516,37 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-                        $(document).ready(function () {
-                        $('.form-select').select2();
-                        $("#tgltxt").datepicker();
-                        var provtxt = $('#provtxt').val();
-                        if (provtxt != '') {
-                        provinsi(provtxt, 'provtxt', 1);
-                        }
-                        });</script>
+$(document).ready(function() {
+    $('.form-select').select2();
+    $("#tgltxt").datepicker();
+    var provtxt = $('#provtxt').val();
+    var countlem = $('#countlem').val();
+    var index_lem;
+    var countsenbud = $('#countsenbud').val();
+    var index_senbud;
+    for (index_senbud = 1; index_senbud <= countsenbud; index_senbud++){
+        var id_prov_senbud = $('#idprovsenbud'+index_senbud).val();
+        provinsi(id_prov_senbud, 'provsenbudtxt' + index_senbud, index_senbud);
+    }
+    for (index_lem = 1; index_lem <= countlem; index_lem++) {
+        var id_prov_lev = $('#idprovlev' + index_lem).val();
+        provinsi(id_prov_lev, 'provlemtxt' + index_lem, index_lem);
+    }
+    if (provtxt != '') {
+        provinsi(provtxt, 'provtxt', 1);
+    }
+});
+</script>
+<script>
+function kabselected(kabtxt, idtxt) {
+    var kabupatenid = $('#idkabsel' + idtxt).length;
+    if (kabupatenid) {
+        var kabupatenidtxt = $('#idkabsel' + idtxt).val();
+        console.log(kabtxt + '-' + kabupatenidtxt);
+        $('#' + kabtxt).val(kabupatenidtxt).trigger('change');
+    }
+}
+</script>
 <script>
     function tambahProg() {
     Swal.fire({
@@ -930,82 +956,81 @@
 <script>
     function provinsi(id_prov, provtxt, idtxt) {
     Swal.fire({
-    title: 'memuat data...',
-            html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            onOpen: function () {
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
             Swal.showLoading();
-            }
+        }
     });
     var kabtxt = '';
     if (provtxt === 'provtxt') {
-    kabtxt = 'kabtxt';
-    $('#' + kabtxt).children('option').remove();
+        kabtxt = 'kabtxt';
+        $('#' + kabtxt).children('option').remove();
     } else if (provtxt === 'provlemtxt' + idtxt) {
-    kabtxt = 'kablemtxt' + idtxt;
-    $('#' + kabtxt).children('option').remove();
+        kabtxt = 'kablemtxt' + idtxt;
+        $('#' + kabtxt).children('option').remove();
     } else if (provtxt === 'provsenbudtxt' + idtxt) {
-    kabtxt = 'kabsenbudtxt' + idtxt;
-    $('#' + kabtxt).children('option').remove();
+        kabtxt = 'kabsenbudtxt' + idtxt;
+        $('#' + kabtxt).children('option').remove();
     }
     if (id_prov !== '') {
-    $.ajax({
-    url: "{{ url('news/kabupaten?id_prov='); }}" + id_prov,
+        $.ajax({
+            url: "{{ url('news/kabupaten?id_prov='); }}" + id_prov,
             type: "GET",
             cache: false,
             contentType: false,
             processData: false,
             dataType: "JSON",
-            success: function (data) {
-            if (data.stat) {
-            var i;
-            for (i = 0; i < data.kabupaten.length; i++) {
-            var sel = document.getElementById(kabtxt);
-            var opt = document.createElement("option");
-            opt.value = data.kabupaten[i].id_kabupaten;
-            opt.text = data.kabupaten[i].kabupaten;
-            sel.add(opt, sel.options[i]);
-            }
-            var txtkab = $('#txtkab').val();
-            if (txtkab != '') {
-            $('#txtkab').val(txtkab).trigger('change');
-            } else {
-            $('#' + kabtxt).val('');
-            $('#' + kabtxt).trigger('change');
-            }
-            Swal.close();
-            } else {
-            Swal.fire({
-            text: data.msgtxt,
-                    icon: "error",
-                    buttonsStyling: !1,
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false,
-                    customClass: {
-                    confirmButton: "btn btn-primary"
+            success: function(data) {
+                if (data.stat) {
+                    var i;
+                    for (i = 0; i < data.kabupaten.length; i++) {
+                        var sel = document.getElementById(kabtxt);
+                        var opt = document.createElement("option");
+                        opt.value = data.kabupaten[i].id_kabupaten;
+                        opt.text = data.kabupaten[i].kabupaten;
+                        sel.add(opt, sel.options[i]);
                     }
-            }).then(function () {
-            window.location.reload();
-            });
-            }
+                    var txtkab = $('#txtkab').val();
+                    if (txtkab != '') {
+                        $('#txtkab').val(txtkab).trigger('change');
+                    }
+                    kabselected('kablemtxt' + idtxt, idtxt);
+                    kabselected('kabsenbudtxt' + idtxt, idtxt);
+                    Swal.close();
+                } else {
+                    Swal.fire({
+                        text: data.msgtxt,
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                }
             },
-            error: function () {
-            Swal.fire({
-            text: "kesalahan saat mendapatkan data kabupaten",
+            error: function() {
+                Swal.fire({
+                    text: "kesalahan saat mendapatkan data kabupaten",
                     icon: "error",
                     buttonsStyling: !1,
                     confirmButtonText: "OK",
                     allowOutsideClick: false,
                     customClass: {
-                    confirmButton: "btn btn-primary"
+                        confirmButton: "btn btn-primary"
                     }
-            }).then(function () {
-            window.location.reload();
-            });
+                }).then(function() {
+                    window.location.reload();
+                });
             }
-    });
+        });
     }
-    }
+}
 </script>
 @include('cms.footer')
