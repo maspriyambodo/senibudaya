@@ -524,8 +524,8 @@ $(document).ready(function() {
     var index_lem;
     var countsenbud = $('#countsenbud').val();
     var index_senbud;
-    for (index_senbud = 1; index_senbud <= countsenbud; index_senbud++){
-        var id_prov_senbud = $('#idprovsenbud'+index_senbud).val();
+    for (index_senbud = 1; index_senbud <= countsenbud; index_senbud++) {
+        var id_prov_senbud = $('#idprovsenbud' + index_senbud).val();
         provinsi(id_prov_senbud, 'provsenbudtxt' + index_senbud, index_senbud);
     }
     for (index_lem = 1; index_lem <= countlem; index_lem++) {
@@ -550,13 +550,13 @@ function kabselected(kabtxt, idtxt) {
 <script>
     function tambahProg() {
     Swal.fire({
-    title: 'memuat data...',
-            html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            onOpen: function () {
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
             Swal.showLoading();
-            }
+        }
     });
     var progCount = $('#countprog').val();
     var tot_Prog = parseInt(progCount, 10) + 1;
@@ -610,25 +610,26 @@ function kabselected(kabtxt, idtxt) {
                 </div>
                 `);
     $('html, body').animate({
-    scrollTop: $("#progElem" + tot_Prog).offset().top - 72
+        scrollTop: $("#progElem" + tot_Prog).offset().top - 72
     }, 2000);
     Swal.close();
-    }
-    function removeProg(val) {
+}
+
+function removeProg(val) {
     $('#progElem' + val).remove();
     $('#countprog').val(parseInt(val, 10) - 1);
-    }
+}
 </script>
 <script>
     function tambahSeniman() {
     Swal.fire({
-    title: 'memuat data...',
-            html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            onOpen: function () {
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
             Swal.showLoading();
-            }
+        }
     });
     var senbudcount = $('#countsenbud').val();
     var tot_Senbud = parseInt(senbudcount, 10) + 1;
@@ -690,71 +691,72 @@ function kabselected(kabtxt, idtxt) {
                 </div>
                 `);
     $.ajax({
-    url: "{{ url('monitoring/provinsi'); }}",
-            type: "GET",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "JSON",
-            success: function (data, textStatus, jqXHR) {
+        url: "{{ url('monitoring/provinsi'); }}",
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data, textStatus, jqXHR) {
             if (data.success) {
-            var i;
-            for (i = 0; i < data.dt_prov.length; i++) {
-            var sel = document.getElementById("provsenbudtxt" + tot_Senbud);
-            var opt = document.createElement("option");
-            opt.value = data.dt_prov[i].id;
-            opt.text = data.dt_prov[i].nama;
-            sel.add(opt, sel.options[i]);
-            }
-            $('#provsenbudtxt' + tot_Senbud).select2({
-            placeholder: "pilih provinsi"
-            });
-            $('html, body').animate({
-            scrollTop: $("#senElem" + tot_Senbud).offset().top - 72
-            }, 2000);
-            Swal.close();
+                var i;
+                for (i = 0; i < data.dt_prov.length; i++) {
+                    var sel = document.getElementById("provsenbudtxt" + tot_Senbud);
+                    var opt = document.createElement("option");
+                    opt.value = data.dt_prov[i].id;
+                    opt.text = data.dt_prov[i].nama;
+                    sel.add(opt, sel.options[i]);
+                }
+                $('#provsenbudtxt' + tot_Senbud).select2({
+                    placeholder: "pilih provinsi"
+                });
+                $('html, body').animate({
+                    scrollTop: $("#senElem" + tot_Senbud).offset().top - 72
+                }, 2000);
+                Swal.close();
             } else {
-            Swal.fire({
-            text: "error get data provinsi, errcode: 2358",
+                Swal.fire({
+                    text: "error get data provinsi, errcode: 2358",
                     icon: "error",
                     buttonsStyling: !1,
                     confirmButtonText: "OK",
                     allowOutsideClick: false,
                     customClass: {
-                    confirmButton: "btn btn-primary"
+                        confirmButton: "btn btn-primary"
                     }
-            });
+                });
             }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
             Swal.fire({
-            text: "error get data provinsi, errcode: 2357",
-                    icon: "error",
-                    buttonsStyling: !1,
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false,
-                    customClass: {
+                text: "error get data provinsi, errcode: 2357",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
                     confirmButton: "btn btn-primary"
-                    }
+                }
             });
-            }
+        }
     });
-    }
-    function removeSenbud(val) {
+}
+
+function removeSenbud(val) {
     $('#senElem' + val).remove();
     $('#countsenbud').val(parseInt(val, 10) - 1);
-    }
+}
 </script>
 <script>
     function tambahLembaga() {
     Swal.fire({
-    title: 'memuat data...',
-            html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            onOpen: function () {
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
             Swal.showLoading();
-            }
+        }
     });
     var countlem = $('#countlem').val();
     var tot_lem = parseInt(countlem, 10) + 1;
@@ -814,75 +816,77 @@ function kabselected(kabtxt, idtxt) {
                     </div>
         `);
     $.ajax({
-    url: "{{ url('monitoring/provinsi'); }}",
-            type: "GET",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "JSON",
-            success: function (data, textStatus, jqXHR) {
+        url: "{{ url('monitoring/provinsi'); }}",
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data, textStatus, jqXHR) {
             if (data.success) {
-            var i;
-            for (i = 0; i < data.dt_prov.length; i++) {
-            var sel = document.getElementById("provlemtxt" + tot_lem);
-            var opt = document.createElement("option");
-            opt.value = data.dt_prov[i].id;
-            opt.text = data.dt_prov[i].nama;
-            sel.add(opt, sel.options[i]);
-            }
-            Swal.close();
-            $('#provlemtxt' + tot_lem).select2({
-            placeholder: "pilih provinsi"
-            });
-            $('html, body').animate({
-            scrollTop: $("#lemelem" + tot_lem).offset().top - 72
-            }, 2000);
+                var i;
+                for (i = 0; i < data.dt_prov.length; i++) {
+                    var sel = document.getElementById("provlemtxt" + tot_lem);
+                    var opt = document.createElement("option");
+                    opt.value = data.dt_prov[i].id;
+                    opt.text = data.dt_prov[i].nama;
+                    sel.add(opt, sel.options[i]);
+                }
+                Swal.close();
+                $('#provlemtxt' + tot_lem).select2({
+                    placeholder: "pilih provinsi"
+                });
+                $('html, body').animate({
+                    scrollTop: $("#lemelem" + tot_lem).offset().top - 72
+                }, 2000);
             } else {
-            Swal.fire({
-            text: "error get data provinsi, errcode: 2228",
+                Swal.fire({
+                    text: "error get data provinsi, errcode: 2228",
                     icon: "error",
                     buttonsStyling: !1,
                     confirmButtonText: "OK",
                     allowOutsideClick: false,
                     customClass: {
-                    confirmButton: "btn btn-primary"
+                        confirmButton: "btn btn-primary"
                     }
-            });
+                });
             }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
             Swal.fire({
-            text: "error get data provinsi, errcode: 2227",
-                    icon: "error",
-                    buttonsStyling: !1,
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false,
-                    customClass: {
+                text: "error get data provinsi, errcode: 2227",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
                     confirmButton: "btn btn-primary"
-                    }
+                }
             });
-            }
+        }
     });
-    }
-    function removeLem(val) {
+}
+
+function removeLem(val) {
     $('#lemelem' + val).remove();
     $('#countlem').val(parseInt(val, 10) - 1);
-    }
+}
 </script>
 <script>
     function removePegawai(val) {
     $('#pegelem' + val).remove();
     $('#countpeg').val(parseInt(val, 10) - 1);
-    }
-    function tambahPegawai() {
+}
+
+function tambahPegawai() {
     Swal.fire({
-    title: 'memuat data...',
-            html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            onOpen: function () {
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
             Swal.showLoading();
-            }
+        }
     });
     var countpeg = $('#countpeg').val();
     var tot_peg = parseInt(countpeg, 10) + 1;
@@ -899,59 +903,59 @@ function kabselected(kabtxt, idtxt) {
                     </div>
         `);
     $.ajax({
-    url: "{{ url('monitoring/pegawai'); }}",
-            type: "GET",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "JSON",
-            success: function (data, textStatus, jqXHR) {
+        url: "{{ url('monitoring/pegawai'); }}",
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data, textStatus, jqXHR) {
             if (data.success) {
-            $('#petugastxt' + tot_peg).children('option').remove();
-            var i;
-            for (i = 0; i < data.dt_pegawai.length; i++) {
-            var sel = document.getElementById("petugastxt" + tot_peg);
-            var opt = document.createElement("option");
-            opt.value = data.dt_pegawai[i].id;
-            opt.text = data.dt_pegawai[i].nama;
-            sel.add(opt, sel.options[i]);
-            }
-            Swal.close();
-            $('#petugastxt' + tot_peg).select2({
-            placeholder: "pilih pegawai"
-            });
-            $('#petugastxt' + tot_peg).val('').trigger('change');
+                $('#petugastxt' + tot_peg).children('option').remove();
+                var i;
+                for (i = 0; i < data.dt_pegawai.length; i++) {
+                    var sel = document.getElementById("petugastxt" + tot_peg);
+                    var opt = document.createElement("option");
+                    opt.value = data.dt_pegawai[i].id;
+                    opt.text = data.dt_pegawai[i].nama;
+                    sel.add(opt, sel.options[i]);
+                }
+                Swal.close();
+                $('#petugastxt' + tot_peg).select2({
+                    placeholder: "pilih pegawai"
+                });
+                $('#petugastxt' + tot_peg).val('').trigger('change');
             } else {
-            Swal.fire({
-            text: "error get data pegawai",
+                Swal.fire({
+                    text: "error get data pegawai",
                     icon: "error",
                     buttonsStyling: !1,
                     confirmButtonText: "OK",
                     allowOutsideClick: false,
                     customClass: {
-                    confirmButton: "btn btn-primary"
+                        confirmButton: "btn btn-primary"
                     }
-            }).then(function () {
-            window.location.reload();
-            });
+                }).then(function() {
+                    window.location.reload();
+                });
             }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
             Swal.fire({
-            text: "kesalahan saat mendapatkan data pegawai",
-                    icon: "error",
-                    buttonsStyling: !1,
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false,
-                    customClass: {
+                text: "kesalahan saat mendapatkan data pegawai",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
                     confirmButton: "btn btn-primary"
-                    }
-            }).then(function () {
-            window.location.reload();
+                }
+            }).then(function() {
+                window.location.reload();
             });
-            }
+        }
     });
-    }
+}
 </script>
 <script>
     function provinsi(id_prov, provtxt, idtxt) {
