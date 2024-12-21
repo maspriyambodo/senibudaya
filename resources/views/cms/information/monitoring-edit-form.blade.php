@@ -7,7 +7,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">{{ $title }} Add New</h5>
+                            <h5 class="m-b-10">Edit Data {{ $title }}</h5>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -17,14 +17,14 @@
                             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}"><i class="feather icon-home"></i></a></li>
                             <li class="breadcrumb-item"><a href="javascript:void(0);">Informasi</a></li>
                             <li class="breadcrumb-item"><a href="{{ url($current) }}">{{ $title }}</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Add</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Edit</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
         <div class="clear" style="margin-top:5%;"></div>
-        <form id="form_monitoring" action="{{ url($current) }}/store" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="" autocomplete="off">
+        <form id="form_monitoring" action="@isset($q){{ url($current . '/update') }}@else{{ url($current . '/store') }}@endisset" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="" autocomplete="off">
             @csrf
             @method('POST')
             <div class="card">
@@ -33,13 +33,16 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Nomor Monitoring</label>
                         <div class="col-sm-8">
-                            <input id="notxt" type="text" name="notxt" class="form-control" placeholder="otomatis by system" readonly=""/>
+                            @isset($data)
+                            <input type="hidden" id="idMonitoring" name="idMonitoring" value="{{$data->id;}}"/>
+                            @endisset
+                            <input id="notxt" type="text" name="notxt" class="form-control" placeholder="otomatis by system" value="@isset($data->no_monitoring) {{ $data->no_monitoring; }} @endisset" readonly=""/>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Tanggal Monitoring</label>
                         <div class="col-sm-8">
-                            <input id="tgltxt" type="text" name="tgltxt" class="form-control" readonly="" required=""/>
+                            <input id="tgltxt" type="text" name="tgltxt" class="form-control" readonly="" required="" value="@isset($data->tgl_monitoring) {{ date('m/d/Y', strtotime($data->tgl_monitoring)); }} @endisset"/>
                             @if($errors->has('tgltxt'))
                             <div class="alert alert-danger" role="alert">tanggal monitoring tidak boleh kosong</div>
                             @endif
@@ -51,7 +54,15 @@
                             <select name="provtxt" id="provtxt" class="form-control form-select" required="" onchange="provinsi(this.value, 'provtxt', 1)">
                                 <option value="">pilih provinsi</option>
                                 @foreach($provinsi as $dt_prov)
+                                @isset($data->provinsi)
+                                @if($data->provinsi == $dt_prov->id_provinsi)
+                                <option value="{{ $dt_prov->id_provinsi }}" selected="">{{ $dt_prov->provinsi }}</option>
+                                @else
                                 <option value="{{ $dt_prov->id_provinsi }}">{{ $dt_prov->provinsi }}</option>
+                                @endif
+                                @else
+                                <option value="{{ $dt_prov->id_provinsi }}">{{ $dt_prov->provinsi }}</option>
+                                @endisset
                                 @endforeach
                             </select>
                             @if($errors->has('provtxt'))
@@ -63,6 +74,7 @@
                         <label class="col-sm-2 col-form-label">Kabupaten</label>
                         <div class="col-sm-8">
                             <select name="kabtxt" id="kabtxt" class="form-control form-select" required=""></select>
+                            <input type="hidden" name="txtkab" id="txtkab" value="@isset($data->kabupaten) {{ $data->kabupaten; }} @endisset"/>
                             @if($errors->has('kabtxt'))
                             <div class="alert alert-danger" role="alert">kabupaten tidak boleh kosong</div>
                             @endif
@@ -74,20 +86,134 @@
                             <select name="petugastxt[]" id="petugastxt1" class="form-control form-select" required="">
                                 <option value="">pilih pegawai</option>
                                 @foreach($pegawai as $dt_pegawai)
+                                @isset($data->petugas[0]->pegawai->id)
+                                @if($data->petugas[0]->pegawai->id == $dt_pegawai->id)
+                                <option value="{{ $dt_pegawai->id }}" selected="">{{ $dt_pegawai->nama }}</option>
+                                @else
                                 <option value="{{ $dt_pegawai->id }}">{{ $dt_pegawai->nama }}</option>
+                                @endif
+                                @endisset
                                 @endforeach
                             </select>
                         </div>
+                        @isset($data)
+                        @if(count($data->petugas) <= 1)
                         <input id="countpeg" type="hidden" name="countpeg" value="1"/>
+                        @endif
+                        @else
+                        <input id="countpeg" type="hidden" name="countpeg" value="1"/>
+                        @endisset
                         <div class="col-sm-3">
                             <button type="button" class="btn btn-primary" onclick="tambahPegawai()"><i class="feather icon-plus"></i> Tambah Petugas</button>
                         </div>
                     </div>
-                    <div id="pegelem"></div>
+                    <div id="pegelem">
+                        @isset($data->petugas[1])
+                        <input id="countpeg" type="hidden" name="countpeg" value="{{ count($data->petugas) }}"/>
+                        @for ($i = 1; $i < count($data->petugas); $i++)
+                        <div id="pegelem{{ $i+1 }}" class="form-group row">
+                            <label class="col-sm-2 col-form-label">Petugas Monitoring {{ $i+1 }}</label>
+                            <div class="col-sm-6">
+                                <select name="petugastxt[]" id="petugastxt{{ $i+1 }}" class="form-control form-select" required="">
+                                    <option value="">pilih pegawai</option>
+                                    @foreach($pegawai as $dt_pegawai)
+                                    @isset($data->petugas[$i]->pegawai->id)
+                                    @if($data->petugas[$i]->pegawai->id == $dt_pegawai->id)
+                                    <option value="{{ $dt_pegawai->id }}" selected="">{{ $dt_pegawai->nama }}</option>
+                                    @else
+                                    <option value="{{ $dt_pegawai->id }}">{{ $dt_pegawai->nama }}</option>
+                                    @endif
+                                    @endisset
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-danger" onclick="removePegawai({{ $i+1 }});">
+                                    <i class="feather icon-trash"></i>Hapus Petugas {{ $i+1 }}
+                                </button>
+                            </div>
+                        </div>
+                        @endfor
+                        @endisset
+                    </div>
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div id="lemelem" class="card-body">
+                    @if(isset($lembaga_seni) && count($lembaga_seni) <> 0)
+                    @foreach($lembaga_seni as $key_lembagaSeni => $dt_lembagaSeni)
+                    <div id="lemelem{{ ($key_lembagaSeni+1) }}">
+                        <h5 class="card-title">Lembaga Seni Budaya Islam {{ ($key_lembagaSeni+1) }}</h5>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Nama Lembaga/Sanggar</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="nmlemtxt{{ ($key_lembagaSeni+1) }}" name="nmlemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->nama }}"/>
+                                <input type="hidden" name="idlembaga_seni[]" id="idlembaga_seni{{ ($key_lembagaSeni+1) }}" value="{{ $dt_lembagaSeni->lembagaSeni->id }}"/>
+                                @if($key_lembagaSeni == 0)
+                                <input type="hidden" name="countlem" id="countlem" value="{{ count($lembaga_seni) }}"/>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Provinsi</label>
+                            <div class="col-sm-8">
+                                <input type="hidden" id="idprovlev{{ ($key_lembagaSeni+1) }}" name="idprovlev[]" value="{{$dt_lembagaSeni->lembagaSeni->provinsi}}"/>
+                                <select id="provlemtxt{{ ($key_lembagaSeni+1) }}" name="provlemtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provlemtxt{{ ($key_lembagaSeni+1) }}', {{ ($key_lembagaSeni+1) }})">
+                                    <option value="">pilih provinsi</option>
+                                    @foreach($provinsi as $dt_prov2)
+                                    @if($dt_prov2->id_provinsi == $dt_lembagaSeni->lembagaSeni->provinsi)
+                                    <option value="{{ $dt_prov2->id_provinsi }}" selected="">{{ $dt_prov2->provinsi }}</option>
+                                    @else
+                                    <option value="{{ $dt_prov2->id_provinsi }}">{{ $dt_prov2->provinsi }}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Kabupaten</label>
+                            <div class="col-sm-8">
+                                <input type="hidden" id="idkabsel{{ ($key_lembagaSeni+1) }}" name="idkabsel[]" value="{{$dt_lembagaSeni->lembagaSeni->kabupaten}}"/>
+                                <select id="kablemtxt{{ ($key_lembagaSeni+1) }}" name="kablemtxt[]" class="form-control form-select"></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Alamat</label>
+                            <div class="col-sm-8">
+                                <textarea id="addrlemtxt{{ ($key_lembagaSeni+1) }}" name="addrlemtxt[]" class="form-control">{{ $dt_lembagaSeni->lembagaSeni->alamat }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Fokus</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="foclemtxt{{ ($key_lembagaSeni+1) }}" name="foclemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->fokus }}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Tingkat</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="tinlemtxt{{ ($key_lembagaSeni+1) }}" name="tinlemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->tingkat }}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Program</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prolemtxt{{ ($key_lembagaSeni+1) }}" name="prolemtxt[]" class="form-control" value="{{ $dt_lembagaSeni->lembagaSeni->program }}"/>
+                            </div>
+                        </div>
+                        @if($key_lembagaSeni > 0)
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-danger" onclick="removeLem({{ ($key_lembagaSeni+1) }});"><i class="feather icon-trash"></i> Hapus Lembaga Seni Budaya Islam {{ ($key_lembagaSeni+1) }}</button>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @endforeach
+                    @else
                     <h5 class="card-title">Lembaga Seni Budaya Islam</h5>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Nama Lembaga/Sanggar</label>
@@ -101,8 +227,8 @@
                         <div class="col-sm-8">
                             <select id="provlemtxt1" name="provlemtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provlemtxt1', 1)">
                                 <option value="">pilih provinsi</option>
-                                @foreach($provinsi as $dt_prov2)
-                                <option value="{{ $dt_prov2->id_provinsi }}">{{ $dt_prov2->provinsi }}</option>
+                                @foreach($provinsi as $dt_prov3)
+                                <option value="{{ $dt_prov3->id_provinsi }}">{{ $dt_prov3->provinsi }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -137,14 +263,88 @@
                             <input type="text" id="prolemtxt1" name="prolemtxt[]" class="form-control"/>
                         </div>
                     </div>
-                    <div id="lemelem"></div>
+                    @endif
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-success" onclick="tambahLembaga()"><i class="feather icon-plus"></i> Tambah</button>
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div id="senElem" class="card-body">
+                    @if(isset($seniman) && count($seniman) <> 0)
+                    @foreach($seniman as $key_seniman => $dt_seniman)
+                    <div id="senElem{{ ($key_seniman+1) }}">
+                        <h5 class="card-title">Seniman & Budayawan Muslim {{ ($key_seniman+1) }}</h5>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Nama</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="nmsenbudtxt{{ ($key_seniman+1) }}" name="nmsenbudtxt[]" class="form-control" value="{{ $dt_seniman->seniman->nama }}"/>
+                                <input type="hidden" name="idseniman[]" id="idseniman{{ ($key_seniman+1) }}" value="{{ $dt_seniman->seniman->id }}"/>
+                                @if($key_seniman == 0)
+                                <input type="hidden" name="countsenbud" id="countsenbud" value="{{ count($seniman); }}"/>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Provinsi</label>
+                            <div class="col-sm-8">
+                                <input type="hidden" name="idprovsenbud" id="idprovsenbud{{ ($key_seniman+1) }}" value="{{ $dt_seniman->seniman->provinsi }}"/>
+                                <select id="provsenbudtxt{{ ($key_seniman+1) }}" name="provsenbudtxt[]" class="form-control form-select" onchange="provinsi(this.value, 'provsenbudtxt{{ ($key_seniman+1) }}', {{ ($key_seniman+1) }})">
+                                    <option value="">pilih provinsi</option>
+                                    @foreach($provinsi as $dt_prov3)
+                                    @if($dt_prov3->id_provinsi == $dt_seniman->seniman->provinsi)
+                                    <option value="{{ $dt_prov3->id_provinsi }}" selected="">{{ $dt_prov3->provinsi }}</option>
+                                    @else
+                                    <option value="{{ $dt_prov3->id_provinsi }}">{{ $dt_prov3->provinsi }}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Kabupaten</label>
+                            <div class="col-sm-8">
+                                <input type="hidden" name="idkabsen[]" id="idkabsen{{ ($key_seniman+1) }}" value="{{ $dt_seniman->seniman->kabupaten }}"/>
+                                <select id="kabsenbudtxt{{ ($key_seniman+1) }}" name="kabsenbudtxt[]" class="form-control form-select"></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Alamat</label>
+                            <div class="col-sm-8">
+                                <textarea id="addrsenbudtxt{{ ($key_seniman+1) }}" name="addrsenbudtxt[]" class="form-control">{{$dt_seniman->seniman->alamat}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Bidang</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="bidsenbudtxt{{ ($key_seniman+1) }}" name="bidsenbudtxt[]" class="form-control" value="{{$dt_seniman->seniman->bidang}}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Karya</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="karsenbudtxt{{ ($key_seniman+1) }}" name="karsenbudtxt[]" class="form-control" value="{{$dt_seniman->seniman->karya}}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Lembaga/Organisasi</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="orgsenbudtxt{{ ($key_seniman+1) }}" name="orgsenbudtxt[]" class="form-control" value="{{$dt_seniman->seniman->lembaga}}"/>
+                            </div>
+                        </div>
+                        @if($key_seniman > 0)
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-danger" onclick="removeSenbud({{ ($key_seniman+1) }});"><i class="feather icon-trash"></i> Hapus Seniman &amp; Budayawan Islam {{ ($key_seniman+1) }}</button>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @endforeach
+                    @else
                     <h5 class="card-title">Seniman & Budayawan Muslim</h5>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Nama</label>
@@ -194,14 +394,71 @@
                             <input type="text" id="orgsenbudtxt1" name="orgsenbudtxt[]" class="form-control"/>
                         </div>
                     </div>
-                    <div id="senElem"></div>
+                    @endif
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-success" onclick="tambahSeniman();"><i class="feather icon-plus"></i> Tambah</button>
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div id="progElem" class="card-body">
+                    @if(isset($programSeni) && count($programSeni) <> 0)
+                    @foreach($programSeni as $key_programSeni => $dt_programSeni)
+                    <div id="progElem{{ ($key_programSeni+1); }}">
+                        <h5 class="card-title">Program Seni Budaya Islam (Pembinaan/Festival, dan sejenisnya) {{ ($key_programSeni+1); }}</h5>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Nama Kegiatan</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgnmtxt{{ ($key_programSeni+1); }}" name="prgnmtxt[]" class="form-control" value="{{ $dt_programSeni->programSeni->nama }}"/>
+                                <input type="hidden" name="idprogramSeni[]" id="idprogramSeni{{ ($key_programSeni+1); }}" value="{{ $dt_programSeni->programSeni->id }}"/>
+                                @if($key_programSeni == 0)
+                                <input type="hidden" name="countprog" id="countprog" value="{{ count($programSeni); }}"/>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Frekuensi</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgfretxt{{ ($key_programSeni+1); }}" name="prgfretxt[]" class="form-control" value="{{ $dt_programSeni->programSeni->frekuansi }}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Tujuan</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgtujtxt{{ ($key_programSeni+1); }}" name="prgtujtxt[]" class="form-control" value="{{ $dt_programSeni->programSeni->tujuan }}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Unsur Peserta</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgunstxt{{ ($key_programSeni+1); }}" name="prgtunstxt[]" class="form-control" value="{{ $dt_programSeni->programSeni->unsur }}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Waktu</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgwkttxt{{ ($key_programSeni+1); }}" name="prgwkttxt[]" class="form-control" value="{{ $dt_programSeni->programSeni->waktu }}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Penyelenggara</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="prgpnytxt{{ ($key_programSeni+1); }}" name="prgpnytxt[]" class="form-control" value="{{ $dt_programSeni->programSeni->penyelenggara }}"/>
+                            </div>
+                        </div>
+                        @if($key_programSeni > 0)
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-danger" onclick="removeProg({{ ($key_programSeni+1); }});"><i class="feather icon-trash"></i> Hapus Program Seni Budaya Islam {{ ($key_programSeni+1); }}</button>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @endforeach
+                    @else
                     <h5 class="card-title">Program Seni Budaya Islam (Pembinaan/Festival, dan sejenisnya)</h5>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Nama Kegiatan</label>
@@ -240,7 +497,7 @@
                             <input type="text" id="prgpnytxt1" name="prgpnytxt[]" class="form-control"/>
                         </div>
                     </div>
-                    <div id="progElem"></div>
+                    @endif
                 </div>
                 <div class="card-footer">
                     <button type="button" class="btn btn-success" onclick="tambahProg();"><i class="feather icon-plus"></i> Tambah</button>
@@ -259,10 +516,39 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-                        $(document).ready(function () {
-                            $('.form-select').select2();
-                            $("#tgltxt").datepicker();
-                        });
+$(document).ready(function() {
+    $('.form-select').select2();
+    $("#tgltxt").datepicker();
+    var provtxt = $('#provtxt').val();
+    var countlem = $('#countlem').val();
+    var index_lem;
+    var countsenbud = $('#countsenbud').val();
+    var index_senbud;
+    for (index_senbud = 1; index_senbud <= countsenbud; index_senbud++) {
+        var id_prov_senbud = $('#idprovsenbud' + index_senbud).val();
+        provinsi(id_prov_senbud, 'provsenbudtxt' + index_senbud, index_senbud);
+    }
+    for (index_lem = 1; index_lem <= countlem; index_lem++) {
+        var id_prov_lev = $('#idprovlev' + index_lem).val();
+        provinsi(id_prov_lev, 'provlemtxt' + index_lem, index_lem);
+    }
+    if (provtxt != '') {
+        provinsi(provtxt, 'provtxt', 1);
+    }
+});
+</script>
+<script>
+function kabselected(kabtxt, idtxt) {
+    var kabupatenid = $('#idkabsel' + idtxt).length;
+    var kabupatenid2 = $('#idkabsen' + idtxt).length;
+    if (kabupatenid) {
+        var kabupatenidtxt = $('#idkabsel' + idtxt).val();
+        $('#' + kabtxt).val(kabupatenidtxt).trigger('change');
+    } else if (kabupatenid2) {
+	var kabupatenidtxt2 = $('#idkabsen' + idtxt).val();
+        $('#' + kabtxt).val(kabupatenidtxt2).trigger('change');
+    }
+}
 </script>
 <script>
     function tambahProg() {
@@ -714,8 +1000,12 @@ function tambahPegawai() {
                         opt.text = data.kabupaten[i].kabupaten;
                         sel.add(opt, sel.options[i]);
                     }
-                    $('#' + kabtxt).val('');
-                    $('#' + kabtxt).trigger('change');
+                    var txtkab = $('#txtkab').val();
+                    if (txtkab != '') {
+                        $('#txtkab').val(txtkab).trigger('change');
+                    }
+                    kabselected('kablemtxt' + idtxt, idtxt);
+                    kabselected('kabsenbudtxt' + idtxt, idtxt);
                     Swal.close();
                 } else {
                     Swal.fire({
@@ -748,6 +1038,6 @@ function tambahPegawai() {
             }
         });
     }
-} 
+}
 </script>
 @include('cms.footer')

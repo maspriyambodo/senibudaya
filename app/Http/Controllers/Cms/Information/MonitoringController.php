@@ -356,6 +356,6 @@ class MonitoringController extends AuthController {
                     'pegawai' => $pegawai
                 ]
         );
-        return view($this->target . '-add-form', $data);
+        return view($this->target . '-edit-form', $data);
     }
 }
