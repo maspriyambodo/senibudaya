@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Cms\Information\MonitoringController;
+use App\Http\Controllers\Cms\Information\LembagaSeni;
 
 //front
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
@@ -157,6 +158,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/monitoring/store', [MonitoringController::class, 'store'])->name('monitoring');
     Route::get('/monitoring/lihat/{id}', [MonitoringController::class, 'lihat'])->name('monitoring');
     Route::get('/monitoring/ubah/{id}', [MonitoringController::class, 'ubah'])->name('monitoring');
+    
+    Route::get('/lembaga', [LembagaSeni::class, 'index'])->name('lembaga');
+    Route::get('/lembaga/json', [LembagaSeni::class, 'json'])->name('lembaga');
+    
     
 //group
     Route::get('/group', [GroupController::class, 'index']);
