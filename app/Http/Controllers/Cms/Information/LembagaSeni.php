@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
 use App\Models\DtaLembagaSeni;
+use App\Models\TrMonitoring;
+use App\Models\TrMonitoringHasil;
 use DataTables;
 
 class LembagaSeni extends AuthController {
@@ -88,8 +90,10 @@ class LembagaSeni extends AuthController {
     }
 
     public function detil(Request $request) {
-        $exec = DtaLembagaSeni::with('provinsi', 'kabupaten')
-                ->where('id', $request->id)
+        $exec = TrMonitoring::with('hasil', 'hasil.lembagaSeni', 'hasil.lembagaSeni.provinsi', 'hasil.lembagaSeni.kabupaten')
+                ->whereHas('hasil.lembagaSeni', function ($q) use ($request) {
+                    $q->where('id', $request->id);
+                })
                 ->first();
         if ($exec) {
             return response()->json([

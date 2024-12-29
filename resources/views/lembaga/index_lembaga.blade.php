@@ -45,7 +45,7 @@
                             <th>Fokus</th>
                             <th>Tingkat</th>
                             <th>Program</th>
-                            <th>Tanggal</th>
+                            <th>Tanggal Input</th>
                         </tr>
                     </thead>
                 </table>
