@@ -57,70 +57,97 @@
     </div>
 </div>
 <script>
-    $(function () {
-        var dTable = $("#data").DataTable({
-            processing: true,
-            serverSide: true,
-            paging: true,
-            ordering: true,
-            deferRender: true,
-            info: true,
-            ajax: {
-                url: "monitoring/json",
-                data: function (d) {
-                    d.keyword = $("#keyword").val();
+    $(function() {
+    Swal.fire({
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
+            Swal.showLoading();
+        }
+    });
+    var dTable = $("#data").DataTable({
+        processing: true,
+        serverSide: true,
+        paging: true,
+        ordering: true,
+        deferRender: true,
+        info: true,
+        ajax: {
+            url: "monitoring/json",
+            data: function(d) {
+                d.keyword = $("#keyword").val();
+            }
+        },
+        order: [
+            [0, "asc"]
+        ],
+        columnDefs: [{
+                className: "text-center text-nowrap",
+                targets: [0]
+            },
+            {
+                className: "text-right text-nowrap",
+                targets: []
+            },
+            {
+                orderable: false,
+                targets: [1]
+            }
+        ],
+        columns: [{
+                render: function(data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            order: [[0, "asc"]],
-            columnDefs: [
-                {className: "text-center text-nowrap", targets: [0]},
-                {className: "text-right text-nowrap", targets: []},
-                {orderable: false, targets: [1]}
-            ],
-            columns: [
-                {
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                },
-                {data: "button"},
-                {data: "no_monitoring"},
-                {
-                    render: function(data, type, row, meta){
-                            return row.provinsi.nama;
-                        }
-                },
-                {
-                    render: function(data, type, row, meta){
-                            return row.kabupaten.nama;
-                        }
-                },
-                {data: "tgl_monitoring"},
-            ],
-            displayStart: 0,
-            pageLength: 10,
-            drawCallback: function () {
-                $('[data-toggle="popover"]').popover({container: "body"});
-                $("#input").off("click").on("click", function () {
-                    $.fn.start_length(dTable.page.info().start, dTable.page.info().length);
-                    $.fn.input();
-                });
+            {
+                data: "button"
             },
-            initComplete: function () {
-                $.fn.start_length(0, 0, "", "");
+            {
+                data: "no_monitoring"
             },
-            dom: `<'row'<'col-sm-6 text-left'><'col-sm-6 text-right'B>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`
-        });
-
-        // Consolidate filter change events
-        const filterChangeHandler = delay(function () {
-            dTable.draw();
-        }, 50);
-
-        $("#keyword").keyup(delay(function (e) {
-            dTable.draw();
-            e.preventDefault();
-        }, 500));
+            {
+                render: function(data, type, row, meta) {
+                    return row.provinsi.nama;
+                }
+            },
+            {
+                render: function(data, type, row, meta) {
+                    return row.kabupaten.nama;
+                }
+            },
+            {
+                data: "tgl_monitoring"
+            },
+        ],
+        displayStart: 0,
+        pageLength: 10,
+        drawCallback: function() {
+            $('[data-toggle="popover"]').popover({
+                container: "body"
+            });
+            $("#input").off("click").on("click", function() {
+                $.fn.start_length(dTable.page.info().start, dTable.page.info().length);
+                $.fn.input();
+            });
+        },
+        initComplete: function() {
+            $.fn.start_length(0, 0, "", "");
+            Swal.close();
+        },
+        dom: `<'row'<'col-sm-6 text-left'><'col-sm-6 text-right'B>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`
     });
+
+    // Consolidate filter change events
+    const filterChangeHandler = delay(function() {
+        dTable.draw();
+    }, 50);
+
+    $("#keyword").keyup(delay(function(e) {
+        dTable.draw();
+        e.preventDefault();
+    }, 500));
+});
 </script>
 @include('cms.footer')

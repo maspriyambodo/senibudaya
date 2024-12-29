@@ -62,7 +62,7 @@
 @endif
 <script>
     $(function() {
-        Swal.fire({
+    Swal.fire({
         title: 'memuat data...',
         html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
         allowOutsideClick: false,
