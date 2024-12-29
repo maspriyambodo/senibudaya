@@ -129,9 +129,9 @@ class MonitoringController extends AuthController {
 
     public function store(Request $request) {
         $validator = Validator::make($request->all(), [
-            'tgltxt' => 'required|date',
-            'provtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
-            'kabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten'
+                    'tgltxt' => 'required|date',
+                    'provtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
+                    'kabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten'
         ]);
         if ($validator->fails()) {
             return redirect('monitoring/add')
@@ -312,6 +312,85 @@ class MonitoringController extends AuthController {
                 ]
         );
         return view($this->target . '-add-form', $data);
+    }
+
+    public function update(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'tgltxt' => 'required|date',
+                    'provtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
+                    'kabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten'
+        ]);
+        if ($validator->fails()) {
+            return redirect('monitoring/ubah/' . $request->idMonitoring)
+                            ->withErrors($validator)
+                            ->withInput();
+        } else {
+            $data_monitoring = [
+                'tgl_monitoring' => Carbon::parse($request->tgltxt)->format('Y-m-d'),
+                'provinsi' => $request->provtxt,
+                'kabupaten' => $request->kabtxt,
+                'updated_by' => auth()->user()->id
+            ];
+            DB::beginTransaction(); // Start transaction
+            try {
+                $exec = TrMonitoring::where([
+                            'id' => $request->idMonitoring,
+                            'no_monitoring' => $request->notxt
+                        ])
+                        ->update($data_monitoring);
+                // Insert related data
+                $this->updatePetugas($request);
+                if ($request->nmlemtxt[0]) {
+                    $this->updateLembagaSeni($request);
+                }
+                if ($request->nmsenbudtxt[0]) {
+                    $this->insertSeniman($request);
+                }
+                if ($request->prgnmtxt[0]) {
+                    $this->insertProgramSeni($request);
+                }
+                DB::commit(); // Commit transaction
+                return redirect($this->page)->with('message', "Berhasil menyimpan data monitoring!");
+            } catch (Exception $exc) {
+                DB::rollBack(); // Rollback transaction
+                Log::error('Failed to create or update user: ' . $exc->getMessage(), [
+                    'user_id' => auth()->user()->id,
+                    'request_data' => $request->all(),
+                ]);
+                return redirect($this->page)->with('message', "Gagal menyimpan data monitoring!");
+            }
+        }
+    }
+
+    private function updateLembagaSeni($request) {
+        for ($i = 0; $i < count($request->idlembaga_seni); $i++) {
+            DtaLembagaSeni::updateOrInsert([
+                        'id' => $request->idlembaga_seni[$i]
+                    ])
+                    ->update([
+                        'nama' => $request->nmlemtxt[$i],
+                        'provinsi' => $request->provlemtxt[$i],
+                        'kabupaten' => $request->kablemtxt[$i],
+                        'alamat' => $request->addrlemtxt[$i],
+                        'fokus' => $request->foclemtxt[$i],
+                        'tingkat' => $request->tinlemtxt[$i],
+                        'program' => $request->prolemtxt[$i],
+                        'updated_by' => auth()->user()->id
+            ]);
+        }
+    }
+
+    private function updatePetugas($request) {
+        for ($i = 0; $i < count($request->idmonpet); $i++) {
+            TrMonitoringPetugas::where([
+                        'id' => $request->idmonpet[$i],
+                        'id_monitoring' => $request->idMonitoring
+                    ])
+                    ->update([
+                        'id_pegawai' => $request[$i]->petugastxt,
+                        'updated_by' => auth()->user()->id
+            ]);
+        }
     }
 
     public function ubah(Request $request) {

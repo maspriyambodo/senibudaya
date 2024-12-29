@@ -156,6 +156,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/monitoring/pegawai', [MonitoringController::class, 'pegawai'])->name('monitoring');
     Route::get('/monitoring/provinsi', [MonitoringController::class, 'provinsi'])->name('monitoring');
     Route::post('/monitoring/store', [MonitoringController::class, 'store'])->name('monitoring');
+    Route::post('/monitoring/update', [MonitoringController::class, 'update'])->name('monitoring');
     Route::get('/monitoring/lihat/{id}', [MonitoringController::class, 'lihat'])->name('monitoring');
     Route::get('/monitoring/ubah/{id}', [MonitoringController::class, 'ubah'])->name('monitoring');
     
