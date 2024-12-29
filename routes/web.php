@@ -161,6 +161,7 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::get('/lembaga', [LembagaSeni::class, 'index'])->name('lembaga');
     Route::get('/lembaga/json', [LembagaSeni::class, 'json'])->name('lembaga');
+    Route::get('/lembaga/detil/{id}', [LembagaSeni::class, 'detil'])->name('detil');
     
     
 //group

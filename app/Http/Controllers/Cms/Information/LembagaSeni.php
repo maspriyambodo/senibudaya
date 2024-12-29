@@ -74,19 +74,32 @@ class LembagaSeni extends AuthController {
         <div class=\"dropdown-menu dropright\">";
 
         if ($this->edit) {
-            $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/lihat/' . $row->id) . "\">
-            <i class=\"fas fa-eye\"></i> Lihat Data</a>";
-            $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/ubah/' . $row->id) . "\">
-            <i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
+            $buttons .= '<a id="view' . $row->id . '" class="dropdown-item has-icon" href="javascript:void(0);" onclick="vLembaga(' . $row->id . ');"><i class="fas fa-eye"></i> Lihat Data</a>';
+            $buttons .= '<a id="edit' . $row->id . '" class="dropdown-item has-icon" href="javascript:void(0);"><i class="fas fa-pencil-alt"></i> Ubah Data</a>';
         }
 
         if ($this->delete) {
-            $buttons .= "<a id=\"del\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#delete\">
-            <i class=\"fas fa-trash\"></i> Hapus Data</a>";
+            $buttons .= '<a id="del' . $row->id . '" class="dropdown-item has-icon" href="javascript:void(0);"><i class="fas fa-trash"></i> Hapus Data</a>';
         }
 
         $buttons .= "</div></div>";
 
         return $buttons;
+    }
+
+    public function detil(Request $request) {
+        $exec = DtaLembagaSeni::with('provinsi', 'kabupaten')
+                ->where('id', $request->id)
+                ->first();
+        if ($exec) {
+            return response()->json([
+                        'success' => true,
+                        'dt_lembaga' => $exec
+            ]);
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
     }
 }
