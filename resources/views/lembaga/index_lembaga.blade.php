@@ -62,6 +62,15 @@
 @endif
 <script>
     $(function() {
+        Swal.fire({
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
+            Swal.showLoading();
+        }
+    });
     var dTable = $("#data").DataTable({
         processing: true,
         serverSide: true,
@@ -141,6 +150,7 @@
         },
         initComplete: function() {
             $.fn.start_length(0, 0, "", "");
+            Swal.close();
         },
         dom: `<'row'<'col-sm-6 text-left'><'col-sm-6 text-right'B>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`
     });
