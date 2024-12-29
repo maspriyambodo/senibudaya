@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="clear" style="margin-top:5%;"></div>
-        <form id="form_monitoring" action="@isset($q){{ url($current . '/update') }}@else{{ url($current . '/store') }}@endisset" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="" autocomplete="off">
+        <form id="form_monitoring" action="{{ url($current . '/update'); }}" method="post" enctype="multipart/form-data" class="needs-validation form" novalidate="" autocomplete="off">
             @csrf
             @method('POST')
             <div class="card">
@@ -83,6 +83,7 @@
                     <div id="pegclone" class="form-group row">
                         <label class="col-sm-2 col-form-label">Petugas Monitoring 1</label>
                         <div class="col-sm-6">
+                            <input type="hidden" name="idmonpet[]" id="idmonpet1" value="{{ $data->petugas[0]->id }}"/>
                             <select name="petugastxt[]" id="petugastxt1" class="form-control form-select" required="">
                                 <option value="">pilih pegawai</option>
                                 @foreach($pegawai as $dt_pegawai)
@@ -114,14 +115,15 @@
                         <div id="pegelem{{ $i+1 }}" class="form-group row">
                             <label class="col-sm-2 col-form-label">Petugas Monitoring {{ $i+1 }}</label>
                             <div class="col-sm-6">
+                                <input type="hidden" name="idmonpet[]" id="idmonpet{{ $i+1 }}" value="{{ $data->petugas[$i]->id }}"/>
                                 <select name="petugastxt[]" id="petugastxt{{ $i+1 }}" class="form-control form-select" required="">
                                     <option value="">pilih pegawai</option>
-                                    @foreach($pegawai as $dt_pegawai)
+                                    @foreach($pegawai as $dt_pegawai1)
                                     @isset($data->petugas[$i]->pegawai->id)
-                                    @if($data->petugas[$i]->pegawai->id == $dt_pegawai->id)
-                                    <option value="{{ $dt_pegawai->id }}" selected="">{{ $dt_pegawai->nama }}</option>
+                                    @if($data->petugas[$i]->pegawai->id == $dt_pegawai1->id)
+                                    <option value="{{ $dt_pegawai1->id }}" selected="">{{ $dt_pegawai1->nama }}</option>
                                     @else
-                                    <option value="{{ $dt_pegawai->id }}">{{ $dt_pegawai->nama }}</option>
+                                    <option value="{{ $dt_pegawai1->id }}">{{ $dt_pegawai1->nama }}</option>
                                     @endif
                                     @endisset
                                     @endforeach
@@ -544,7 +546,8 @@ function kabselected(kabtxt, idtxt) {
     if (kabupatenid) {
         var kabupatenidtxt = $('#idkabsel' + idtxt).val();
         $('#' + kabtxt).val(kabupatenidtxt).trigger('change');
-    } else if (kabupatenid2) {
+    }
+    if (kabupatenid2) {
 	var kabupatenidtxt2 = $('#idkabsen' + idtxt).val();
         $('#' + kabtxt).val(kabupatenidtxt2).trigger('change');
     }
