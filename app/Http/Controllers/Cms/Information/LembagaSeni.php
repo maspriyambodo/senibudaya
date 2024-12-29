@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
 use App\Models\DtaLembagaSeni;
 use App\Models\TrMonitoring;
-use App\Models\TrMonitoringHasil;
+use App\Models\Provinsi;
+use App\Models\KabupatenKota;
 use DataTables;
 
 class LembagaSeni extends AuthController {
@@ -77,7 +78,7 @@ class LembagaSeni extends AuthController {
 
         if ($this->edit) {
             $buttons .= '<a id="view' . $row->id . '" class="dropdown-item has-icon" href="javascript:void(0);" onclick="vLembaga(' . $row->id . ');"><i class="fas fa-eye"></i> Lihat Data</a>';
-            $buttons .= '<a id="edit' . $row->id . '" class="dropdown-item has-icon" href="javascript:void(0);"><i class="fas fa-pencil-alt"></i> Ubah Data</a>';
+            $buttons .= '<a id="edit' . $row->id . '" class="dropdown-item has-icon" href="javascript:void(0);" onclick="eLembaga(' . $row->id . ');"><i class="fas fa-pencil-alt"></i> Ubah Data</a>';
         }
 
         if ($this->delete) {
@@ -105,5 +106,21 @@ class LembagaSeni extends AuthController {
                         'success' => false
             ]);
         }
+    }
+
+    public function Provinsi() {
+        $exec = Provinsi::all();
+        return response()->json([
+                    'success' => true,
+                    'dt_prov' => $exec
+        ]);
+    }
+
+    public function Kabupaten(Request $request) {
+        $exec = KabupatenKota::where('id_provinsi', $request->id_provinsi)->get();
+        return response()->json([
+                    'success' => true,
+                    'dt_kab' => $exec
+        ]);
     }
 }

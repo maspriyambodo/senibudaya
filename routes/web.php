@@ -162,7 +162,9 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::get('/lembaga', [LembagaSeni::class, 'index'])->name('lembaga');
     Route::get('/lembaga/json', [LembagaSeni::class, 'json'])->name('lembaga');
-    Route::get('/lembaga/detil/{id}', [LembagaSeni::class, 'detil'])->name('detil');
+    Route::get('/lembaga/detil/{id}', [LembagaSeni::class, 'detil'])->name('lembaga');
+    Route::get('/lembaga/provinsi', [LembagaSeni::class, 'Provinsi'])->name('lembaga');
+    Route::get('/lembaga/kabupaten/{id_provinsi}', [LembagaSeni::class, 'Kabupaten'])->name('lembaga');
     
     
 //group

@@ -54,9 +54,7 @@
     </div>
 </div>
 @include('lembaga.vModal')
-@if($edit)
 @include('lembaga.eModal')
-@endif
 @if($delete)
 @include('lembaga.dModal')
 @endif
