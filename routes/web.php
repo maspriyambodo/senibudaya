@@ -165,6 +165,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/lembaga/detil/{id}', [LembagaSeni::class, 'detil'])->name('lembaga');
     Route::get('/lembaga/provinsi', [LembagaSeni::class, 'Provinsi'])->name('lembaga');
     Route::get('/lembaga/kabupaten/{id_provinsi}', [LembagaSeni::class, 'Kabupaten'])->name('lembaga');
+    Route::post('lembaga/update', [LembagaSeni::class, 'Update'])->name('lembaga');
     
     
 //group

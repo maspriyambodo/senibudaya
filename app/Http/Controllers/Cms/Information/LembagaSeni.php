@@ -123,4 +123,52 @@ class LembagaSeni extends AuthController {
                     'dt_kab' => $exec
         ]);
     }
+
+    public function Update(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'nomontxt2' => 'required|integer|exists:tr_monitoring,no_monitoring',
+            'nmtxt2' => 'required|string',
+            'eprovtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
+            'ekabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten',
+            'addrtxt2' => 'required|string',
+            'foctxt2' => 'required|string',
+            'tigtxt2' => 'required|string',
+            'prgtxt2' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errmessage' => 'mohon lengkapi form!'
+                            ], 422);
+        } else {
+            DB::beginTransaction(); // Start transaction
+            try {
+                DtaLembagaSeni::where('id', $request->eidtxt)
+                        ->update([
+                            'nama' => $request->nmtxt2,
+                            'provinsi' => $request->eprovtxt,
+                            'kabupaten' => $request->ekabtxt,
+                            'alamat' => $request->addrtxt2,
+                            'fokus' => $request->foctxt2,
+                            'tingkat' => $request->tigtxt2,
+                            'program' => $request->prgtxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
+                DB::commit(); // Commit transaction
+                return response()->json([
+                            'success' => true,
+                                ], 200);
+            } catch (Exception $exc) {
+                DB::rollBack(); // Rollback transaction
+                Log::error('Failed to create or update user: ' . $exc->getMessage(), [
+                    'user_id' => auth()->user()->id,
+                    'request_data' => $request->all(),
+                ]);
+                return response()->json([
+                            'success' => false,
+                            'errmessage' => 'error ketika update data, errcode: 30122246'
+                                ], 422);
+            }
+        }
+    }
 }
