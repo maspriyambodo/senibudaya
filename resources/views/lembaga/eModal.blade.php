@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/formvalidation/0.6.2-dev/css/formValidation.min.css" integrity="sha512-B9GRVQaYJ7aMZO3WC2UvS9xds1D+gWQoNiXiZYRlqIVszL073pHXi0pxWxVycBk0fnacKIE3UHuWfSeETDCe7w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <div id="eModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="eModalTitle" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -69,7 +68,7 @@
 </div>
 <script>
     function update() {
-        var nomontxt2, nmtxt2, eprovtxt, ekabtxt, addrtxt2, foctxt2, tigtxt2, prgtxt2, formStat, eformData;
+        var eidtxt, nomontxt2, nmtxt2, eprovtxt, ekabtxt, addrtxt2, foctxt2, tigtxt2, prgtxt2, formStat, eformData;
         const edit_form = document.getElementById('edit_form');
         nomontxt2 = $('#nomontxt2').val();
         nmtxt2 = $('#nmtxt2').val();
@@ -80,6 +79,20 @@
         tigtxt2 = $('#tigtxt2').val();
         prgtxt2 = $('#prgtxt2').val();
         formStat = true;
+        if (eidtxt === '') {
+            Swal.fire({
+                text: "sesuatu yang salah pada sistem!",
+                icon: "success",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            }).then(function () {
+                window.location.reload();
+            });
+        }
         if (nomontxt2 === '') {
             formStat = false;
         }
@@ -113,6 +126,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
+                            $('#data').DataTable().ajax.reload();
                             $('#eModal').modal('toggle');
                             Swal.fire({
                                 text: "data has been updated",

@@ -55,9 +55,7 @@
 </div>
 @include('lembaga.vModal')
 @include('lembaga.eModal')
-@if($delete)
 @include('lembaga.dModal')
-@endif
 <script>
     $(function() {
     Swal.fire({

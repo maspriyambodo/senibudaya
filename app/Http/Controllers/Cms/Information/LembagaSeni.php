@@ -39,7 +39,7 @@ class LembagaSeni extends AuthController {
     }
 
     public function json(Request $request) {
-        $exec = DtaLembagaSeni::with('provinsi', 'kabupaten');
+        $exec = DtaLembagaSeni::with('provinsi', 'kabupaten')->where('stat', 1);
 
         $this->applyFilters($exec, $request);
 
@@ -82,7 +82,7 @@ class LembagaSeni extends AuthController {
         }
 
         if ($this->delete) {
-            $buttons .= '<a id="del' . $row->id . '" class="dropdown-item has-icon" href="javascript:void(0);"><i class="fas fa-trash"></i> Hapus Data</a>';
+            $buttons .= '<a id="del' . $row->id . '" class="dropdown-item has-icon" href="javascript:void(0);" onclick="dLembaga(' . $row->id . ');"><i class="fas fa-trash"></i> Hapus Data</a>';
         }
 
         $buttons .= "</div></div>";
@@ -124,8 +124,44 @@ class LembagaSeni extends AuthController {
         ]);
     }
 
+    public function Delete(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'didtxt' => 'required|integer|exists:dta_lembaga_seni,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errmessage' => 'mohon lengkapi form!'
+                            ], 422);
+        } else {
+            DB::beginTransaction(); // Start transaction
+            try {
+                DtaLembagaSeni::where('id', $request->didtxt)
+                        ->update([
+                            'stat' => 0,
+                            'updated_by' => auth()->user()->id
+                ]);
+                DB::commit(); // Commit transaction
+                return response()->json([
+                            'success' => true
+                                ], 200);
+            } catch (Exception $exc) {
+                DB::rollBack(); // Rollback transaction
+                Log::error('Failed to create or delete lembaga: ' . $exc->getMessage(), [
+                    'user_id' => auth()->user()->id,
+                    'request_data' => $request->all(),
+                ]);
+                return response()->json([
+                            'success' => false,
+                            'errmessage' => 'error ketika delete data, errcode: 30122348'
+                                ], 422);
+            }
+        }
+    }
+
     public function Update(Request $request) {
         $validator = Validator::make($request->all(), [
+            'eidtxt' => 'required|integer|exists:dta_lembaga_seni,id',
             'nomontxt2' => 'required|integer|exists:tr_monitoring,no_monitoring',
             'nmtxt2' => 'required|string',
             'eprovtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
@@ -160,7 +196,7 @@ class LembagaSeni extends AuthController {
                                 ], 200);
             } catch (Exception $exc) {
                 DB::rollBack(); // Rollback transaction
-                Log::error('Failed to create or update user: ' . $exc->getMessage(), [
+                Log::error('Failed to create or update lembaga: ' . $exc->getMessage(), [
                     'user_id' => auth()->user()->id,
                     'request_data' => $request->all(),
                 ]);
