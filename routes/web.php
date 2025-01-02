@@ -23,6 +23,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Cms\Information\MonitoringController;
 use App\Http\Controllers\Cms\Information\LembagaSeni;
+use App\Http\Controllers\Cms\Information\Seniman;
 
 //front
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
@@ -167,6 +168,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/lembaga/kabupaten/{id_provinsi}', [LembagaSeni::class, 'Kabupaten'])->name('lembaga');
     Route::post('lembaga/update', [LembagaSeni::class, 'Update'])->name('lembaga');
     Route::post('lembaga/delete', [LembagaSeni::class, 'Delete'])->name('lembaga');
+    
+    Route::get('/seniman', [Seniman::class, 'index'])->name('seniman');
+    Route::get('/seniman/json', [Seniman::class, 'json'])->name('seniman');
     
     
 //group
