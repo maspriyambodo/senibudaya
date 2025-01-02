@@ -107,4 +107,88 @@ class Seniman extends AuthController {
             ]);
         }
     }
+
+    public function Delete(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'didtxt' => 'required|integer|exists:dta_lembaga_seni,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errmessage' => 'mohon lengkapi form!'
+                            ], 422);
+        } else {
+            DB::beginTransaction(); // Start transaction
+            try {
+                DtaSeniman::where('id', $request->didtxt)
+                        ->update([
+                            'stat' => 0,
+                            'updated_by' => auth()->user()->id
+                ]);
+                DB::commit(); // Commit transaction
+                return response()->json([
+                            'success' => true
+                                ], 200);
+            } catch (Exception $exc) {
+                DB::rollBack(); // Rollback transaction
+                Log::error('Failed to create or delete lembaga: ' . $exc->getMessage(), [
+                    'user_id' => auth()->user()->id,
+                    'request_data' => $request->all(),
+                ]);
+                return response()->json([
+                            'success' => false,
+                            'errmessage' => 'error ketika delete data, errcode: 30122348'
+                                ], 422);
+            }
+        }
+    }
+
+    public function Update(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'eidtxt' => 'required|integer|exists:dta_lembaga_seni,id',
+            'nomontxt2' => 'required|integer|exists:tr_monitoring,no_monitoring',
+            'nmtxt2' => 'required|string',
+            'eprovtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
+            'ekabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten',
+            'addrtxt2' => 'required|string',
+            'bidtxt2' => 'required|string',
+            'tigtxt2' => 'required|string', // karya
+            'prgtxt2' => 'required|string' // lembaga
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errmessage' => 'mohon lengkapi form!'
+                            ], 422);
+        } else {
+            DB::beginTransaction(); // Start transaction
+            try {
+                DtaSeniman::where('id', $request->eidtxt)
+                        ->update([
+                            'nama' => $request->nmtxt2,
+                            'provinsi' => $request->eprovtxt,
+                            'kabupaten' => $request->ekabtxt,
+                            'alamat' => $request->addrtxt2,
+                            'bidang' => $request->bidtxt2,
+                            'karya' => $request->tigtxt2,
+                            'lembaga' => $request->prgtxt2,
+                            'updated_by' => auth()->user()->id
+                ]);
+                DB::commit(); // Commit transaction
+                return response()->json([
+                            'success' => true,
+                                ], 200);
+            } catch (Exception $exc) {
+                DB::rollBack(); // Rollback transaction
+                Log::error('Failed to create or update lembaga: ' . $exc->getMessage(), [
+                    'user_id' => auth()->user()->id,
+                    'request_data' => $request->all(),
+                ]);
+                return response()->json([
+                            'success' => false,
+                            'errmessage' => 'error ketika update data, errcode: 30122246'
+                                ], 422);
+            }
+        }
+    }
 }
