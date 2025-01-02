@@ -171,6 +171,7 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::get('/seniman', [Seniman::class, 'index'])->name('seniman');
     Route::get('/seniman/json', [Seniman::class, 'json'])->name('seniman');
+    Route::get('/seniman/detil/{id}', [Seniman::class, 'detil'])->name('seniman');
     
     
 //group

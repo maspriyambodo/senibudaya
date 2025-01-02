@@ -89,4 +89,22 @@ class Seniman extends AuthController {
 
         return $buttons;
     }
+
+    public function detil(Request $request) {
+        $exec = TrMonitoring::with('hasil', 'hasil.seniman', 'hasil.seniman.provinsi', 'hasil.seniman.kabupaten')
+                ->whereHas('hasil.seniman', function ($q) use ($request) {
+                    $q->where('id', $request->id);
+                })
+                ->first();
+        if ($exec) {
+            return response()->json([
+                        'success' => true,
+                        'dt_seniman' => $exec
+            ]);
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
+    }
 }
