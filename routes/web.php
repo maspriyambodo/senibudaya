@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Cms\LoginController;
 use App\Http\Controllers\Cms\BackgroundController;
 use App\Http\Controllers\Cms\ProfilController;
@@ -24,6 +23,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Cms\Information\MonitoringController;
 use App\Http\Controllers\Cms\Information\LembagaSeni;
 use App\Http\Controllers\Cms\Information\Seniman;
+use App\Http\Controllers\Cms\Information\ProgramSeni;
 
 //front
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
@@ -37,7 +37,6 @@ Route::get('peta-sebaran', [LandingController::class, 'peta_sebaran'])->name('la
 //Route::get('/generate-password/{tulispassword}', function ($request) {
 //    return Hash::make(md5($request));
 //});
-
 //sitemap
 Route::get('/sitemap.xml', [App\Http\Controllers\SitemapController::class, 'index']);
 Route::get('/sitemap/{id}', [App\Http\Controllers\SitemapController::class, 'posts']);
@@ -84,7 +83,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/profil/change', [ProfilController::class, 'change']);
 
     #### Content
-
     //parameter
     Route::get('/parameter', [ParameterController::class, 'index']);
     Route::get('/parameter/json', [ParameterController::class, 'json']);
@@ -100,7 +98,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/menu/destroy', [MenuController::class, 'destroy']);
 
     #### Information
-
     //banner
     Route::get('/banner', [BannerController::class, 'index']);
     Route::get('/banner/json', [BannerController::class, 'json']);
@@ -130,7 +127,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/videos/destroy', [VideosController::class, 'destroy']);
 
     #### Consultation
-
     #### Contact
     //contact
     Route::get('/contact', [ContactController::class, 'index']);
@@ -138,19 +134,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/contact/destroy', [ContactController::class, 'destroy']);
 
     #### Setting
-
     //user
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/json', [UserController::class, 'json']);
     Route::post('/user/store', [UserController::class, 'store']);
     Route::post('/user/destroy', [UserController::class, 'destroy']);
     Route::post('/user/change', [UserController::class, 'change']);
-    
+
     Route::get('/pegawai', [PegawaiController::class, 'index']);
     Route::get('/pegawai/json', [PegawaiController::class, 'json']);
     Route::post('/pegawai/store', [PegawaiController::class, 'store']);
     Route::get('/pegawai-edit/{id}', [PegawaiController::class, 'edit']);
-    
+
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring');
     Route::get('/monitoring/json', [MonitoringController::class, 'json'])->name('monitoring');
     Route::get('/monitoring/add', [MonitoringController::class, 'add'])->name('monitoring');
@@ -160,7 +155,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/monitoring/update', [MonitoringController::class, 'update'])->name('monitoring');
     Route::get('/monitoring/lihat/{id}', [MonitoringController::class, 'lihat'])->name('monitoring');
     Route::get('/monitoring/ubah/{id}', [MonitoringController::class, 'ubah'])->name('monitoring');
-    
+
     Route::get('/lembaga', [LembagaSeni::class, 'index'])->name('lembaga');
     Route::get('/lembaga/json', [LembagaSeni::class, 'json'])->name('lembaga');
     Route::get('/lembaga/detil/{id}', [LembagaSeni::class, 'detil'])->name('lembaga');
@@ -168,14 +163,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/lembaga/kabupaten/{id_provinsi}', [LembagaSeni::class, 'Kabupaten'])->name('lembaga');
     Route::post('lembaga/update', [LembagaSeni::class, 'Update'])->name('lembaga');
     Route::post('lembaga/delete', [LembagaSeni::class, 'Delete'])->name('lembaga');
-    
+
     Route::get('/seniman', [Seniman::class, 'index'])->name('seniman');
     Route::get('/seniman/json', [Seniman::class, 'json'])->name('seniman');
     Route::get('/seniman/detil/{id}', [Seniman::class, 'detil'])->name('seniman');
     Route::post('seniman/update', [Seniman::class, 'Update'])->name('seniman');
     Route::post('seniman/delete', [Seniman::class, 'Delete'])->name('seniman');
-    
-    
+
+    Route::get('/program-seni', [ProgramSeni::class, 'index'])->name('program-seni');
+    Route::get('/program-seni/json', [ProgramSeni::class, 'json'])->name('program-seni');
+    Route::get('/program-seni/detil/{id}', [ProgramSeni::class, 'detil'])->name('program-seni');
+    Route::post('program-seni/update', [ProgramSeni::class, 'Update'])->name('program-seni');
+    Route::post('program-seni/delete', [ProgramSeni::class, 'Delete'])->name('program-seni');
 //group
     Route::get('/group', [GroupController::class, 'index']);
     Route::get('/group/json', [GroupController::class, 'json']);
