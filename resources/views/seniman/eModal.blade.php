@@ -193,7 +193,7 @@
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 Swal.fire({
-                    text: "error get data provinsi, errcode: 29121642c",
+                    text: "error get data provinsi, errcode: 02012147c",
                     icon: "error",
                     buttonsStyling: !1,
                     confirmButtonText: "OK",
@@ -231,7 +231,7 @@
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 Swal.fire({
-                    text: "error get data provinsi, errcode: 29121642c",
+                    text: "error get data provinsi, errcode: 02012147d",
                     icon: "error",
                     buttonsStyling: !1,
                     confirmButtonText: "OK",
@@ -277,7 +277,7 @@
                     Swal.close();
                 } else {
                     Swal.fire({
-                        text: "error get data Seniman, errcode: 02012147c",
+                        text: "error get data Seniman, errcode: 02012147e",
                         icon: "error",
                         buttonsStyling: !1,
                         confirmButtonText: "OK",
@@ -290,7 +290,7 @@
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 Swal.fire({
-                    text: "error get data Seniman, errcode: 02012147d",
+                    text: "error get data Seniman, errcode: 02012147e",
                     icon: "error",
                     buttonsStyling: !1,
                     confirmButtonText: "OK",

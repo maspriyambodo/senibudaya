@@ -110,7 +110,7 @@ class Seniman extends AuthController {
 
     public function Delete(Request $request) {
         $validator = Validator::make($request->all(), [
-            'didtxt' => 'required|integer|exists:dta_lembaga_seni,id'
+            'didtxt' => 'required|integer|exists:dta_seniman,id'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -131,13 +131,13 @@ class Seniman extends AuthController {
                                 ], 200);
             } catch (Exception $exc) {
                 DB::rollBack(); // Rollback transaction
-                Log::error('Failed to create or delete lembaga: ' . $exc->getMessage(), [
+                Log::error('Failed to create or delete seniman: ' . $exc->getMessage(), [
                     'user_id' => auth()->user()->id,
                     'request_data' => $request->all(),
                 ]);
                 return response()->json([
                             'success' => false,
-                            'errmessage' => 'error ketika delete data, errcode: 30122348'
+                            'errmessage' => 'error ketika delete data, errcode: 02012209a'
                                 ], 422);
             }
         }
@@ -186,7 +186,7 @@ class Seniman extends AuthController {
                 ]);
                 return response()->json([
                             'success' => false,
-                            'errmessage' => 'error ketika update data, errcode: 30122246'
+                            'errmessage' => 'error ketika update data, errcode: 02012209b'
                                 ], 422);
             }
         }
