@@ -129,9 +129,9 @@ class MonitoringController extends AuthController {
 
     public function store(Request $request) {
         $validator = Validator::make($request->all(), [
-                    'tgltxt' => 'required|date',
-                    'provtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
-                    'kabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten'
+            'tgltxt' => 'required|date',
+            'provtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
+            'kabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten'
         ]);
         if ($validator->fails()) {
             return redirect('monitoring/add')
@@ -316,9 +316,9 @@ class MonitoringController extends AuthController {
 
     public function update(Request $request) {
         $validator = Validator::make($request->all(), [
-                    'tgltxt' => 'required|date',
-                    'provtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
-                    'kabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten'
+            'tgltxt' => 'required|date',
+            'provtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
+            'kabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten'
         ]);
         if ($validator->fails()) {
             return redirect('monitoring/ubah/' . $request->idMonitoring)
@@ -414,7 +414,7 @@ class MonitoringController extends AuthController {
                     'jenis' => 2
                 ])
                 ->get();
-        $programSeni = TrMonitoringHasil::with(['programSeni.provinsi', 'programSeni.kabupaten'])
+        $programSeni = TrMonitoringHasil::with(['programSeni'])
                 ->where([
                     'id_monitoring' => $request->id,
                     'jenis' => 3
@@ -436,5 +436,45 @@ class MonitoringController extends AuthController {
                 ]
         );
         return view($this->target . '-edit-form', $data);
+    }
+
+    public function lihat(Request $request) {
+        $exec = TrMonitoring::with('provinsiLihat', 'kabupatenLihat', 'hasil', 'petugas', 'petugas.pegawai')
+                ->where('tr_monitoring.id', $request->id)
+                ->orWhereHas('petugas', function ($q) use ($request) {
+                    $q->where('tr_monitoring_petugas.id_monitoring', $request->id);
+                })
+                ->first();
+        $lembaga_seni = TrMonitoringHasil::with(['lembagaSeni.provinsiLihat', 'lembagaSeni.kabupatenLihat'])
+                ->where([
+                    'id_monitoring' => $request->id,
+                    'jenis' => 1
+                ])
+                ->get();
+        $seniman = TrMonitoringHasil::with(['seniman.provinsiLihat', 'seniman.kabupatenLihat'])
+                ->where([
+                    'id_monitoring' => $request->id,
+                    'jenis' => 2
+                ])
+                ->get();
+        $programSeni = TrMonitoringHasil::with(['programSeni'])
+                ->where([
+                    'id_monitoring' => $request->id,
+                    'jenis' => 3
+                ])
+                ->get();
+        $pegawai = Pegawai::where('stat', 1)->get();
+//        dd($programSeni);
+        $data = array_merge(
+                ClassMenu::view($this->target),
+                [
+                    'data' => $exec,
+                    'lembaga_seni' => $lembaga_seni,
+                    'seniman' => $seniman,
+                    'programSeni' => $programSeni,
+                    'pegawai' => $pegawai
+                ]
+        );
+        return view($this->target . '-view-form', $data);
     }
 }

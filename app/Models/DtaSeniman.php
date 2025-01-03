@@ -27,8 +27,16 @@ class DtaSeniman extends Model {
     public function provinsi() {
         return $this->belongsTo(Provinsi::class, 'provinsi', 'id_provinsi');
     }
+    
+    public function provinsiLihat() {
+        return $this->belongsTo(Provinsi::class, 'provinsi', 'id_provinsi');
+    }
 
     public function kabupaten() {
+        return $this->belongsTo(KabupatenKota::class, 'kabupaten', 'id_kabupaten');
+    }
+    
+    public function kabupatenLihat() {
         return $this->belongsTo(KabupatenKota::class, 'kabupaten', 'id_kabupaten');
     }
 }
