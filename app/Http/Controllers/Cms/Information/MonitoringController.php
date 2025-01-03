@@ -593,6 +593,30 @@ class MonitoringController extends AuthController {
         }
     }
 
+    public function add_pegawai(Request $request) {
+        DB::beginTransaction(); // Start transaction
+        try {
+            TrMonitoringPetugas::create([
+                'id_monitoring' => $request->idmon3,
+                'id_pegawai' => $request->addpegtxt,
+                'created_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to update tr_monitoring_petugas: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => true,
+                            ], 422);
+        }
+    }
+
     public function delete_pegawai(Request $request) {
         DB::beginTransaction(); // Start transaction
         try {

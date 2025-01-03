@@ -67,6 +67,9 @@
             </div>
             <div class="card-footer">
                 <button type="button" id="epegbtn{{ ($key_peg + 1) }}" class="btn btn-secondary" onclick="editPeg({{ $data->petugas[$key_peg]->id }});">Edit</button>
+                @if($key_peg == 0)
+                <button type="button" id="tpegbtn{{ ($key_peg + 1) }}" class="btn btn-info ml-2" data-toggle="modal" data-target="#addPegawai" onclick="addPeg({{ $data->id }});">Tambah Petugas</button>
+                @endif
                 @if($key_peg > 0)
                 <button type="button" id="dpegbtn{{ ($key_peg + 1) }}" class="btn btn-danger ml-2" onclick="deletePeg({{ $data->petugas[$key_peg]->id }});">Delete</button>
                 @endif

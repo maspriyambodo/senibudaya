@@ -43,54 +43,76 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="cmonbtn" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" id="submonbtn" class="btn btn-danger" onclick="dPegbtn();">Delete</button>
+                    <button type="button" id="delmonbtn" class="btn btn-danger" onclick="dPegbtn();">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="addPegawai" class="modal fade show" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addPegawaiTitle" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPegawaiTitle"></h5>
+            </div>
+            <form id="addPegawaiForm" novalidate="novalidate" method="POST" autocomplete="off">
+                @csrf
+                @method('POST')
+                <input type="hidden" id="idmon3" name="idmon3" required=""/>
+                <div class="modal-body">
+                    <select id="addpegtxt" name="addpegtxt" class="form-control form-select" required=""></select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="addmonbtn1" class="btn btn-secondary" data-dismiss="modal" onclick="closeAddPeg();">Cancel</button>
+                    <button type="button" id="addmonbtn2" class="btn btn-success" onclick="addPegbtn();">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <script>
-    function editPeg(idMonitoringPeg) {
-        Swal.fire({
-            title: 'memuat data...',
-            html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            onOpen: function () {
-                Swal.showLoading();
-            }
-        });
-        $.ajax({
-            url: "{{ url('monitoring/get-pegawai'); }}/" + idMonitoringPeg,
-            type: "GET",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "JSON",
-            success: function (data) {
-                if (data.success) {
-                    $('#idmonpeg').val(data.dt_pegawai.id);
-                    dirPeg(data.dt_pegawai.pegawai.id);
-                    $('#eModalPeg').modal('show');
-                    Swal.close();
-                } else {
-                    Swal.fire({
-                        text: "error while get data pegawai, errcode: 04010148",
-                        icon: "error",
-                        buttonsStyling: !1,
-                        confirmButtonText: "OK",
-                        allowOutsideClick: false,
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    }).then(function () {
-                        window.location.reload();
-                    });
+function closeAddPeg() {
+    $('#addpegtxt').select2('destroy');
+    $('#addpegtxt').empty();
+}
+
+function addPeg(idmon) {
+    $('#idmon3').val(idmon);
+    Swal.fire({
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
+            Swal.showLoading();
+        }
+    });
+    $.ajax({
+        url: "{{ url('monitoring/pegawai'); }}",
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data) {
+            if (data.success) {
+                var i;
+                for (i = 0; i < data.dt_pegawai.length; i++) {
+                    var sel = document.getElementById("addpegtxt");
+                    var opt = document.createElement("option");
+                    opt.value = data.dt_pegawai[i].id;
+                    opt.text = data.dt_pegawai[i].nama;
+                    sel.add(opt, sel.options[i]);
                 }
-            },
-            error: function () {
+                $('#addpegtxt').val('').trigger('change');
+                $('#addpegtxt').select2({
+                    dropdownParent: $('#addPegawai'),
+                    width: '100%'
+                });
+                Swal.close();
+            } else {
                 Swal.fire({
-                    text: "error while get data pegawai, errcode: 04010147",
+                    text: "error while get data pegawai, errcode: 04010157",
                     icon: "error",
                     buttonsStyling: !1,
                     confirmButtonText: "OK",
@@ -98,130 +120,14 @@
                     customClass: {
                         confirmButton: "btn btn-primary"
                     }
-                }).then(function () {
+                }).then(function() {
                     window.location.reload();
                 });
             }
-        });
-    }
-
-    function dirPeg(idPeg) {
-        $.ajax({
-            url: "{{ url('monitoring/pegawai'); }}",
-            type: "GET",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "JSON",
-            success: function (data) {
-                if (data.success) {
-                    var i;
-                    for (i = 0; i < data.dt_pegawai.length; i++) {
-                        var sel = document.getElementById("pegtxt");
-                        var opt = document.createElement("option");
-                        opt.value = data.dt_pegawai[i].id;
-                        opt.text = data.dt_pegawai[i].nama;
-                        sel.add(opt, sel.options[i]);
-                    }
-                    $('#pegtxt').val(idPeg).trigger('change');
-                    $('#pegtxt').select2({
-                        dropdownParent: $('#eModalPeg'),
-                        width: '100%'
-                    });
-                } else {
-                    Swal.fire({
-                        text: "error while get data pegawai, errcode: 04010157",
-                        icon: "error",
-                        buttonsStyling: !1,
-                        confirmButtonText: "OK",
-                        allowOutsideClick: false,
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    }).then(function () {
-                        window.location.reload();
-                    });
-                }
-            },
-            error: function () {
-                Swal.fire({
-                    text: "error while get data pegawai, errcode: 04010154",
-                    icon: "error",
-                    buttonsStyling: !1,
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false,
-                    customClass: {
-                        confirmButton: "btn btn-primary"
-                    }
-                }).then(function () {
-                    window.location.reload();
-                });
-            }
-        });
-    }
-
-    function sPeg() {
-        var idmonpeg, pegtxt, formStat, form_pegawai;
-        form_pegawai = document.getElementById('ePeg');
-        formStat = true;
-        pegtxt = $('#pegtxt').val();
-        idmonpeg = $('#idmonpeg').val();
-        if (idmonpeg === '') {
+        },
+        error: function() {
             Swal.fire({
-                text: "sesuatu yang salah pada sistem!",
-                icon: "success",
-                buttonsStyling: !1,
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                customClass: {
-                    confirmButton: "btn btn-primary"
-                }
-            }).then(function () {
-                window.location.reload();
-            });
-        }
-        if (pegtxt === '') {
-            formStat = false;
-        }
-        if (formStat) {
-            const eformPeg = new FormData(form_pegawai);
-            fetch("{{ url('monitoring/update_pegawai') }}", {
-                method: 'POST',
-                body: eformPeg
-            })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire({
-                                text: "data has been updated!",
-                                icon: "success",
-                                buttonsStyling: !1,
-                                confirmButtonText: "OK",
-                                allowOutsideClick: false,
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            }).then(function () {
-                                window.location.reload();
-                            });
-                        } else {
-                            Swal.fire({
-                                text: data.errmessage,
-                                icon: "error",
-                                buttonsStyling: !1,
-                                confirmButtonText: "OK",
-                                allowOutsideClick: false,
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            }).then(function () {
-                                window.location.reload();
-                            });
-                        }
-                    });
-        } else {
-            Swal.fire({
-                text: "Pegawai belum dipilih!",
+                text: "error while get data pegawai, errcode: 04010154",
                 icon: "error",
                 buttonsStyling: !1,
                 confirmButtonText: "OK",
@@ -229,57 +135,331 @@
                 customClass: {
                     confirmButton: "btn btn-primary"
                 }
+            }).then(function() {
+                window.location.reload();
             });
         }
-    }
+    });
+}
 
-    function cPeg() {
-        $('#pegtxt').select2('destroy');
-        $('#pegtxt').empty();
-        $('#eModalPeg').modal('toggle');
+function addPegbtn() {
+    var idmonpeg3, idmon3, addpegtxt, formStat, addFormPeg;
+    idmonpeg3 = $('#idmonpeg3').val();
+    idmon3 = $('#idmon3').val();
+    addpegtxt = $('#addpegtxt').val();
+    formStat = true;
+    addFormPeg = document.getElementById('addPegawaiForm');
+    if (idmon3 === '') {
+        Swal.fire({
+            text: "sesuatu yang salah pada sistem!",
+            icon: "success",
+            buttonsStyling: !1,
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        }).then(function() {
+            window.location.reload();
+        });
     }
-    
-    function deletePeg(idMonitoringPeg) {
-        $('#idmonpeg2').val(idMonitoringPeg);
-        $('#dModalPeg').modal('show');
+    if (idmonpeg3 === '') {
+        Swal.fire({
+            text: "sesuatu yang salah pada sistem!",
+            icon: "success",
+            buttonsStyling: !1,
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        }).then(function() {
+            window.location.reload();
+        });
     }
-    
-    function dPegbtn() {
-        var dform_pegawai = document.getElementById('dPeg');
-        const dformPeg = new FormData(dform_pegawai);
-            fetch("{{ url('monitoring/delete_pegawai') }}", {
+    if (addpegtxt === '') {
+        formStat = false;
+    }
+    if (formStat) {
+        const addformPeg2 = new FormData(addFormPeg);
+        fetch("{{ url('monitoring/add-pegawai') }}", {
                 method: 'POST',
-                body: dformPeg
+                body: addformPeg2
             })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire({
-                                text: "data has been deleted!",
-                                icon: "success",
-                                buttonsStyling: !1,
-                                confirmButtonText: "OK",
-                                allowOutsideClick: false,
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            }).then(function () {
-                                window.location.reload();
-                            });
-                        } else {
-                            Swal.fire({
-                                text: data.errmessage,
-                                icon: "error",
-                                buttonsStyling: !1,
-                                confirmButtonText: "OK",
-                                allowOutsideClick: false,
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            }).then(function () {
-                                window.location.reload();
-                            });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        text: "data has been updated!",
+                        icon: "success",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
                         }
+                    }).then(function() {
+                        window.location.reload();
                     });
+                } else {
+                    Swal.fire({
+                        text: data.errmessage,
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                }
+            });
+    } else {
+        Swal.fire({
+            text: "Pegawai belum dipilih!",
+            icon: "error",
+            buttonsStyling: !1,
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
     }
+}
+
+function editPeg(idMonitoringPeg) {
+    Swal.fire({
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
+            Swal.showLoading();
+        }
+    });
+    $.ajax({
+        url: "{{ url('monitoring/get-pegawai'); }}/" + idMonitoringPeg,
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data) {
+            if (data.success) {
+                $('#idmonpeg').val(data.dt_pegawai.id);
+                dirPeg(data.dt_pegawai.pegawai.id);
+                $('#eModalPeg').modal('show');
+                Swal.close();
+            } else {
+                Swal.fire({
+                    text: "error while get data pegawai, errcode: 04010148",
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function() {
+                    window.location.reload();
+                });
+            }
+        },
+        error: function() {
+            Swal.fire({
+                text: "error while get data pegawai, errcode: 04010147",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            }).then(function() {
+                window.location.reload();
+            });
+        }
+    });
+}
+
+function dirPeg(idPeg) {
+    $.ajax({
+        url: "{{ url('monitoring/pegawai'); }}",
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data) {
+            if (data.success) {
+                var i;
+                for (i = 0; i < data.dt_pegawai.length; i++) {
+                    var sel = document.getElementById("pegtxt");
+                    var opt = document.createElement("option");
+                    opt.value = data.dt_pegawai[i].id;
+                    opt.text = data.dt_pegawai[i].nama;
+                    sel.add(opt, sel.options[i]);
+                }
+                $('#pegtxt').val(idPeg).trigger('change');
+                $('#pegtxt').select2({
+                    dropdownParent: $('#eModalPeg'),
+                    width: '100%'
+                });
+            } else {
+                Swal.fire({
+                    text: "error while get data pegawai, errcode: 04010157",
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function() {
+                    window.location.reload();
+                });
+            }
+        },
+        error: function() {
+            Swal.fire({
+                text: "error while get data pegawai, errcode: 04010345",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            }).then(function() {
+                window.location.reload();
+            });
+        }
+    });
+}
+
+function sPeg() {
+    var idmonpeg, pegtxt, formStat, form_pegawai;
+    form_pegawai = document.getElementById('ePeg');
+    formStat = true;
+    pegtxt = $('#pegtxt').val();
+    idmonpeg = $('#idmonpeg').val();
+    if (idmonpeg === '') {
+        Swal.fire({
+            text: "sesuatu yang salah pada sistem!",
+            icon: "success",
+            buttonsStyling: !1,
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        }).then(function() {
+            window.location.reload();
+        });
+    }
+    if (pegtxt === '') {
+        formStat = false;
+    }
+    if (formStat) {
+        const eformPeg = new FormData(form_pegawai);
+        fetch("{{ url('monitoring/update_pegawai') }}", {
+                method: 'POST',
+                body: eformPeg
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        text: "data has been updated!",
+                        icon: "success",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        text: data.errmessage,
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                }
+            });
+    } else {
+        Swal.fire({
+            text: "Pegawai belum dipilih!",
+            icon: "error",
+            buttonsStyling: !1,
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+    }
+}
+
+function cPeg() {
+    $('#pegtxt').select2('destroy');
+    $('#pegtxt').empty();
+    $('#eModalPeg').modal('toggle');
+}
+
+function deletePeg(idMonitoringPeg) {
+    $('#idmonpeg2').val(idMonitoringPeg);
+    $('#dModalPeg').modal('show');
+}
+
+function dPegbtn() {
+    var dform_pegawai = document.getElementById('dPeg');
+    const dformPeg = new FormData(dform_pegawai);
+    fetch("{{ url('monitoring/delete_pegawai') }}", {
+            method: 'POST',
+            body: dformPeg
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    text: "data has been deleted!",
+                    icon: "success",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function() {
+                    window.location.reload();
+                });
+            } else {
+                Swal.fire({
+                    text: data.errmessage,
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function() {
+                    window.location.reload();
+                });
+            }
+        });
+}
 </script>
