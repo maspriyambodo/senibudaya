@@ -55,6 +55,7 @@ function sMonitoring() {
     tglmontxt = $('#tglmontxt').val();
     nmontxt = $('#nmontxt').val();
     if (eidtxt === '') {
+        $('#eModal').modal('toggle');
         Swal.fire({
             text: "sesuatu yang salah pada sistem!",
             icon: "success",
@@ -86,38 +87,40 @@ function sMonitoring() {
                 method: 'POST',
                 body: eformData
             })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            $('#eModal').modal('toggle');
-                            Swal.fire({
-                                text: "data has been updated!",
-                                icon: "success",
-                                buttonsStyling: !1,
-                                confirmButtonText: "OK",
-                                allowOutsideClick: false,
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            }).then(function () {
-                                window.location.reload();
-                            });
-                        } else {
-                            Swal.fire({
-                                text: data.errmessage,
-                                icon: "error",
-                                buttonsStyling: !1,
-                                confirmButtonText: "OK",
-                                allowOutsideClick: false,
-                                customClass: {
-                                    confirmButton: "btn btn-primary"
-                                }
-                            }).then(function () {
-                                window.location.reload();
-                            });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $('#eModal').modal('toggle');
+                    Swal.fire({
+                        text: "data has been updated!",
+                        icon: "success",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
                         }
+                    }).then(function() {
+                        window.location.reload();
                     });
+                } else {
+                    $('#eModal').modal('toggle');
+                    Swal.fire({
+                        text: data.errmessage,
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                }
+            });
     } else {
+
         Swal.fire({
             text: "mohon lengkapi form!",
             icon: "error",
@@ -163,6 +166,7 @@ function provMonitoring(id_provinsi) {
             });
         },
         error: function() {
+            $('#eModal').modal('toggle');
             Swal.fire({
                 text: "error get data Provinsi Monitoring, errcode: 03012331",
                 icon: "error",
@@ -201,6 +205,7 @@ function kabMonitoring(id_prov, id_kab) {
             });
         },
         error: function() {
+            $('#eModal').modal('toggle');
             Swal.fire({
                 text: "error get data Kabupaten Monitoring, errcode: 03012333",
                 icon: "error",
@@ -244,6 +249,7 @@ function monitorEdit(idMonitoring) {
                 Swal.close();
                 $('#eModal').modal('show');
             } else {
+                $('#eModal').modal('toggle');
                 Swal.fire({
                     text: "error get data Monitoring, errcode: 03012307a",
                     icon: "error",
@@ -256,8 +262,18 @@ function monitorEdit(idMonitoring) {
                 });
             }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
-
+        error: function() {
+            $('#eModal').modal('toggle');
+                Swal.fire({
+                    text: "error get data Monitoring, errcode: 04010050",
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                });
         }
     });
 }
