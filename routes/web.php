@@ -151,10 +151,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/monitoring/add', [MonitoringController::class, 'add'])->name('monitoring');
     Route::get('/monitoring/pegawai', [MonitoringController::class, 'pegawai'])->name('monitoring');
     Route::get('/monitoring/provinsi', [MonitoringController::class, 'provinsi'])->name('monitoring');
+    Route::get('/monitoring/kabupaten/{id}', [MonitoringController::class, 'kabupaten'])->name('monitoring');
     Route::post('/monitoring/store', [MonitoringController::class, 'store'])->name('monitoring');
     Route::post('/monitoring/update', [MonitoringController::class, 'update'])->name('monitoring');
+    Route::post('/monitoring/update_monitoring', [MonitoringController::class, 'update1'])->name('monitoring');
     Route::get('/monitoring/lihat/{id}', [MonitoringController::class, 'lihat'])->name('monitoring');
     Route::get('/monitoring/ubah/{id}', [MonitoringController::class, 'ubah'])->name('monitoring');
+    Route::get('/monitoring/detil-monitoring/{id}', [MonitoringController::class, 'detil_monitoring'])->name('monitoring');
 
     Route::get('/lembaga', [LembagaSeni::class, 'index'])->name('lembaga');
     Route::get('/lembaga/json', [LembagaSeni::class, 'json'])->name('lembaga');

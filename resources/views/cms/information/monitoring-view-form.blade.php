@@ -50,6 +50,9 @@
                     </div>
                 </div>
             </div>
+            <div class="card-footer">
+                <button type="button" id="monitorbtn" class="btn btn-secondary" onclick="monitorEdit({{ $data->id; }});">Edit</button>
+            </div>
         </div>
         @foreach($data->petugas as $dt_pegawai)
         <div class="card">
@@ -203,4 +206,5 @@
         @endforeach
     </div>
 </div>
+@include('cms.monitoring.eMonitoring')
 @include('cms.footer')

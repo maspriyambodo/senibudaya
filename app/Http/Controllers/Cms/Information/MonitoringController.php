@@ -85,7 +85,7 @@ class MonitoringController extends AuthController {
         if ($this->edit) {
             $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/lihat/' . $row->id) . "\">
             <i class=\"fas fa-eye\"></i> Lihat Data</a>";
-            $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/ubah/' . $row->id) . "\">
+            $buttons .= "<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"" . url('/' . $this->page . '/lihat/' . $row->id) . "\">
             <i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
         }
 
@@ -119,6 +119,20 @@ class MonitoringController extends AuthController {
             return response()->json([
                         'success' => true,
                         'dt_prov' => $prov
+            ]);
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
+    }
+
+    public function kabupaten(Request $request) {
+        $kab = KabupatenKota::where('id_provinsi', $request->id)->get();
+        if ($kab) {
+            return response()->json([
+                        'success' => true,
+                        'dt_kab' => $kab
             ]);
         } else {
             return response()->json([
@@ -474,5 +488,59 @@ class MonitoringController extends AuthController {
                 ]
         );
         return view($this->target . '-view-form', $data);
+    }
+
+    public function detil_monitoring(Request $request) {
+        $exec = TrMonitoring::where('id', $request->id)->get();
+        if ($exec) {
+            return response()->json([
+                        'success' => true,
+                        'dt_monitoring' => $exec[0]
+            ]);
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
+    }
+
+    public function update1(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'eidtxt' => 'required|integer|exists:tr_monitoring,id',
+            'nmontxt' => 'required|string',
+            'tglmontxt' => 'required|string',
+            'provtxt' => 'required|integer|exists:mt_provinsi,id_provinsi',
+            'kabtxt' => 'required|integer|exists:mt_kabupaten,id_kabupaten'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errmessage' => 'mohon lengkapi form!'
+                            ], 422);
+        } else {
+            DB::beginTransaction(); // Start transaction
+            try {
+                TrMonitoring::where('id', $request->eidtxt)
+                        ->update([
+                            'tgl_monitoring' => Carbon::parse($request->tglmontxt)->format('Y-m-d'),
+                            'provinsi' => $request->provtxt,
+                            'kabupaten' => $request->kabtxt,
+                            'updated_by' => auth()->user()->id
+                ]);
+                DB::commit(); // Commit transaction
+                return response()->json([
+                            'success' => true,
+                                ], 200);
+            } catch (Exception $exc) {
+                DB::rollBack(); // Rollback transaction
+                Log::error('Failed to update tr_monitoring: ' . $exc->getMessage(), [
+                    'user_id' => auth()->user()->id,
+                    'request_data' => $request->all(),
+                ]);
+                return response()->json([
+                            'success' => true,
+                                ], 422);
+            }
+        }
     }
 }
