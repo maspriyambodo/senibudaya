@@ -51,9 +51,21 @@
                 </div>
             </div>
         </div>
+        @foreach($data->petugas as $dt_pegawai)
         <div class="card">
             <div class="card-body">
-                @foreach($lembaga_seni as $dt_lembaga)
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Nama Petugas</label>
+                    <div class="col-sm-8">
+                        <label class="col-form-label">: {{ $dt_pegawai->pegawai->nama; }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
+        @foreach($lembaga_seni as $dt_lembaga)
+        <div class="card">
+            <div class="card-body">
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Nama Lembaga</label>
                     <div class="col-sm-8">
@@ -96,13 +108,12 @@
                         <label class="col-form-label">: {{ $dt_lembaga->lembagaSeni->program; }}</label>
                     </div>
                 </div>
-                <hr>
-                @endforeach
             </div>
         </div>
+        @endforeach
+        @foreach($seniman as $dt_seniman)
         <div class="card">
             <div class="card-body">
-                @foreach($seniman as $dt_seniman)
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Nama Lembaga</label>
                     <div class="col-sm-8">
@@ -145,13 +156,12 @@
                         <label class="col-form-label">: {{ $dt_seniman->seniman->lembaga; }}</label>
                     </div>
                 </div>
-                <hr>
-                @endforeach
             </div>
         </div>
+        @endforeach
+        @foreach($programSeni as $dt_program)
         <div class="card">
             <div class="card-body">
-                @foreach($programSeni as $dt_program)
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Nama Program</label>
                     <div class="col-sm-8">
@@ -188,10 +198,9 @@
                         <label class="col-form-label">: {{ $dt_program->programSeni->penyelenggara; }}</label>
                     </div>
                 </div>
-                <hr>
-                @endforeach
             </div>
         </div>
+        @endforeach
     </div>
 </div>
 @include('cms.footer')

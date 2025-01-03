@@ -463,16 +463,14 @@ class MonitoringController extends AuthController {
                     'jenis' => 3
                 ])
                 ->get();
-        $pegawai = Pegawai::where('stat', 1)->get();
-//        dd($programSeni);
+//        dd($exec);
         $data = array_merge(
                 ClassMenu::view($this->target),
                 [
                     'data' => $exec,
                     'lembaga_seni' => $lembaga_seni,
                     'seniman' => $seniman,
-                    'programSeni' => $programSeni,
-                    'pegawai' => $pegawai
+                    'programSeni' => $programSeni
                 ]
         );
         return view($this->target . '-view-form', $data);
