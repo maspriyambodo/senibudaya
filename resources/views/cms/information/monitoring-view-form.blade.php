@@ -54,7 +54,7 @@
                 <button type="button" id="monitorbtn" class="btn btn-secondary" onclick="monitorEdit({{ $data->id; }});">Edit</button>
             </div>
         </div>
-        @foreach($data->petugas as $dt_pegawai)
+        @foreach($data->petugas as $key_peg => $dt_pegawai)
         <div class="card">
             <div class="card-body">
                 <div class="form-group row">
@@ -63,6 +63,12 @@
                         <label class="col-form-label">: {{ $dt_pegawai->pegawai->nama; }}</label>
                     </div>
                 </div>
+            </div>
+            <div class="card-footer">
+                <button type="button" id="epegbtn{{ ($key_peg + 1) }}" class="btn btn-secondary" onclick="editPeg({{ $data->petugas[$key_peg]->id }});">Edit</button>
+                @if($key_peg > 0)
+                <button type="button" id="dpegbtn{{ ($key_peg + 1) }}" class="btn btn-danger ml-2">Delete</button>
+                @endif
             </div>
         </div>
         @endforeach
@@ -207,4 +213,5 @@
     </div>
 </div>
 @include('cms.monitoring.eMonitoring')
+@include('cms.monitoring.ePetugas')
 @include('cms.footer')

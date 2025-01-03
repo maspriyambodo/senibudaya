@@ -543,4 +543,53 @@ class MonitoringController extends AuthController {
             }
         }
     }
+    
+    public function get_pegawai(Request $request) {
+        $exec = TrMonitoringPetugas::with('pegawai')->where('id', $request->id)->first();
+        if ($exec) {
+            return response()->json([
+                        'success' => true,
+                        'dt_pegawai' => $exec
+            ]);
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
+    }
+    
+    public function update_pegawai(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'idmonpeg' => 'required|integer|exists:tr_monitoring_petugas,id',
+            'pegtxt' => 'required|integer'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                        'success' => false,
+                        'errmessage' => 'mohon lengkapi form!'
+                            ], 422);
+        } else {
+            DB::beginTransaction(); // Start transaction
+            try {
+                TrMonitoringPetugas::where('id', $request->idmonpeg)
+                        ->update([
+                            'id_pegawai' => $request->pegtxt,
+                            'updated_by' => auth()->user()->id
+                ]);
+                DB::commit(); // Commit transaction
+                return response()->json([
+                            'success' => true,
+                                ], 200);
+            } catch (Exception $exc) {
+                DB::rollBack(); // Rollback transaction
+                Log::error('Failed to update tr_monitoring_petugas: ' . $exc->getMessage(), [
+                    'user_id' => auth()->user()->id,
+                    'request_data' => $request->all(),
+                ]);
+                return response()->json([
+                            'success' => true,
+                                ], 422);
+            }
+        }
+    }
 }
