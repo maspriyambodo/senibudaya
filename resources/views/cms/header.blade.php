@@ -27,7 +27,13 @@
 <script src="{{ asset('datatables/datatables.min.js') }}"></script>
 <script async>var app_url="{{ url('') }}";</script>
 <script async>var app_page="{{ url($current) }}";</script>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+    .swal2-container {
+        z-index: 3000 !important;
+    }
+</style>
+</head>
 <body>
 <div class="loader-bg">
 <div class="loader-track">
