@@ -55,6 +55,7 @@
             </div>
         </div>
         @foreach($data->petugas as $key_peg => $dt_pegawai)
+        @if($dt_pegawai->is_trash == 1)
         <div class="card">
             <div class="card-body">
                 <div class="form-group row">
@@ -67,10 +68,11 @@
             <div class="card-footer">
                 <button type="button" id="epegbtn{{ ($key_peg + 1) }}" class="btn btn-secondary" onclick="editPeg({{ $data->petugas[$key_peg]->id }});">Edit</button>
                 @if($key_peg > 0)
-                <button type="button" id="dpegbtn{{ ($key_peg + 1) }}" class="btn btn-danger ml-2">Delete</button>
+                <button type="button" id="dpegbtn{{ ($key_peg + 1) }}" class="btn btn-danger ml-2" onclick="deletePeg({{ $data->petugas[$key_peg]->id }});">Delete</button>
                 @endif
             </div>
         </div>
+        @endif
         @endforeach
         @foreach($lembaga_seni as $dt_lembaga)
         <div class="card">

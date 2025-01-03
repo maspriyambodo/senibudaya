@@ -24,6 +24,31 @@
         </div>
     </div>
 </div>
+<div id="dModalPeg" class="modal fade show" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="dModalPegTitle" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dModalPegTitle"></h5>
+            </div>
+            <form id="dPeg" novalidate="novalidate" method="POST" autocomplete="off">
+                @csrf
+                @method('POST')
+                <input type="hidden" id="idmonpeg2" name="idmonpeg2" required=""/>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        anda yakin ingin menghapus data Petugas?
+                        <br>
+                        data yang telah dihapus tidak dapat dikembalikan!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cmonbtn" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="submonbtn" class="btn btn-danger" onclick="dPegbtn();">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
     function editPeg(idMonitoringPeg) {
         Swal.fire({
@@ -212,5 +237,49 @@
         $('#pegtxt').select2('destroy');
         $('#pegtxt').empty();
         $('#eModalPeg').modal('toggle');
+    }
+    
+    function deletePeg(idMonitoringPeg) {
+        $('#idmonpeg2').val(idMonitoringPeg);
+        $('#dModalPeg').modal('show');
+    }
+    
+    function dPegbtn() {
+        var dform_pegawai = document.getElementById('dPeg');
+        const dformPeg = new FormData(dform_pegawai);
+            fetch("{{ url('monitoring/delete_pegawai') }}", {
+                method: 'POST',
+                body: dformPeg
+            })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                text: "data has been deleted!",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "OK",
+                                allowOutsideClick: false,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                text: data.errmessage,
+                                icon: "error",
+                                buttonsStyling: !1,
+                                confirmButtonText: "OK",
+                                allowOutsideClick: false,
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function () {
+                                window.location.reload();
+                            });
+                        }
+                    });
     }
 </script>

@@ -543,7 +543,7 @@ class MonitoringController extends AuthController {
             }
         }
     }
-    
+
     public function get_pegawai(Request $request) {
         $exec = TrMonitoringPetugas::with('pegawai')->where('id', $request->id)->first();
         if ($exec) {
@@ -557,7 +557,7 @@ class MonitoringController extends AuthController {
             ]);
         }
     }
-    
+
     public function update_pegawai(Request $request) {
         $validator = Validator::make($request->all(), [
             'idmonpeg' => 'required|integer|exists:tr_monitoring_petugas,id',
@@ -590,6 +590,30 @@ class MonitoringController extends AuthController {
                             'success' => true,
                                 ], 422);
             }
+        }
+    }
+
+    public function delete_pegawai(Request $request) {
+        DB::beginTransaction(); // Start transaction
+        try {
+            TrMonitoringPetugas::where('id', $request->idmonpeg2)
+                    ->update([
+                        'is_trash' => 0,
+                        'updated_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to update tr_monitoring_petugas: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => true,
+                            ], 422);
         }
     }
 }
