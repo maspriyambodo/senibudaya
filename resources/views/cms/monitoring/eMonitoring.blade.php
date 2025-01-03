@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<div id="eModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="eModalTitle" aria-modal="true">
+<div id="eModal" class="modal fade show" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="eModalTitle" aria-modal="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -55,7 +55,6 @@ function sMonitoring() {
     tglmontxt = $('#tglmontxt').val();
     nmontxt = $('#nmontxt').val();
     if (eidtxt === '') {
-        $('#eModal').modal('toggle');
         Swal.fire({
             text: "sesuatu yang salah pada sistem!",
             icon: "success",
@@ -90,7 +89,6 @@ function sMonitoring() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    $('#eModal').modal('toggle');
                     Swal.fire({
                         text: "data has been updated!",
                         icon: "success",
@@ -104,7 +102,6 @@ function sMonitoring() {
                         window.location.reload();
                     });
                 } else {
-                    $('#eModal').modal('toggle');
                     Swal.fire({
                         text: data.errmessage,
                         icon: "error",
@@ -120,7 +117,6 @@ function sMonitoring() {
                 }
             });
     } else {
-
         Swal.fire({
             text: "mohon lengkapi form!",
             icon: "error",
@@ -166,7 +162,6 @@ function provMonitoring(id_provinsi) {
             });
         },
         error: function() {
-            $('#eModal').modal('toggle');
             Swal.fire({
                 text: "error get data Provinsi Monitoring, errcode: 03012331",
                 icon: "error",
@@ -205,7 +200,6 @@ function kabMonitoring(id_prov, id_kab) {
             });
         },
         error: function() {
-            $('#eModal').modal('toggle');
             Swal.fire({
                 text: "error get data Kabupaten Monitoring, errcode: 03012333",
                 icon: "error",
@@ -249,7 +243,6 @@ function monitorEdit(idMonitoring) {
                 Swal.close();
                 $('#eModal').modal('show');
             } else {
-                $('#eModal').modal('toggle');
                 Swal.fire({
                     text: "error get data Monitoring, errcode: 03012307a",
                     icon: "error",
@@ -263,7 +256,6 @@ function monitorEdit(idMonitoring) {
             }
         },
         error: function() {
-            $('#eModal').modal('toggle');
                 Swal.fire({
                     text: "error get data Monitoring, errcode: 04010050",
                     icon: "error",
