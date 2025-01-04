@@ -477,7 +477,7 @@ class MonitoringController extends AuthController {
                     'jenis' => 3
                 ])
                 ->get();
-//        dd($exec);
+//        dd($lembaga_seni);
         $data = array_merge(
                 ClassMenu::view($this->target),
                 [
@@ -488,6 +488,25 @@ class MonitoringController extends AuthController {
                 ]
         );
         return view($this->target . '-view-form', $data);
+    }
+
+    public function monitoring_hasil(Request $request) {
+        $exec = TrMonitoringHasil::with('lembagaSeni')
+                ->where([
+                    'id' => $request->id,
+                    'jenis' => 1
+                ])
+                ->get();
+        if ($exec) {
+            return response()->json([
+                        'success' => true,
+                        'dt_monitoring' => $exec[0]
+            ], 200);
+        } else {
+            return response()->json([
+                        'success' => false
+            ], 422);
+        }
     }
 
     public function detil_monitoring(Request $request) {

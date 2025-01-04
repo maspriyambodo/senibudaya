@@ -25,6 +25,7 @@
         <div class="clear" style="margin-top:5%;"></div>
         <div class="card">
             <div class="card-body">
+                <h5><u>Data Monitoring</u></h5>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Nomor Monitoring</label>
                     <div class="col-sm-8">
@@ -58,6 +59,7 @@
         @if($dt_pegawai->is_trash == 1)
         <div class="card">
             <div class="card-body">
+                <h5><u>Petugas Monitoring</u></h5>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Nama Petugas</label>
                     <div class="col-sm-8">
@@ -77,9 +79,11 @@
         </div>
         @endif
         @endforeach
-        @foreach($lembaga_seni as $dt_lembaga)
+        @foreach($lembaga_seni as $key_lembaga => $dt_lembaga)
+        @if($dt_lembaga->lembagaSeni->stat == 1)
         <div class="card">
             <div class="card-body">
+                <h5><u>Lembaga Seni</u></h5>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Nama Lembaga</label>
                     <div class="col-sm-8">
@@ -123,13 +127,26 @@
                     </div>
                 </div>
             </div>
+            <div class="card-footer">
+                <button type="button" id="elembtn{{ ($key_lembaga + 1) }}" class="btn btn-secondary" onclick="editLem({{ $dt_lembaga->id }});">Edit</button>
+                @if($key_lembaga == 0)
+                <button type="button" id="tlembtn{{ ($key_lembaga + 1) }}" class="btn btn-info ml-2" data-toggle="modal" data-target="#addLem" onclick="addLembtn({{ $dt_lembaga->id_monitoring }});">Tambah Lembaga Seni</button>
+                @endif
+                @if($key_lembaga > 0)
+                <button type="button" id="dlembtn{{ ($key_lembaga + 1) }}" class="btn btn-danger ml-2" onclick="delLembtn({{ $dt_lembaga->id }})">Delete</button>
+                @endif
+            </div>
         </div>
+        @endif
         @endforeach
-        @foreach($seniman as $dt_seniman)
+        
+        @foreach($seniman as $key_seniman => $dt_seniman)
+        @if($dt_seniman->seniman->stat == 1)
         <div class="card">
             <div class="card-body">
+                <h5><u>Seniman</u></h5>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Nama Lembaga</label>
+                    <label class="col-sm-2 col-form-label">Nama Seniman</label>
                     <div class="col-sm-8">
                         <label class="col-form-label">: {{ $dt_seniman->seniman->nama; }}</label>
                     </div>
@@ -172,10 +189,13 @@
                 </div>
             </div>
         </div>
+        @endif
         @endforeach
-        @foreach($programSeni as $dt_program)
+        @foreach($programSeni as $key_program => $dt_program)
+        @if($dt_program->programSeni->stat == 1)
         <div class="card">
             <div class="card-body">
+                <h5><u>Program Seni</u></h5>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Nama Program</label>
                     <div class="col-sm-8">
@@ -214,9 +234,11 @@
                 </div>
             </div>
         </div>
+        @endif
         @endforeach
     </div>
 </div>
 @include('cms.monitoring.eMonitoring')
 @include('cms.monitoring.ePetugas')
+@include('cms.monitoring.eLembaga')
 @include('cms.footer')

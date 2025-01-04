@@ -161,6 +161,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/monitoring/lihat/{id}', [MonitoringController::class, 'lihat'])->name('monitoring');
     Route::get('/monitoring/ubah/{id}', [MonitoringController::class, 'ubah'])->name('monitoring');
     Route::get('/monitoring/detil-monitoring/{id}', [MonitoringController::class, 'detil_monitoring'])->name('monitoring');
+    Route::get('/monitoring/monitoring-hasil/{id}', [MonitoringController::class, 'monitoring_hasil'])->name('monitoring');
     Route::get('/monitoring/get-pegawai/{id}', [MonitoringController::class, 'get_pegawai'])->name('monitoring');
 
     Route::get('/lembaga', [LembagaSeni::class, 'index'])->name('lembaga');
