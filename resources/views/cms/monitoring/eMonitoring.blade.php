@@ -198,6 +198,8 @@ function kabMonitoring(id_prov, id_kab) {
                 dropdownParent: $('#eModal'),
                 width: '100%'
             });
+            Swal.close();
+            $('#eModal').modal('show');
         },
         error: function() {
             Swal.fire({
@@ -240,8 +242,6 @@ function monitorEdit(idMonitoring) {
                 $('#tglmontxt').val(data.dt_monitoring.tgl_monitoring);
                 provMonitoring(data.dt_monitoring.provinsi);
                 kabMonitoring(data.dt_monitoring.provinsi, data.dt_monitoring.kabupaten);
-                Swal.close();
-                $('#eModal').modal('show');
             } else {
                 Swal.fire({
                     text: "error get data Monitoring, errcode: 03012307a",
