@@ -556,6 +556,35 @@ class MonitoringController extends AuthController {
         }
     }
 
+    public function del_lembaga(Request $request) {
+        DB::beginTransaction(); // Start transaction
+        try {
+            DtaLembagaSeni::where('id', $request->idLemtxt2)
+                    ->update([
+                        'stat' => 0,
+                        'updated_by' => auth()->user()->id
+            ]);
+            TrMonitoringHasil::where('id', $request->idMonHasil)
+                    ->update([
+                        'is_trash' => 0,
+                        'updated_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to update tr_monitoring: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => true,
+                            ], 422);
+        }
+    }
+
     public function monitoring_hasil(Request $request) {
         $exec = TrMonitoringHasil::with('lembagaSeni')
                 ->where([

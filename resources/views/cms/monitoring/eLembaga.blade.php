@@ -123,7 +123,139 @@
         </div>
     </div>
 </div>
+<div id="delModalLem" class="modal fade show" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="delModalLemTitle" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="delModalLemTitle"></h5>
+            </div>
+            <form id="dLembaga" novalidate="novalidate" method="POST" autocomplete="off">
+                @csrf
+                @method('POST')
+                <input type="hidden" id="idMonHasil" name="idMonHasil" required=""/>
+                <input type="hidden" id="idLemtxt2" name="idLemtxt2" required=""/>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        anda yakin ingin menghapus data Lembaga Seni?
+                        <br><!-- comment -->
+                        data yang telah dihapus tidak dapat dikembalikan!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cmonbtn2" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="submonbtn2" class="btn btn-danger" onclick="deLem();">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
+function deLem() {
+    Swal.fire({
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
+            Swal.showLoading();
+        }
+    });
+    var delformLem = document.getElementById('dLembaga');
+    const delLemData = new FormData(delformLem);
+    fetch("{{ url('monitoring/del_lembaga') }}", {
+                method: 'POST',
+                body: delLemData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        text: "data has been deleted!",
+                        icon: "success",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        text: data.errmessage,
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                }
+            });
+}
+    
+function delLembtn(idMonitorHasil) {
+    Swal.fire({
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
+            Swal.showLoading();
+        }
+    });
+    $.ajax({
+        url: "{{ url('monitoring/monitoring-hasil'); }}/" + idMonitorHasil,
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data) {
+            if (data.success) {
+                var idMonHasil, idLemtxt2, formStat, formDelete;
+                formDelete = document.getElementById('dLembaga');
+                formStat = true;
+                idLemtxt2 = $('#idLemtxt2').val(data.dt_monitoring.id_content);
+                idMonHasil = $('#idMonHasil').val(data.dt_monitoring.id_content);
+                $('#delModalLem').modal('show');
+                Swal.close();
+            } else {
+                Swal.fire({
+                    text: "error while get data Lembaga, errcode: 04011903",
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function() {
+                    window.location.reload();
+                });
+            }
+        },
+        error: function() {
+            Swal.fire({
+                text: "error while get data Lembaga, errcode: 04011904",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            }).then(function() {
+                window.location.reload();
+            });
+        }
+    });
+}
+
 function sLem2() {
     var idMonitorHasil, nmtxt, provLemtxt, kabLemtxt, addrtxt, fokLemtxt, tgktxt, prgtxt, formStat, formLem;
     formLem = document.getElementById('addLembaga');
@@ -150,28 +282,28 @@ function sLem2() {
             window.location.reload();
         });
     }
-    if(nmtxt === '') {
+    if (nmtxt === '') {
         formStat = false;
     }
-    if(provLemtxt === '') {
+    if (provLemtxt === '') {
         formStat = false;
     }
-    if(kabLemtxt === '') {
+    if (kabLemtxt === '') {
         formStat = false;
     }
-    if(addrtxt === '') {
+    if (addrtxt === '') {
         formStat = false;
     }
-    if(fokLemtxt === '') {
+    if (fokLemtxt === '') {
         formStat = false;
     }
-    if(tgktxt === '') {
+    if (tgktxt === '') {
         formStat = false;
     }
-    if(prgtxt === '') {
+    if (prgtxt === '') {
         formStat = false;
     }
-    if(formStat) {
+    if (formStat) {
         const addformLem = new FormData(formLem);
         fetch("{{ url('monitoring/add_lembaga') }}", {
                 method: 'POST',
@@ -220,7 +352,7 @@ function sLem2() {
         });
     }
 }
-    
+
 function addLembtn(id_monitoring) {
     $('#idMonitorHasil2').val(id_monitoring);
     provLem2();

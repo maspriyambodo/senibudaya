@@ -160,6 +160,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/monitoring/add-pegawai', [MonitoringController::class, 'add_pegawai'])->name('monitoring');
     Route::post('/monitoring/update_lembaga', [MonitoringController::class, 'update_lembaga'])->name('monitoring');
     Route::post('/monitoring/add_lembaga', [MonitoringController::class, 'add_lembaga'])->name('monitoring');
+    Route::post('/monitoring/del_lembaga', [MonitoringController::class, 'del_lembaga'])->name('monitoring');
     Route::get('/monitoring/lihat/{id}', [MonitoringController::class, 'lihat'])->name('monitoring');
     Route::get('/monitoring/ubah/{id}', [MonitoringController::class, 'ubah'])->name('monitoring');
     Route::get('/monitoring/detil-monitoring/{id}', [MonitoringController::class, 'detil_monitoring'])->name('monitoring');
