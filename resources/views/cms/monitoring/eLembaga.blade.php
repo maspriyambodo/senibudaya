@@ -19,7 +19,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Provinsi</label>
                         <div class="col-sm-7">
-                            <select id="provLemtxt" name="provLemtxt" class="form-control form-select" required=""></select>
+                            <select id="provLemtxt" name="provLemtxt" class="form-control form-select" required="" onchange="kabLem1(this.value)"></select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -347,6 +347,7 @@ function provLem2() {
         processData: false,
         dataType: "JSON",
         success: function(data) {
+            $('#kabLemtxt2').children('option').remove();
             var i;
             for (i = 0; i < data.dt_prov.length; i++) {
                 var sel = document.getElementById("provLemtxt2");
@@ -376,6 +377,46 @@ function provLem2() {
     });
 }
 
+function kabLem1(id_prov) {
+    if (id_prov !== '') {
+        $.ajax({
+            url: "{{ url('monitoring/kabupaten'); }}/" + id_prov,
+            type: "GET",
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            success: function(data) {
+                $('#kabLemtxt').children('option').remove();
+                var i;
+                for (i = 0; i < data.dt_kab.length; i++) {
+                    var sel = document.getElementById("kabLemtxt");
+                    var opt = document.createElement("option");
+                    opt.value = data.dt_kab[i].id_kabupaten;
+                    opt.text = data.dt_kab[i].nama;
+                    sel.add(opt, sel.options[i]);
+                }
+                $('#kabLemtxt').select2({
+                    dropdownParent: $('#eModalLem'),
+                    width: '100%'
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    text: "error get data Kabupaten, errcode: 04011804",
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                });
+            }
+        });
+    }
+}
+
 function kabLem2(id_prov) {
     if (id_prov !== '') {
         $.ajax({
@@ -386,6 +427,7 @@ function kabLem2(id_prov) {
             processData: false,
             dataType: "JSON",
             success: function(data) {
+                $('#kabLemtxt2').children('option').remove();
                 var i;
                 for (i = 0; i < data.dt_kab.length; i++) {
                     var sel = document.getElementById("kabLemtxt2");
@@ -425,6 +467,7 @@ function provLem(id_provinsi) {
         processData: false,
         dataType: "JSON",
         success: function(data) {
+            $('#kabLemtxt').children('option').remove();
             var i;
             for (i = 0; i < data.dt_prov.length; i++) {
                 var sel = document.getElementById("provLemtxt");
@@ -463,6 +506,7 @@ function kabLem(id_prov, id_kab) {
         processData: false,
         dataType: "JSON",
         success: function(data) {
+            $('#kabLemtxt').children('option').remove();
             var i;
             for (i = 0; i < data.dt_kab.length; i++) {
                 var sel = document.getElementById("kabLemtxt");
@@ -496,10 +540,8 @@ function kabLem(id_prov, id_kab) {
 
 function cLem(idElem) {
     $('#eModalLem' + idElem).modal('toggle');
-    $('#provLemtxt' + idElem).select2('destroy');
-    $('#provLemtxt' + idElem).empty();
-    $('#kabLemtxt' + idElem).select2('destroy');
-    $('#kabLemtxt' + idElem).empty();
+    $('#provLemtxt' + idElem).children('option').remove();
+    $('#kabLemtxt' + idElem).children('option').remove();
 }
 
 function editLem(idMonitorHasil) {
