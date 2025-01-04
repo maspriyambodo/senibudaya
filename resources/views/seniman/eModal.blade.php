@@ -24,7 +24,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Provinsi</label>
                         <div class="col-sm-7">
-                            <select id="eprovtxt" name="eprovtxt" class="form-control form-select" required="" style="width:100%"></select>
+                            <select id="eprovtxt" name="eprovtxt" class="form-control form-select" required="" style="width:100%" onchange="eKabupaten2(this.value);"></select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -67,6 +67,48 @@
     </div>
 </div>
 <script>
+function eKabupaten2(id_prov) {
+    if (id_prov !== '') {
+        $.ajax({
+            url: "{{ url('lembaga/kabupaten'); }}/" + id_prov,
+            type: "GET",
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            success: function (data) {
+                $('#ekabtxt').children('option').remove();
+                var i;
+                for (i = 0; i < data.dt_kab.length; i++) {
+                    var sel = document.getElementById("ekabtxt");
+                    var opt = document.createElement("option");
+                    opt.value = data.dt_kab[i].id_provinsi;
+                    opt.text = data.dt_kab[i].nama;
+                    sel.add(opt, sel.options[i]);
+                }
+                $('#ekabtxt').val('').trigger('change');
+                $('#ekabtxt').select2({
+                    dropdownParent: $('#eModal'),
+                    width: '100%'
+                });
+            },
+            error: function () {
+                Swal.fire({
+                    text: "error get data kabupaten, errcode: 04011941",
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                });
+            }
+        });
+    }
+}
+</script>
+<script>
     function update() {
         var eidtxt, nomontxt2, nmtxt2, eprovtxt, ekabtxt, addrtxt2, bidtxt2, tigtxt2, prgtxt2, formStat, eformData;
         const edit_form = document.getElementById('edit_form');
@@ -99,10 +141,10 @@
         if (nmtxt2 === '') {
             formStat = false;
         }
-        if (eprovtxt === '') {
+        if (eprovtxt === '' || eprovtxt === null) {
             formStat = false;
         }
-        if (ekabtxt === '') {
+        if (ekabtxt === '' || ekabtxt === null) {
             formStat = false;
         }
         if (addrtxt2 === '') {
