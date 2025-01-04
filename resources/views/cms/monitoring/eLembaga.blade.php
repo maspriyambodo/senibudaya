@@ -221,7 +221,7 @@ function delLembtn(idMonitorHasil) {
                 formDelete = document.getElementById('dLembaga');
                 formStat = true;
                 idLemtxt2 = $('#idLemtxt2').val(data.dt_monitoring.id_content);
-                idMonHasil = $('#idMonHasil').val(data.dt_monitoring.id_content);
+                idMonHasil = $('#idMonHasil').val(data.dt_monitoring.id);
                 $('#delModalLem').modal('show');
                 Swal.close();
             } else {
