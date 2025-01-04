@@ -490,37 +490,72 @@ class MonitoringController extends AuthController {
         return view($this->target . '-view-form', $data);
     }
 
+    public function add_lembaga(Request $request) {
+        DB::beginTransaction(); // Start transaction
+        try {
+            $exec = DtaLembagaSeni::create([
+                'nama' => $request->nmtxt2,
+                'alamat' => $request->addrtxt2,
+                'fokus' => $request->fokLemtxt2,
+                'tingkat' => $request->tgktxt2,
+                'program' => $request->prgtxt2,
+                'provinsi' => $request->provLemtxt2,
+                'kabupaten' => $request->kabLemtxt2,
+                'created_by' => auth()->user()->id
+            ]);
+            $lastInsertedId = $exec->id;
+            TrMonitoringHasil::create([
+                'id_monitoring' => $request->idMonitorHasil2,
+                'id_content' => $lastInsertedId,
+                'jenis' => 1,
+                'created_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to update tr_monitoring: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => true,
+                            ], 422);
+        }
+    }
+
     public function update_lembaga(Request $request) {
         DB::beginTransaction(); // Start transaction
-            try {
-                DtaLembagaSeni::where('id', $request->idLemtxt)
-                        ->update([
-                            'nama' => $request->nmtxt,
-                            'nama' => $request->nmtxt,
-                            'alamat' => $request->addrtxt,
-                            'fokus' => $request->fokLemtxt,
-                            'tingkat' => $request->tgktxt,
-                            'program' => $request->prgtxt,
-                            'provinsi' => $request->provLemtxt,
-                            'kabupaten' => $request->kabLemtxt,
-                            'updated_by' => auth()->user()->id
-                ]);
-                DB::commit(); // Commit transaction
-                return response()->json([
-                            'success' => true,
-                                ], 200);
-            } catch (Exception $exc) {
-                DB::rollBack(); // Rollback transaction
-                Log::error('Failed to update tr_monitoring: ' . $exc->getMessage(), [
-                    'user_id' => auth()->user()->id,
-                    'request_data' => $request->all(),
-                ]);
-                return response()->json([
-                            'success' => true,
-                                ], 422);
-            }
+        try {
+            DtaLembagaSeni::where('id', $request->idLemtxt)
+                    ->update([
+                        'nama' => $request->nmtxt,
+                        'alamat' => $request->addrtxt,
+                        'fokus' => $request->fokLemtxt,
+                        'tingkat' => $request->tgktxt,
+                        'program' => $request->prgtxt,
+                        'provinsi' => $request->provLemtxt,
+                        'kabupaten' => $request->kabLemtxt,
+                        'updated_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to update tr_monitoring: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => true,
+                            ], 422);
+        }
     }
-    
+
     public function monitoring_hasil(Request $request) {
         $exec = TrMonitoringHasil::with('lembagaSeni')
                 ->where([
@@ -532,11 +567,11 @@ class MonitoringController extends AuthController {
             return response()->json([
                         'success' => true,
                         'dt_monitoring' => $exec[0]
-            ], 200);
+                            ], 200);
         } else {
             return response()->json([
                         'success' => false
-            ], 422);
+                            ], 422);
         }
     }
 

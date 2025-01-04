@@ -130,7 +130,7 @@
             <div class="card-footer">
                 <button type="button" id="elembtn{{ ($key_lembaga + 1) }}" class="btn btn-secondary" onclick="editLem({{ $dt_lembaga->id }});">Edit</button>
                 @if($key_lembaga == 0)
-                <button type="button" id="tlembtn{{ ($key_lembaga + 1) }}" class="btn btn-info ml-2" data-toggle="modal" data-target="#addLem" onclick="addLembtn({{ $dt_lembaga->id_monitoring }});">Tambah Lembaga Seni</button>
+                <button type="button" id="tlembtn{{ ($key_lembaga + 1) }}" class="btn btn-info ml-2" data-toggle="modal" data-target="#eModalLem2" onclick="addLembtn({{ $dt_lembaga->id_monitoring }});">Tambah Lembaga Seni</button>
                 @endif
                 @if($key_lembaga > 0)
                 <button type="button" id="dlembtn{{ ($key_lembaga + 1) }}" class="btn btn-danger ml-2" onclick="delLembtn({{ $dt_lembaga->id }})">Delete</button>
