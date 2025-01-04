@@ -490,6 +490,37 @@ class MonitoringController extends AuthController {
         return view($this->target . '-view-form', $data);
     }
 
+    public function update_lembaga(Request $request) {
+        DB::beginTransaction(); // Start transaction
+            try {
+                DtaLembagaSeni::where('id', $request->idLemtxt)
+                        ->update([
+                            'nama' => $request->nmtxt,
+                            'nama' => $request->nmtxt,
+                            'alamat' => $request->addrtxt,
+                            'fokus' => $request->fokLemtxt,
+                            'tingkat' => $request->tgktxt,
+                            'program' => $request->prgtxt,
+                            'provinsi' => $request->provLemtxt,
+                            'kabupaten' => $request->kabLemtxt,
+                            'updated_by' => auth()->user()->id
+                ]);
+                DB::commit(); // Commit transaction
+                return response()->json([
+                            'success' => true,
+                                ], 200);
+            } catch (Exception $exc) {
+                DB::rollBack(); // Rollback transaction
+                Log::error('Failed to update tr_monitoring: ' . $exc->getMessage(), [
+                    'user_id' => auth()->user()->id,
+                    'request_data' => $request->all(),
+                ]);
+                return response()->json([
+                            'success' => true,
+                                ], 422);
+            }
+    }
+    
     public function monitoring_hasil(Request $request) {
         $exec = TrMonitoringHasil::with('lembagaSeni')
                 ->where([

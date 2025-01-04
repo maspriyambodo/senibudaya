@@ -8,6 +8,7 @@
                 @csrf
                 @method('POST')
                 <input type="hidden" id="idMonitorHasil" name="idMonitorHasil" required=""/>
+                <input type="hidden" id="idLemtxt" name="idLemtxt" required=""/>
                 <div class="modal-body">
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Nama Lembaga</label>
@@ -61,121 +62,92 @@
     </div>
 </div>
 <script>
-    function provLem(id_provinsi) {
-        $.ajax({
-            url: "{{ url('monitoring/provinsi'); }}",
-            type: "GET",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "JSON",
-            success: function(data) {
-                var i;
-                for (i = 0; i < data.dt_prov.length; i++) {
-                    var sel = document.getElementById("provLemtxt");
-                    var opt = document.createElement("option");
-                    opt.value = data.dt_prov[i].id_provinsi;
-                    opt.text = data.dt_prov[i].nama;
-                    sel.add(opt, sel.options[i]);
-                }
-                $('#provLemtxt').val(id_provinsi).trigger('change');
-                $('#provLemtxt').select2({
-                    dropdownParent: $('#eModal'),
-                    width: '100%'
-                });
-            },
-            error: function() {
-                Swal.fire({
-                    text: "error get data Provinsi, errcode: 04011708",
-                    icon: "error",
-                    buttonsStyling: !1,
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false,
-                    customClass: {
-                        confirmButton: "btn btn-primary"
-                    }
-                });
-            }
-        });
-    }
-
-    function kabLem(id_prov, id_kab) {
-        $.ajax({
-            url: "{{ url('monitoring/kabupaten'); }}/" + id_prov,
-            type: "GET",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "JSON",
-            success: function(data) {
-                var i;
-                for (i = 0; i < data.dt_kab.length; i++) {
-                    var sel = document.getElementById("kabLemtxt");
-                    var opt = document.createElement("option");
-                    opt.value = data.dt_kab[i].id_kabupaten;
-                    opt.text = data.dt_kab[i].nama;
-                    sel.add(opt, sel.options[i]);
-                }
-                $('#kabLemtxt').val(id_kab).trigger('change');
-                $('#kabLemtxt').select2({
-                    dropdownParent: $('#eModal'),
-                    width: '100%'
-                });
-                Swal.close();
-                $('#eModalLem').modal('show');
-            },
-            error: function() {
-                Swal.fire({
-                    text: "error get data Kabupaten, errcode: 04011709",
-                    icon: "error",
-                    buttonsStyling: !1,
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false,
-                    customClass: {
-                        confirmButton: "btn btn-primary"
-                    }
-                });
-            }
-        });
-    }
-
-    function cLem() {
-        $('#provLemtxt').select2('destroy');
-        $('#provLemtxt').empty();
-        $('#kabLemtxt').select2('destroy');
-        $('#kabLemtxt').empty();
-    }
-    
-    function editLem(idMonitorHasil) {
+function sLem() {
+    var idMonitorHasil, idLemtxt, nmtxt, provLemtxt, kabLemtxt, addrtxt, fokLemtxt, tgktxt, prgtxt, formStat, formLem;
+    formLem = document.getElementById('eLembaga');
+    formStat = true;
+    prgtxt = $('#prgtxt').val();
+    tgktxt = $('#tgktxt').val();
+    fokLemtxt = $('#fokLemtxt').val();
+    addrtxt = $('#addrtxt').val();
+    kabLemtxt = $('#kabLemtxt').val();
+    provLemtxt = $('#provLemtxt').val();
+    nmtxt = $('#nmtxt').val();
+    idLemtxt = $('#idLemtxt').val();
+    idMonitorHasil = $('#idMonitorHasil').val();
+    if (idMonitorHasil === '') {
         Swal.fire({
-            title: 'memuat data...',
-            html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+            text: "sesuatu yang salah pada sistem!",
+            icon: "success",
+            buttonsStyling: !1,
+            confirmButtonText: "OK",
             allowOutsideClick: false,
-            showConfirmButton: false,
-            onOpen: function () {
-                Swal.showLoading();
+            customClass: {
+                confirmButton: "btn btn-primary"
             }
+        }).then(function() {
+            window.location.reload();
         });
-        $.ajax({
-            url: "{{ url('monitoring/monitoring-hasil'); }}/" + idMonitorHasil,
-            type: "GET",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "JSON",
-            success: function (data) {
+    }
+    if (idLemtxt === '') {
+        Swal.fire({
+            text: "sesuatu yang salah pada sistem!",
+            icon: "success",
+            buttonsStyling: !1,
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        }).then(function() {
+            window.location.reload();
+        });
+    }
+    if (nmtxt === '') {
+        formStat = false;
+    }
+    if (provLemtxt === '') {
+        formStat = false;
+    }
+    if (kabLemtxt === '') {
+        formStat = false;
+    }
+    if (addrtxt === '') {
+        formStat = false;
+    }
+    if (fokLemtxt === '') {
+        formStat = false;
+    }
+    if (tgktxt === '') {
+        formStat = false;
+    }
+    if (prgtxt === '') {
+        formStat = false;
+    }
+    if (formStat) {
+        const eformLem = new FormData(formLem);
+        fetch("{{ url('monitoring/update_lembaga') }}", {
+                method: 'POST',
+                body: eformLem
+            })
+            .then(response => response.json())
+            .then(data => {
                 if (data.success) {
-                    provLem(data.dt_monitoring.lembaga_seni.provinsi);
-                    kabLem(data.dt_monitoring.lembaga_seni.provinsi, data.dt_monitoring.lembaga_seni.kabupaten);
-                    $('#idMonitorHasil').val(idMonitorHasil);
-                    $('#nmtxt').val(data.dt_monitoring.lembaga_seni.nama);
-                    $('#addrtxt').val(data.dt_monitoring.lembaga_seni.alamat);
-                    $('#fokLemtxt').val(data.dt_monitoring.lembaga_seni.fokus);
-                    $('#tgktxt').val(data.dt_monitoring.lembaga_seni.tingkat);
-                    $('#prgtxt').val(data.dt_monitoring.lembaga_seni.program);
+                    Swal.fire({
+                        text: "data has been updated!",
+                        icon: "success",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
                 } else {
                     Swal.fire({
-                        text: "error while get data Lembaga, errcode: 04011657",
+                        text: data.errmessage,
                         icon: "error",
                         buttonsStyling: !1,
                         confirmButtonText: "OK",
@@ -183,12 +155,140 @@
                         customClass: {
                             confirmButton: "btn btn-primary"
                         }
-                    }).then(function () {
+                    }).then(function() {
                         window.location.reload();
                     });
                 }
-            },
-            error: function () {
+            });
+    } else {
+        Swal.fire({
+            text: "lengkapi form Lembaga Seni!",
+            icon: "success",
+            buttonsStyling: !1,
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+    }
+}
+
+function provLem(id_provinsi) {
+    $.ajax({
+        url: "{{ url('monitoring/provinsi'); }}",
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data) {
+            var i;
+            for (i = 0; i < data.dt_prov.length; i++) {
+                var sel = document.getElementById("provLemtxt");
+                var opt = document.createElement("option");
+                opt.value = data.dt_prov[i].id_provinsi;
+                opt.text = data.dt_prov[i].nama;
+                sel.add(opt, sel.options[i]);
+            }
+            $('#provLemtxt').val(id_provinsi).trigger('change');
+            $('#provLemtxt').select2({
+                dropdownParent: $('#eModal'),
+                width: '100%'
+            });
+        },
+        error: function() {
+            Swal.fire({
+                text: "error get data Provinsi, errcode: 04011708",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+        }
+    });
+}
+
+function kabLem(id_prov, id_kab) {
+    $.ajax({
+        url: "{{ url('monitoring/kabupaten'); }}/" + id_prov,
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data) {
+            var i;
+            for (i = 0; i < data.dt_kab.length; i++) {
+                var sel = document.getElementById("kabLemtxt");
+                var opt = document.createElement("option");
+                opt.value = data.dt_kab[i].id_kabupaten;
+                opt.text = data.dt_kab[i].nama;
+                sel.add(opt, sel.options[i]);
+            }
+            $('#kabLemtxt').val(id_kab).trigger('change');
+            $('#kabLemtxt').select2({
+                dropdownParent: $('#eModal'),
+                width: '100%'
+            });
+            Swal.close();
+            $('#eModalLem').modal('show');
+        },
+        error: function() {
+            Swal.fire({
+                text: "error get data Kabupaten, errcode: 04011709",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+        }
+    });
+}
+
+function cLem() {
+    $('#eModalLem').modal('toggle');
+    $('#provLemtxt').select2('destroy');
+    $('#provLemtxt').empty();
+    $('#kabLemtxt').select2('destroy');
+    $('#kabLemtxt').empty();
+}
+
+function editLem(idMonitorHasil) {
+    Swal.fire({
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
+            Swal.showLoading();
+        }
+    });
+    $.ajax({
+        url: "{{ url('monitoring/monitoring-hasil'); }}/" + idMonitorHasil,
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data) {
+            if (data.success) {
+                provLem(data.dt_monitoring.lembaga_seni.provinsi);
+                kabLem(data.dt_monitoring.lembaga_seni.provinsi, data.dt_monitoring.lembaga_seni.kabupaten);
+                $('#idMonitorHasil').val(idMonitorHasil);
+                $('#idLemtxt').val(data.dt_monitoring.id_content);
+                $('#nmtxt').val(data.dt_monitoring.lembaga_seni.nama);
+                $('#addrtxt').val(data.dt_monitoring.lembaga_seni.alamat);
+                $('#fokLemtxt').val(data.dt_monitoring.lembaga_seni.fokus);
+                $('#tgktxt').val(data.dt_monitoring.lembaga_seni.tingkat);
+                $('#prgtxt').val(data.dt_monitoring.lembaga_seni.program);
+            } else {
                 Swal.fire({
                     text: "error while get data Lembaga, errcode: 04011657",
                     icon: "error",
@@ -198,10 +298,25 @@
                     customClass: {
                         confirmButton: "btn btn-primary"
                     }
-                }).then(function () {
+                }).then(function() {
                     window.location.reload();
                 });
             }
-        });
-    }
+        },
+        error: function() {
+            Swal.fire({
+                text: "error while get data Lembaga, errcode: 04011657",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            }).then(function() {
+                window.location.reload();
+            });
+        }
+    });
+}
 </script>
