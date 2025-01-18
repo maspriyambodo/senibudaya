@@ -188,6 +188,15 @@
                     </div>
                 </div>
             </div>
+            <div class="card-footer">
+                <button type="button" id="esenimanbtn{{ ($key_seniman + 1) }}" class="btn btn-secondary" onclick="editSeniman({{ $dt_seniman->seniman->id }});">Edit</button>
+                @if($key_seniman == 0)
+                <button type="button" id="tsenimanbtn{{ ($key_seniman + 1) }}" class="btn btn-info ml-2" onclick="addSenimanbtn({{ $dt_seniman->id }});">Tambah Lembaga Seni</button>
+                @endif
+                @if($key_seniman > 0)
+                <button type="button" id="dsenimanbtn{{ ($key_seniman + 1) }}" class="btn btn-danger ml-2" onclick="delSenimanbtn({{ $dt_seniman->id }})">Delete</button>
+                @endif
+            </div>
         </div>
         @endif
         @endforeach
@@ -241,4 +250,5 @@
 @include('cms.monitoring.eMonitoring')
 @include('cms.monitoring.ePetugas')
 @include('cms.monitoring.eLembaga')
+@include('cms.monitoring.eSeniman')
 @include('cms.footer')

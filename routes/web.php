@@ -159,6 +159,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/monitoring/delete_pegawai', [MonitoringController::class, 'delete_pegawai'])->name('monitoring');
     Route::post('/monitoring/add-pegawai', [MonitoringController::class, 'add_pegawai'])->name('monitoring');
     Route::post('/monitoring/update_lembaga', [MonitoringController::class, 'update_lembaga'])->name('monitoring');
+    Route::post('/monitoring/update_seniman', [MonitoringController::class, 'update_seniman'])->name('monitoring');
     Route::post('/monitoring/add_lembaga', [MonitoringController::class, 'add_lembaga'])->name('monitoring');
     Route::post('/monitoring/del_lembaga', [MonitoringController::class, 'del_lembaga'])->name('monitoring');
     Route::get('/monitoring/lihat/{id}', [MonitoringController::class, 'lihat'])->name('monitoring');
@@ -178,6 +179,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/seniman', [Seniman::class, 'index'])->name('seniman');
     Route::get('/seniman/json', [Seniman::class, 'json'])->name('seniman');
     Route::get('/seniman/detil/{id}', [Seniman::class, 'detil'])->name('seniman');
+    Route::get('/seniman/detil-seniman/{id}', [Seniman::class, 'detil2'])->name('seniman');
     Route::post('seniman/update', [Seniman::class, 'Update'])->name('seniman');
     Route::post('seniman/delete', [Seniman::class, 'Delete'])->name('seniman');
 

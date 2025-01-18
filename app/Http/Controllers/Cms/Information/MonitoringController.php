@@ -477,7 +477,7 @@ class MonitoringController extends AuthController {
                     'jenis' => 3
                 ])
                 ->get();
-//        dd($lembaga_seni);
+//        dd($seniman);
         $data = array_merge(
                 ClassMenu::view($this->target),
                 [
@@ -546,12 +546,45 @@ class MonitoringController extends AuthController {
                             ], 200);
         } catch (Exception $exc) {
             DB::rollBack(); // Rollback transaction
-            Log::error('Failed to update tr_monitoring: ' . $exc->getMessage(), [
+            Log::error('Failed to update dta_lembaga_seni: ' . $exc->getMessage(), [
                 'user_id' => auth()->user()->id,
                 'request_data' => $request->all(),
             ]);
             return response()->json([
                         'success' => true,
+                            ], 422);
+        }
+    }
+
+    public function update_seniman(Request $request) {
+        DB::beginTransaction(); // Start transaction
+        try {
+            $exec = DtaSeniman::where('id', $request->idSenimantxt)
+                    ->update([
+                        'nama' => $request->senimantxt,
+                        'provinsi' => $request->provSenitxt,
+                        'kabupaten' => $request->kanSenitxt,
+                        'alamat' => $request->addrSenitxt,
+                        'bidang' => $request->bidSenitxt,
+                        'karya' => $request->karSenitxt,
+                        'lembaga' => $request->lemSenitxt,
+                        'updated_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+//            throw new \Exception('Something went wrong!');
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $e) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('An error occurred', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return response()->json([
+                        'success' => false,
                             ], 422);
         }
     }
