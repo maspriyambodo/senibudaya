@@ -555,6 +555,42 @@ class MonitoringController extends AuthController {
                             ], 422);
         }
     }
+    
+    public function simpan_seniman(Request $request) {
+        DB::beginTransaction(); // Start transaction
+        try {
+            $exec = DtaSeniman::create([
+                'nama' => $request->senimantxt2,
+                'provinsi' => $request->provSenitxt2,
+                'kabupaten' => $request->kanSenitxt2,
+                'alamat' => $request->addrSenitxt2,
+                'bidang' => $request->bidSenitxt2,
+                'karya' => $request->karSenitxt2,
+                'lembaga' => $request->lemSenitxt2,
+                'created_by' => auth()->user()->id
+            ]);
+            $lastInsertedId = $exec->id;
+            TrMonitoringHasil::create([
+                'id_monitoring' => $request->idMonitSenitxt,
+                'id_content' => $lastInsertedId,
+                'jenis' => 2,
+                'created_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to update Seniman: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => true,
+                            ], 422);
+        }
+    }
 
     public function update_seniman(Request $request) {
         DB::beginTransaction(); // Start transaction

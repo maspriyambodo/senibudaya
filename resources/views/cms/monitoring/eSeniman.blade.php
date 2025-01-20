@@ -60,6 +60,68 @@
         </div>
     </div>
 </div>
+<div id="eModalSeni2" class="modal fade show" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addModalSeniTitle" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalSeniTitle"></h5>
+            </div>
+            <form id="addSeniman_form" novalidate="novalidate" method="POST" autocomplete="off">
+                @csrf
+                @method('POST')
+                <input type="hidden" id="idMonitSenitxt" name="idMonitSenitxt" required=""/>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Nama Seniman</label>
+                        <div class="col-sm-7">
+                            <input id="senimantxt2" name="senimantxt2" class="form-control" required=""/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Provinsi</label>
+                        <div class="col-sm-7">
+                            <select id="provSenitxt2" name="provSenitxt2" class="form-control form-select" required="" onchange="kabSeniman2(this.value);"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Kabupaten</label>
+                        <div class="col-sm-7">
+                            <select id="kanSenitxt2" name="kanSenitxt2" class="form-control form-select" required=""></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Alamat</label>
+                        <div class="col-sm-7">
+                            <textarea id="addrSenitxt2" name="addrSenitxt2" class="form-control" required=""></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Bidang</label>
+                        <div class="col-sm-7">
+                            <input id="bidSenitxt2" name="bidSenitxt2" class="form-control" required=""/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Karya</label>
+                        <div class="col-sm-7">
+                            <input id="karSenitxt2" name="karSenitxt2" class="form-control" required=""/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Lembaga</label>
+                        <div class="col-sm-7">
+                            <input id="lemSenitxt2" name="lemSenitxt2" class="form-control" required=""/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cmonbtn3" class="btn btn-secondary" onclick="closeSeniModal(2);">Cancel</button>
+                    <button type="button" id="submonbtn3" class="btn btn-success" onclick="saveSeniman();">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
 function kabSeniman1(id_prov) {
     if (id_prov !== '') {
@@ -101,10 +163,10 @@ function kabSeniman1(id_prov) {
     }
 }
 
-function closeSeniModal() {
-    $('#eModalSeni').modal('toggle');
-    $('#provSenitxt').children('option').remove();
-    $('#kanSenitxt').children('option').remove();
+function closeSeniModal(idElem) {
+    $('#eModalSeni' + idElem).modal('toggle');
+    $('#provSenitxt' + idElem).children('option').remove();
+    $('#kanSenitxt' + idElem).children('option').remove();
 }
 
 function updateSeni() {
@@ -256,6 +318,45 @@ function provSeniman(id_prov) {
     });
 }
 
+function provSeniman2() {
+    $.ajax({
+        url: "{{ url('monitoring/provinsi'); }}",
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data) {
+            $('#kanSenitxt2').children('option').remove();
+            var i;
+            for (i = 0; i < data.dt_prov.length; i++) {
+                var sel = document.getElementById("provSenitxt2");
+                var opt = document.createElement("option");
+                opt.value = data.dt_prov[i].id_provinsi;
+                opt.text = data.dt_prov[i].nama;
+                sel.add(opt, sel.options[i]);
+            }
+            $('#provSenitxt2').val('').trigger('change');
+            $('#provSenitxt2').select2({
+                dropdownParent: $('#eModalSeni2'),
+                width: '100%'
+            });
+        },
+        error: function() {
+            Swal.fire({
+                text: "error get data Provinsi, errcode: 10011005",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+        }
+    });
+}
+
 function kabSeniman(id_prov, id_kab) {
     $.ajax({
         url: "{{ url('monitoring/kabupaten'); }}/" + id_prov,
@@ -295,6 +396,47 @@ function kabSeniman(id_prov, id_kab) {
             });
         }
     });
+}
+
+function kabSeniman2(id_prov) {
+    if(id_prov !== '') {
+        $.ajax({
+        url: "{{ url('monitoring/kabupaten'); }}/" + id_prov,
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function(data) {
+            $('#kanSenitxt2').children('option').remove();
+            var i;
+            for (i = 0; i < data.dt_kab.length; i++) {
+                var sel = document.getElementById("kanSenitxt2");
+                var opt = document.createElement("option");
+                opt.value = data.dt_kab[i].id_kabupaten;
+                opt.text = data.dt_kab[i].nama;
+                sel.add(opt, sel.options[i]);
+            }
+            $('#kanSenitxt2').val('').trigger('change');
+            $('#kanSenitxt2').select2({
+                dropdownParent: $('#eModalSeni2'),
+                width: '100%'
+            });
+        },
+        error: function() {
+            Swal.fire({
+                text: "error get data Kabupaten, errcode: 04011709",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+        }
+    });
+    }
 }
 
 function editSeniman(idSenimantxt) {
@@ -341,8 +483,120 @@ function editSeniman(idSenimantxt) {
     });
 }
 
-function addSenimanbtn() {
+function addSenimanbtn(id_monitoring) {
+    $('#idMonitSenitxt').val(id_monitoring);
+    provSeniman2();
+    $('#eModalSeni2').modal('show');
+}
 
+function saveSeniman() {
+    var idMonitSenitxt, senimantxt2, provSenitxt2, kanSenitxt2, addrSenitxt2, bidSenitxt2, karSenitxt2, lemSenitxt2, formStat2, formSeni2;
+    formSeni2 = document.getElementById('addSeniman_form');
+    formStat2 = true;
+    lemSenitxt2 = $('#lemSenitxt2').val();
+    karSenitxt2 = $('#karSenitxt2').val();
+    bidSenitxt2 = $('#bidSenitxt2').val();
+    addrSenitxt2 = $('#addrSenitxt2').val();
+    kanSenitxt2 = $('#kanSenitxt2').val();
+    provSenitxt2 = $('#provSenitxt2').val();
+    senimantxt2 = $('#senimantxt2').val();
+    idMonitSenitxt = $('#idMonitSenitxt').val();
+    if (idMonitSenitxt === '') {
+        Swal.fire({
+            text: "sesuatu yang salah pada sistem!",
+            icon: "error",
+            buttonsStyling: !1,
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        }).then(function() {
+            window.location.reload();
+        });
+    }
+    if (senimantxt2 === '') {
+        formStat2 = false;
+    }
+    if (provSenitxt2 === '') {
+        formStat2 = false;
+    }
+    if (kanSenitxt2 === '') {
+        formStat2 = false;
+    }
+    if (addrSenitxt2 === '') {
+        formStat2 = false;
+    }
+    if (bidSenitxt2 === '') {
+        formStat2 = false;
+    }
+    if (karSenitxt2 === '') {
+        formStat2 = false;
+    }
+    if (lemSenitxt2 === '') {
+        formStat2 = false;
+    }
+    if (formStat2) {
+        const eformSeni2 = new FormData(formSeni2);
+        fetch("{{ url('monitoring/simpan_seniman') }}", {
+                method: 'POST',
+                body: eformSeni2
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (typeof(data) !== 'object') {
+                    Swal.fire({
+                        text: 'error while update data, errcode: 20012025',
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                } else if (data.success) {
+                    Swal.fire({
+                        text: "data has been added!",
+                        icon: "success",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        text: data.errmessage,
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                }
+            });
+    } else {
+        Swal.fire({
+            text: "lengkapi form Seniman!",
+            icon: "success",
+            buttonsStyling: !1,
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+    }
 }
 
 function delSenimanbtn() {
