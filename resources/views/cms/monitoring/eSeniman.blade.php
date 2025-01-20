@@ -18,7 +18,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Provinsi</label>
                         <div class="col-sm-7">
-                            <select id="provSenitxt" name="provSenitxt" class="form-control form-select" required="" onchange="kabLem1(this.value)"></select>
+                            <select id="provSenitxt" name="provSenitxt" class="form-control form-select" required="" onchange="kabSeniman1(this.value);"></select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -61,6 +61,46 @@
     </div>
 </div>
 <script>
+function kabSeniman1(id_prov) {
+    if (id_prov !== '') {
+        $.ajax({
+            url: "{{ url('monitoring/kabupaten'); }}/" + id_prov,
+            type: "GET",
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            success: function(data) {
+                $('#kanSenitxt').children('option').remove();
+                var i;
+                for (i = 0; i < data.dt_kab.length; i++) {
+                    var sel = document.getElementById("kanSenitxt");
+                    var opt = document.createElement("option");
+                    opt.value = data.dt_kab[i].id_kabupaten;
+                    opt.text = data.dt_kab[i].nama;
+                    sel.add(opt, sel.options[i]);
+                }
+                $('#kanSenitxt').select2({
+                    dropdownParent: $('#eModalSeni'),
+                    width: '100%'
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    text: "error get data Kabupaten, errcode: 04011804",
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                });
+            }
+        });
+    }
+}
+
 function closeSeniModal() {
     $('#eModalSeni').modal('toggle');
     $('#provSenitxt').children('option').remove();
