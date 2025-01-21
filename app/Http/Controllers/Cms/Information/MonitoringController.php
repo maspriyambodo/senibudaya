@@ -620,6 +620,41 @@ class MonitoringController extends AuthController {
                             ], 422);
         }
     }
+    
+    public function simpan_program(Request $request) {
+        DB::beginTransaction(); // Start transaction
+        try {
+            $exec = DtaProgramSeni::create([
+                'nama' => $request->progtxt,
+                'frekuensi' => $request->fretxt,
+                'tujuan' => $request->tujutxt,
+                'unsur' => $request->unstxt,
+                'waktu' => $request->wkutxt,
+                'penyelenggara' => $request->pnytxt,
+                'created_by' => auth()->user()->id
+            ]);
+            $lastInsertedId = $exec->id;
+            TrMonitoringHasil::create([
+                'id_monitoring' => $request->idMoniPro,
+                'id_content' => $lastInsertedId,
+                'jenis' => 3,
+                'created_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to update ProgramSeni: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => true,
+                            ], 422);
+        }
+    }
 
     public function update_seniman(Request $request) {
         DB::beginTransaction(); // Start transaction
@@ -711,6 +746,35 @@ class MonitoringController extends AuthController {
                             ], 422);
         }
     }
+    
+    public function del_program(Request $request) {
+        DB::beginTransaction(); // Start transaction
+        try {
+            DtaProgramSeni::where('id', $request->idProtxt2)
+                    ->update([
+                        'stat' => 0,
+                        'updated_by' => auth()->user()->id
+            ]);
+            TrMonitoringHasil::where('id', $request->idMoniPro2)
+                    ->update([
+                        'is_trash' => 0,
+                        'updated_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to update tr_monitoring: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => true,
+                            ], 422);
+        }
+    }
 
     public function monitoring_hasil(Request $request) {
         $exec = TrMonitoringHasil::with('lembagaSeni')
@@ -736,6 +800,24 @@ class MonitoringController extends AuthController {
                 ->where([
                     'id' => $request->id,
                     'jenis' => 2
+                ])
+                ->get();
+        if ($exec) {
+            return response()->json([
+                        'success' => true,
+                        'dt_monitoring' => $exec[0]
+                            ], 200);
+        } else {
+            return response()->json([
+                        'success' => false
+                            ], 422);
+        }
+    }
+    
+    public function monitoring_hasil3(Request $request) {
+        $exec = TrMonitoringHasil::where([
+                    'id' => $request->id,
+                    'jenis' => 3
                 ])
                 ->get();
         if ($exec) {
