@@ -79,6 +79,7 @@
         </div>
         @endif
         @endforeach
+        
         @foreach($lembaga_seni as $key_lembaga => $dt_lembaga)
         @if($dt_lembaga->lembagaSeni->stat == 1)
         <div class="card">
@@ -200,6 +201,7 @@
         </div>
         @endif
         @endforeach
+        
         @foreach($programSeni as $key_program => $dt_program)
         @if($dt_program->programSeni->stat == 1)
         <div class="card">

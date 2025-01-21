@@ -122,6 +122,32 @@
         </div>
     </div>
 </div>
+<div id="eModalSeni3" class="modal fade show" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="delModalSeniTitle" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="delModalSeniTitle"></h5>
+            </div>
+            <form id="delSeniman_form" novalidate="novalidate" method="POST" autocomplete="off">
+                @csrf
+                @method('POST')
+                <input type="hidden" id="idDelMoni" name="idDelMoni" required=""/>
+                <input type="hidden" id="idSeni2" name="idSeni2" required=""/>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        anda yakin ingin menghapus data Seniman?
+                        <br><!-- comment -->
+                        data yang telah dihapus tidak dapat dikembalikan!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cmonbtn4" class="btn btn-secondary">Cancel</button>
+                    <button type="button" id="submonbtn4" class="btn btn-danger" onclick="delSeniman();">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
 function kabSeniman1(id_prov) {
     if (id_prov !== '') {
@@ -599,7 +625,91 @@ function saveSeniman() {
     }
 }
 
-function delSenimanbtn() {
+function delSeniman() {
+    Swal.fire({
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
+            Swal.showLoading();
+        }
+    });
+    var delSeniman_form = document.getElementById('delSeniman_form');
+    const delSeniman_Data = new FormData(delSeniman_form);
+    fetch("{{ url('monitoring/del_seniman') }}", {
+                method: 'POST',
+                body: delSeniman_Data
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        text: "data has been deleted!",
+                        icon: "success",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        text: data.errmessage,
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false,
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                }
+            });
+}
 
+function delSenimanbtn(idDelMoni) {
+    Swal.fire({
+        title: 'memuat data...',
+        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onOpen: function() {
+            Swal.showLoading();
+        }
+    });
+    $.ajax({
+        url: "{{ url('monitoring/monitoring-seniman'); }}/" + idDelMoni,
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "JSON",
+        success: function (data) {
+            $('#idSeni2').val(data.dt_monitoring.id_content);
+                        $('#idDelMoni').val(data.dt_monitoring.id);
+                $('#eModalSeni3').modal('show');
+                Swal.close();
+                    },
+        error: function () {
+                        Swal.fire({
+                            text: "error while get data Seniman, errcode: 21012220",
+                            icon: "error",
+                            buttonsStyling: !1,
+                            confirmButtonText: "OK",
+                            allowOutsideClick: false,
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        }).then(function() {
+                            window.location.reload();
+                        });
+                    }
+    });
 }
 </script>

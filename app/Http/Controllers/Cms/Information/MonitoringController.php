@@ -653,12 +653,60 @@ class MonitoringController extends AuthController {
                             ], 422);
         }
     }
+    
+    public function del_seniman(Request $request) {
+        DB::beginTransaction(); // Start transaction
+        try {
+            DtaSeniman::where('id', $request->idSeni2)
+                    ->update([
+                        'stat' => 0,
+                        'updated_by' => auth()->user()->id
+            ]);
+            TrMonitoringHasil::where('id', $request->idDelMoni)
+                    ->update([
+                        'is_trash' => 0,
+                        'updated_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to update tr_monitoring: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => true,
+                            ], 422);
+        }
+    }
 
     public function monitoring_hasil(Request $request) {
         $exec = TrMonitoringHasil::with('lembagaSeni')
                 ->where([
                     'id' => $request->id,
                     'jenis' => 1
+                ])
+                ->get();
+        if ($exec) {
+            return response()->json([
+                        'success' => true,
+                        'dt_monitoring' => $exec[0]
+                            ], 200);
+        } else {
+            return response()->json([
+                        'success' => false
+                            ], 422);
+        }
+    }
+    
+    public function monitoring_hasil2(Request $request) {
+        $exec = TrMonitoringHasil::with('seniman')
+                ->where([
+                    'id' => $request->id,
+                    'jenis' => 2
                 ])
                 ->get();
         if ($exec) {

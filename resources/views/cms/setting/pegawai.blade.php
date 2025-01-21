@@ -243,7 +243,7 @@
 <script>
     function editData(id_user) {
         $.ajax({
-            url: 'pegawai-edit/' + id_user,
+            url: 'pegawai/pegawai-edit/' + id_user,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
