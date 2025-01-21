@@ -425,43 +425,43 @@ function kabSeniman(id_prov, id_kab) {
 }
 
 function kabSeniman2(id_prov) {
-    if(id_prov !== '') {
+    if (id_prov !== '') {
         $.ajax({
-        url: "{{ url('monitoring/kabupaten'); }}/" + id_prov,
-        type: "GET",
-        cache: false,
-        contentType: false,
-        processData: false,
-        dataType: "JSON",
-        success: function(data) {
-            $('#kanSenitxt2').children('option').remove();
-            var i;
-            for (i = 0; i < data.dt_kab.length; i++) {
-                var sel = document.getElementById("kanSenitxt2");
-                var opt = document.createElement("option");
-                opt.value = data.dt_kab[i].id_kabupaten;
-                opt.text = data.dt_kab[i].nama;
-                sel.add(opt, sel.options[i]);
-            }
-            $('#kanSenitxt2').val('').trigger('change');
-            $('#kanSenitxt2').select2({
-                dropdownParent: $('#eModalSeni2'),
-                width: '100%'
-            });
-        },
-        error: function() {
-            Swal.fire({
-                text: "error get data Kabupaten, errcode: 04011709",
-                icon: "error",
-                buttonsStyling: !1,
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                customClass: {
-                    confirmButton: "btn btn-primary"
+            url: "{{ url('monitoring/kabupaten'); }}/" + id_prov,
+            type: "GET",
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            success: function(data) {
+                $('#kanSenitxt2').children('option').remove();
+                var i;
+                for (i = 0; i < data.dt_kab.length; i++) {
+                    var sel = document.getElementById("kanSenitxt2");
+                    var opt = document.createElement("option");
+                    opt.value = data.dt_kab[i].id_kabupaten;
+                    opt.text = data.dt_kab[i].nama;
+                    sel.add(opt, sel.options[i]);
                 }
-            });
-        }
-    });
+                $('#kanSenitxt2').val('').trigger('change');
+                $('#kanSenitxt2').select2({
+                    dropdownParent: $('#eModalSeni2'),
+                    width: '100%'
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    text: "error get data Kabupaten, errcode: 04011709",
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                });
+            }
+        });
     }
 }
 
@@ -638,39 +638,39 @@ function delSeniman() {
     var delSeniman_form = document.getElementById('delSeniman_form');
     const delSeniman_Data = new FormData(delSeniman_form);
     fetch("{{ url('monitoring/del_seniman') }}", {
-                method: 'POST',
-                body: delSeniman_Data
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        text: "data has been deleted!",
-                        icon: "success",
-                        buttonsStyling: !1,
-                        confirmButtonText: "OK",
-                        allowOutsideClick: false,
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    }).then(function() {
-                        window.location.reload();
-                    });
-                } else {
-                    Swal.fire({
-                        text: data.errmessage,
-                        icon: "error",
-                        buttonsStyling: !1,
-                        confirmButtonText: "OK",
-                        allowOutsideClick: false,
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    }).then(function() {
-                        window.location.reload();
-                    });
-                }
-            });
+            method: 'POST',
+            body: delSeniman_Data
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    text: "data has been deleted!",
+                    icon: "success",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function() {
+                    window.location.reload();
+                });
+            } else {
+                Swal.fire({
+                    text: data.errmessage,
+                    icon: "error",
+                    buttonsStyling: !1,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                }).then(function() {
+                    window.location.reload();
+                });
+            }
+        });
 }
 
 function delSenimanbtn(idDelMoni) {
@@ -690,26 +690,26 @@ function delSenimanbtn(idDelMoni) {
         contentType: false,
         processData: false,
         dataType: "JSON",
-        success: function (data) {
+        success: function(data) {
             $('#idSeni2').val(data.dt_monitoring.id_content);
-                        $('#idDelMoni').val(data.dt_monitoring.id);
-                $('#eModalSeni3').modal('show');
-                Swal.close();
-                    },
-        error: function () {
-                        Swal.fire({
-                            text: "error while get data Seniman, errcode: 21012220",
-                            icon: "error",
-                            buttonsStyling: !1,
-                            confirmButtonText: "OK",
-                            allowOutsideClick: false,
-                            customClass: {
-                                confirmButton: "btn btn-primary"
-                            }
-                        }).then(function() {
-                            window.location.reload();
-                        });
-                    }
+            $('#idDelMoni').val(data.dt_monitoring.id);
+            $('#eModalSeni3').modal('show');
+            Swal.close();
+        },
+        error: function() {
+            Swal.fire({
+                text: "error while get data Seniman, errcode: 21012220",
+                icon: "error",
+                buttonsStyling: !1,
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            }).then(function() {
+                window.location.reload();
+            });
+        }
     });
 }
 </script>
