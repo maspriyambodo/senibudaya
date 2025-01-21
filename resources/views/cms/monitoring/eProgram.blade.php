@@ -99,13 +99,13 @@ function delProgrambtn(idMonHasil) {
         contentType: false,
         processData: false,
         dataType: "JSON",
-        success: function (data) {
-                        $('#idProtxt2').val(data.dt_monitoring.id_content);
+        success: function(data) {
+            $('#idProtxt2').val(data.dt_monitoring.id_content);
             $('#idMoniPro2').val(data.dt_monitoring.id);
             $('#eModalPro2').modal('show');
             Swal.close();
-                    },
-        error: function () {
+        },
+        error: function() {
             Swal.fire({
                 text: "error while get data Program Seni, errcode: 22010014",
                 icon: "error",
@@ -121,7 +121,7 @@ function delProgrambtn(idMonHasil) {
         }
     });
 }
-    
+
 function delProgBtn() {
     Swal.fire({
         title: 'memuat data...',
@@ -169,7 +169,7 @@ function delProgBtn() {
             }
         });
 }
-    
+
 function addProgrambtn(idmonitorpro) {
     $('#idMoniPro').val(idmonitorpro);
     $('#idProtxt').val('');
