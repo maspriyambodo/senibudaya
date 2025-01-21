@@ -54,6 +54,120 @@ Route::get('/signup', [LoginController::class, 'signup']);
 Route::post('/register', [LoginController::class, 'auth_register']);
 Route::get('/user-activate/{param}', [LoginController::class, 'user_activate']);
 
+Route::middleware(['auth'])
+        ->prefix('monitoring')
+        ->group(function () {
+            Route::get('/', [MonitoringController::class, 'index'])->name('monitoring');
+            Route::get('/json', [MonitoringController::class, 'json'])->name('monitoring');
+            Route::get('/add', [MonitoringController::class, 'add'])->name('monitoring');
+            Route::get('/pegawai', [MonitoringController::class, 'pegawai'])->name('monitoring');
+            Route::get('/provinsi', [MonitoringController::class, 'provinsi'])->name('monitoring');
+            Route::get('/kabupaten/{id}', [MonitoringController::class, 'kabupaten'])->name('monitoring');
+            Route::post('/store', [MonitoringController::class, 'store'])->name('monitoring');
+            Route::post('/update', [MonitoringController::class, 'update'])->name('monitoring');
+            Route::post('/update_monitoring', [MonitoringController::class, 'update1'])->name('monitoring');
+            Route::post('/update_pegawai', [MonitoringController::class, 'update_pegawai'])->name('monitoring');
+            Route::post('/delete_pegawai', [MonitoringController::class, 'delete_pegawai'])->name('monitoring');
+            Route::post('/add-pegawai', [MonitoringController::class, 'add_pegawai'])->name('monitoring');
+            Route::post('/update_lembaga', [MonitoringController::class, 'update_lembaga'])->name('monitoring');
+            Route::post('/update_seniman', [MonitoringController::class, 'update_seniman'])->name('monitoring');
+            Route::post('/simpan_seniman', [MonitoringController::class, 'simpan_seniman'])->name('monitoring');
+            Route::post('/add_lembaga', [MonitoringController::class, 'add_lembaga'])->name('monitoring');
+            Route::post('/del_lembaga', [MonitoringController::class, 'del_lembaga'])->name('monitoring');
+            Route::post('/del_seniman', [MonitoringController::class, 'del_seniman'])->name('monitoring');
+            Route::get('/lihat/{id}', [MonitoringController::class, 'lihat'])->name('monitoring');
+            Route::get('/ubah/{id}', [MonitoringController::class, 'ubah'])->name('monitoring');
+            Route::get('/detil-monitoring/{id}', [MonitoringController::class, 'detil_monitoring'])->name('monitoring');
+            Route::get('/monitoring-hasil/{id}', [MonitoringController::class, 'monitoring_hasil'])->name('monitoring');
+            Route::get('/monitoring-seniman/{id}', [MonitoringController::class, 'monitoring_hasil2'])->name('monitoring');
+            Route::get('/get-pegawai/{id}', [MonitoringController::class, 'get_pegawai'])->name('monitoring');
+        });
+        
+Route::middleware(['auth'])
+        ->prefix('parameter')
+        ->group(function () {
+            Route::get('/', [ParameterController::class, 'index']);
+            Route::get('/json', [ParameterController::class, 'json']);
+            Route::post('/store', [ParameterController::class, 'store']);
+            Route::post('/destroy', [ParameterController::class, 'destroy']);
+        });
+
+Route::middleware(['auth'])
+        ->prefix('menu')
+        ->group(function () {
+            Route::get('/', [MenuController::class, 'index']);
+            Route::get('/json', [MenuController::class, 'json']);
+            Route::get('/add/{id}', [MenuController::class, 'form']);
+            Route::get('/edit/{id}', [MenuController::class, 'form']);
+            Route::post('/store', [MenuController::class, 'store']);
+            Route::post('/destroy', [MenuController::class, 'destroy']);
+        });
+        
+Route::middleware(['auth'])
+        ->prefix('news')
+        ->group(function () {
+            Route::get('/', [NewsController::class, 'index']);
+            Route::get('/json', [NewsController::class, 'json']);
+            Route::get('/form/{id}', [NewsController::class, 'form']);
+            Route::post('/store', [NewsController::class, 'store']);
+            Route::post('/news-approval', [NewsController::class, 'news_approval']);
+            Route::post('/destroy', [NewsController::class, 'destroy']);
+            Route::get('/kabupaten', [NewsController::class, 'kabupaten']);
+            Route::get('/check_slug', [NewsController::class, 'check_slug']);
+        });
+        
+Route::middleware(['auth'])
+        ->prefix('user')
+        ->group(function () {
+            Route::get('/', [UserController::class, 'index']);
+            Route::get('/json', [UserController::class, 'json']);
+            Route::post('/store', [UserController::class, 'store']);
+            Route::post('/destroy', [UserController::class, 'destroy']);
+            Route::post('/change', [UserController::class, 'change']);
+        });
+        
+Route::middleware(['auth'])
+        ->prefix('lembaga')
+        ->group(function () {
+            Route::get('/', [LembagaSeni::class, 'index'])->name('lembaga');
+            Route::get('/json', [LembagaSeni::class, 'json'])->name('lembaga');
+            Route::get('/detil/{id}', [LembagaSeni::class, 'detil'])->name('lembaga');
+            Route::get('/provinsi', [LembagaSeni::class, 'Provinsi'])->name('lembaga');
+            Route::get('/kabupaten/{id_provinsi}', [LembagaSeni::class, 'Kabupaten'])->name('lembaga');
+            Route::post('update', [LembagaSeni::class, 'Update'])->name('lembaga');
+            Route::post('delete', [LembagaSeni::class, 'Delete'])->name('lembaga');
+        });
+        
+Route::middleware(['auth'])
+        ->prefix('seniman')
+        ->group(function () {
+            Route::get('/', [Seniman::class, 'index'])->name('seniman');
+            Route::get('/json', [Seniman::class, 'json'])->name('seniman');
+            Route::get('/detil/{id}', [Seniman::class, 'detil'])->name('seniman');
+            Route::get('/detil-seniman/{id}', [Seniman::class, 'detil2'])->name('seniman');
+            Route::post('/update', [Seniman::class, 'Update'])->name('seniman');
+            Route::post('/delete', [Seniman::class, 'Delete'])->name('seniman');
+        });
+        
+Route::middleware(['auth'])
+        ->prefix('program-seni')
+        ->group(function () {
+            Route::get('/', [ProgramSeni::class, 'index'])->name('program-seni');
+            Route::get('/json', [ProgramSeni::class, 'json'])->name('program-seni');
+            Route::get('/detil/{id}', [ProgramSeni::class, 'detil'])->name('program-seni');
+            Route::post('/update', [ProgramSeni::class, 'Update'])->name('program-seni');
+            Route::post('/delete', [ProgramSeni::class, 'Delete'])->name('program-seni');
+        });
+        
+Route::middleware(['auth'])
+        ->prefix('pegawai')
+        ->group(function () {
+            Route::get('/', [PegawaiController::class, 'index']);
+            Route::get('/json', [PegawaiController::class, 'json']);
+            Route::post('/store', [PegawaiController::class, 'store']);
+            Route::get('/pegawai-edit/{id}', [PegawaiController::class, 'edit']);
+        });
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -82,37 +196,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/profil/store', [ProfilController::class, 'store']);
     Route::post('/profil/change', [ProfilController::class, 'change']);
 
-    #### Content
-    //parameter
-    Route::get('/parameter', [ParameterController::class, 'index']);
-    Route::get('/parameter/json', [ParameterController::class, 'json']);
-    Route::post('/parameter/store', [ParameterController::class, 'store']);
-    Route::post('/parameter/destroy', [ParameterController::class, 'destroy']);
-
-    //menu
-    Route::get('/menu', [MenuController::class, 'index']);
-    Route::get('/menu/json', [MenuController::class, 'json']);
-    Route::get('/menu/add/{id}', [MenuController::class, 'form']);
-    Route::get('/menu/edit/{id}', [MenuController::class, 'form']);
-    Route::post('/menu/store', [MenuController::class, 'store']);
-    Route::post('/menu/destroy', [MenuController::class, 'destroy']);
-
     #### Information
     //banner
     Route::get('/banner', [BannerController::class, 'index']);
     Route::get('/banner/json', [BannerController::class, 'json']);
     Route::post('/banner/store', [BannerController::class, 'store']);
     Route::post('/banner/destroy', [BannerController::class, 'destroy']);
-
-    //news
-    Route::get('/news', [NewsController::class, 'index']);
-    Route::get('/news/json', [NewsController::class, 'json']);
-    Route::get('/news/form/{id}', [NewsController::class, 'form']);
-    Route::post('/news/store', [NewsController::class, 'store']);
-    Route::post('/news/news-approval', [NewsController::class, 'news_approval']);
-    Route::post('/news/destroy', [NewsController::class, 'destroy']);
-    Route::get('/news/kabupaten', [NewsController::class, 'kabupaten']);
-    Route::get('/news/check_slug', [NewsController::class, 'check_slug']);
 
     //photos
     Route::get('/photos', [PhotosController::class, 'index']);
@@ -132,63 +221,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/contact', [ContactController::class, 'index']);
     Route::get('/contact/json', [ContactController::class, 'json']);
     Route::post('/contact/destroy', [ContactController::class, 'destroy']);
-
-    #### Setting
-    //user
-    Route::get('/user', [UserController::class, 'index']);
-    Route::get('/user/json', [UserController::class, 'json']);
-    Route::post('/user/store', [UserController::class, 'store']);
-    Route::post('/user/destroy', [UserController::class, 'destroy']);
-    Route::post('/user/change', [UserController::class, 'change']);
-
-    Route::get('/pegawai', [PegawaiController::class, 'index']);
-    Route::get('/pegawai/json', [PegawaiController::class, 'json']);
-    Route::post('/pegawai/store', [PegawaiController::class, 'store']);
-    Route::get('/pegawai-edit/{id}', [PegawaiController::class, 'edit']);
-
-    Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring');
-    Route::get('/monitoring/json', [MonitoringController::class, 'json'])->name('monitoring');
-    Route::get('/monitoring/add', [MonitoringController::class, 'add'])->name('monitoring');
-    Route::get('/monitoring/pegawai', [MonitoringController::class, 'pegawai'])->name('monitoring');
-    Route::get('/monitoring/provinsi', [MonitoringController::class, 'provinsi'])->name('monitoring');
-    Route::get('/monitoring/kabupaten/{id}', [MonitoringController::class, 'kabupaten'])->name('monitoring');
-    Route::post('/monitoring/store', [MonitoringController::class, 'store'])->name('monitoring');
-    Route::post('/monitoring/update', [MonitoringController::class, 'update'])->name('monitoring');
-    Route::post('/monitoring/update_monitoring', [MonitoringController::class, 'update1'])->name('monitoring');
-    Route::post('/monitoring/update_pegawai', [MonitoringController::class, 'update_pegawai'])->name('monitoring');
-    Route::post('/monitoring/delete_pegawai', [MonitoringController::class, 'delete_pegawai'])->name('monitoring');
-    Route::post('/monitoring/add-pegawai', [MonitoringController::class, 'add_pegawai'])->name('monitoring');
-    Route::post('/monitoring/update_lembaga', [MonitoringController::class, 'update_lembaga'])->name('monitoring');
-    Route::post('/monitoring/update_seniman', [MonitoringController::class, 'update_seniman'])->name('monitoring');
-    Route::post('/monitoring/simpan_seniman', [MonitoringController::class, 'simpan_seniman'])->name('monitoring');
-    Route::post('/monitoring/add_lembaga', [MonitoringController::class, 'add_lembaga'])->name('monitoring');
-    Route::post('/monitoring/del_lembaga', [MonitoringController::class, 'del_lembaga'])->name('monitoring');
-    Route::get('/monitoring/lihat/{id}', [MonitoringController::class, 'lihat'])->name('monitoring');
-    Route::get('/monitoring/ubah/{id}', [MonitoringController::class, 'ubah'])->name('monitoring');
-    Route::get('/monitoring/detil-monitoring/{id}', [MonitoringController::class, 'detil_monitoring'])->name('monitoring');
-    Route::get('/monitoring/monitoring-hasil/{id}', [MonitoringController::class, 'monitoring_hasil'])->name('monitoring');
-    Route::get('/monitoring/get-pegawai/{id}', [MonitoringController::class, 'get_pegawai'])->name('monitoring');
-
-    Route::get('/lembaga', [LembagaSeni::class, 'index'])->name('lembaga');
-    Route::get('/lembaga/json', [LembagaSeni::class, 'json'])->name('lembaga');
-    Route::get('/lembaga/detil/{id}', [LembagaSeni::class, 'detil'])->name('lembaga');
-    Route::get('/lembaga/provinsi', [LembagaSeni::class, 'Provinsi'])->name('lembaga');
-    Route::get('/lembaga/kabupaten/{id_provinsi}', [LembagaSeni::class, 'Kabupaten'])->name('lembaga');
-    Route::post('lembaga/update', [LembagaSeni::class, 'Update'])->name('lembaga');
-    Route::post('lembaga/delete', [LembagaSeni::class, 'Delete'])->name('lembaga');
-
-    Route::get('/seniman', [Seniman::class, 'index'])->name('seniman');
-    Route::get('/seniman/json', [Seniman::class, 'json'])->name('seniman');
-    Route::get('/seniman/detil/{id}', [Seniman::class, 'detil'])->name('seniman');
-    Route::get('/seniman/detil-seniman/{id}', [Seniman::class, 'detil2'])->name('seniman');
-    Route::post('seniman/update', [Seniman::class, 'Update'])->name('seniman');
-    Route::post('seniman/delete', [Seniman::class, 'Delete'])->name('seniman');
-
-    Route::get('/program-seni', [ProgramSeni::class, 'index'])->name('program-seni');
-    Route::get('/program-seni/json', [ProgramSeni::class, 'json'])->name('program-seni');
-    Route::get('/program-seni/detil/{id}', [ProgramSeni::class, 'detil'])->name('program-seni');
-    Route::post('program-seni/update', [ProgramSeni::class, 'Update'])->name('program-seni');
-    Route::post('program-seni/delete', [ProgramSeni::class, 'Delete'])->name('program-seni');
+    
 //group
     Route::get('/group', [GroupController::class, 'index']);
     Route::get('/group/json', [GroupController::class, 'json']);
