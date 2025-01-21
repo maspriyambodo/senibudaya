@@ -99,6 +99,21 @@ class ProgramSeni extends AuthController {
             ]);
         }
     }
+    
+    public function detil2(Request $request) {
+        $exec = DtaProgramSeni::where('id', $request->id)
+                ->first();
+        if ($exec) {
+            return response()->json([
+                        'success' => true,
+                        'dt_program' => $exec
+            ]);
+        } else {
+            return response()->json([
+                        'success' => false
+            ]);
+        }
+    }
 
     public function Update(Request $request) {
         $validator = Validator::make($request->all(), [

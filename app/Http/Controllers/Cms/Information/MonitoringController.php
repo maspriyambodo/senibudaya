@@ -556,6 +556,35 @@ class MonitoringController extends AuthController {
         }
     }
     
+    public function update_program(Request $request) {
+        DB::beginTransaction(); // Start transaction
+        try {
+            DtaProgramSeni::where('id', $request->idProtxt)
+                    ->update([
+                        'nama' => $request->progtxt,
+                        'frekuensi' => $request->fretxt,
+                        'tujuan' => $request->tujutxt,
+                        'unsur' => $request->unstxt,
+                        'waktu' => $request->wkutxt,
+                        'penyelenggara' => $request->pnytxt,
+                        'updated_by' => auth()->user()->id
+            ]);
+            DB::commit(); // Commit transaction
+            return response()->json([
+                        'success' => true,
+                            ], 200);
+        } catch (Exception $exc) {
+            DB::rollBack(); // Rollback transaction
+            Log::error('Failed to update dta_program_seni: ' . $exc->getMessage(), [
+                'user_id' => auth()->user()->id,
+                'request_data' => $request->all(),
+            ]);
+            return response()->json([
+                        'success' => true,
+                            ], 422);
+        }
+    }
+    
     public function simpan_seniman(Request $request) {
         DB::beginTransaction(); // Start transaction
         try {

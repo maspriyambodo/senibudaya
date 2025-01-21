@@ -244,6 +244,15 @@
                     </div>
                 </div>
             </div>
+            <div class="card-footer">
+                <button type="button" id="esenimanbtn{{ ($key_program + 1) }}" class="btn btn-secondary" onclick="editProgram({{ $dt_program->programSeni->id }});">Edit</button>
+                @if($key_program == 0)
+                <button type="button" id="tsenimanbtn{{ ($key_program + 1) }}" class="btn btn-info ml-2" onclick="addProgrambtn({{ $dt_program->id_monitoring }});">Tambah Program</button>
+                @endif
+                @if($key_program > 0)
+                <button type="button" id="dsenimanbtn{{ ($key_program + 1) }}" class="btn btn-danger ml-2" onclick="delProgrambtn({{ $dt_program->id }})">Delete</button>
+                @endif
+            </div>
         </div>
         @endif
         @endforeach
@@ -253,4 +262,5 @@
 @include('cms.monitoring.ePetugas')
 @include('cms.monitoring.eLembaga')
 @include('cms.monitoring.eSeniman')
+@include('cms.monitoring.eProgram')
 @include('cms.footer')
