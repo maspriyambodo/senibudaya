@@ -73,14 +73,17 @@ Route::middleware(['auth'])
             Route::post('/update_seniman', [MonitoringController::class, 'update_seniman'])->name('monitoring');
             Route::post('/update_program', [MonitoringController::class, 'update_program'])->name('monitoring');
             Route::post('/simpan_seniman', [MonitoringController::class, 'simpan_seniman'])->name('monitoring');
+            Route::post('/simpan_program', [MonitoringController::class, 'simpan_program'])->name('monitoring');
             Route::post('/add_lembaga', [MonitoringController::class, 'add_lembaga'])->name('monitoring');
             Route::post('/del_lembaga', [MonitoringController::class, 'del_lembaga'])->name('monitoring');
             Route::post('/del_seniman', [MonitoringController::class, 'del_seniman'])->name('monitoring');
+            Route::post('/del_program', [MonitoringController::class, 'del_program'])->name('monitoring');
             Route::get('/lihat/{id}', [MonitoringController::class, 'lihat'])->name('monitoring');
             Route::get('/ubah/{id}', [MonitoringController::class, 'ubah'])->name('monitoring');
             Route::get('/detil-monitoring/{id}', [MonitoringController::class, 'detil_monitoring'])->name('monitoring');
             Route::get('/monitoring-hasil/{id}', [MonitoringController::class, 'monitoring_hasil'])->name('monitoring');
             Route::get('/monitoring-seniman/{id}', [MonitoringController::class, 'monitoring_hasil2'])->name('monitoring');
+            Route::get('/monitoring-program/{id}', [MonitoringController::class, 'monitoring_hasil3'])->name('monitoring');
             Route::get('/get-pegawai/{id}', [MonitoringController::class, 'get_pegawai'])->name('monitoring');
         });
         
