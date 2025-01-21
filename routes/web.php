@@ -71,6 +71,7 @@ Route::middleware(['auth'])
             Route::post('/add-pegawai', [MonitoringController::class, 'add_pegawai'])->name('monitoring');
             Route::post('/update_lembaga', [MonitoringController::class, 'update_lembaga'])->name('monitoring');
             Route::post('/update_seniman', [MonitoringController::class, 'update_seniman'])->name('monitoring');
+            Route::post('/update_program', [MonitoringController::class, 'update_program'])->name('monitoring');
             Route::post('/simpan_seniman', [MonitoringController::class, 'simpan_seniman'])->name('monitoring');
             Route::post('/add_lembaga', [MonitoringController::class, 'add_lembaga'])->name('monitoring');
             Route::post('/del_lembaga', [MonitoringController::class, 'del_lembaga'])->name('monitoring');
@@ -155,6 +156,7 @@ Route::middleware(['auth'])
             Route::get('/', [ProgramSeni::class, 'index'])->name('program-seni');
             Route::get('/json', [ProgramSeni::class, 'json'])->name('program-seni');
             Route::get('/detil/{id}', [ProgramSeni::class, 'detil'])->name('program-seni');
+            Route::get('/detil-program/{id}', [ProgramSeni::class, 'detil2'])->name('program-seni');
             Route::post('/update', [ProgramSeni::class, 'Update'])->name('program-seni');
             Route::post('/delete', [ProgramSeni::class, 'Delete'])->name('program-seni');
         });
