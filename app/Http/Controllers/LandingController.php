@@ -81,7 +81,7 @@ class LandingController extends Controller
 
         // Define the categories for collections
         $categories_our_collection = $this->getCategoryCollection($slug);
-
+        
         // Build the base query for our collections
         $query = $this->buildCollectionQuery($slug, $categories_our_collection);
 
@@ -108,6 +108,7 @@ class LandingController extends Controller
 
         return CategoriesOurCollection::where('status', 1)
                         ->where('slug', $slug)
+                        ->orWhere('slug', $slug)
                         ->firstOrFail();
     }
 
