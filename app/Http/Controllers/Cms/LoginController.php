@@ -48,7 +48,7 @@ class LoginController extends Controller {
                 'password_user' => Hash::make(md5($request->password)),
                 'nama_user' => $request->namatxt,
                 'email_user' => $request->username,
-                'status_user' => 'f',
+                'status_user' => 't',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
@@ -74,8 +74,8 @@ class LoginController extends Controller {
                     'views_file' => 'emails.mail_activate',
                     'nama' => null
                 ];
-                UserHelper::composeEmail($mail_data);
-                $response = ['stat' => true, 'msgtxt' => 'We have sent an email to activate your account.', 'url_direct' => url('login')];
+//                UserHelper::composeEmail($mail_data);
+                $response = ['stat' => true, 'msgtxt' => 'Account registration successful, please login to enter the system', 'url_direct' => url('login')];
             } else {
                 $response = ['stat' => false, 'msgtxt' => 'System error while saving data.'];
             }
@@ -203,7 +203,7 @@ class LoginController extends Controller {
             Session::put('foto_user', File::exists(public_path('cms/images/user/' . $user->foto_user)) ? $user->foto_user : "default.png");
 
             // Redirect based on user group
-            $url = $user->id_group == 5 ? route('profile') : route('dashboard');
+            $url = $user->id_group == 5 ? route('profile.edit') : route('dashboard');
             return response()->json(['stat' => true, 'url_direct' => $url]);
         } else {
             // Return a generic error message

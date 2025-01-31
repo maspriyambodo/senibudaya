@@ -174,11 +174,12 @@ Route::middleware(['auth'])
         });
 
 Route::group(['middleware' => ['auth']], function () {
+    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
-
+    
     Route::get('my-pengajuan', [FormPengajuanController::class, 'index'])->name('form-pengajuan.index');
     Route::get('form-pengajuan/create', [FormPengajuanController::class, 'create'])->name('form-pengajuan.create');
     Route::post('form-pengajuan/store', [FormPengajuanController::class, 'store'])->name('form-pengajuan.store');
@@ -195,11 +196,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/background', [BackgroundController::class, 'index']);
     Route::get('/background/table/{val}', [BackgroundController::class, 'table']);
     Route::post('/background/upload', [BackgroundController::class, 'upload']);
-
-    //profil
-    Route::get('/profil', [ProfilController::class, 'index']);
-    Route::post('/profil/store', [ProfilController::class, 'store']);
-    Route::post('/profil/change', [ProfilController::class, 'change']);
 
     #### Information
     //banner
