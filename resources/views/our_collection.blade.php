@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-4">
                     <div class="logo">
-                        <a href="//senibudaya.test"><img class="light-logo" src="//senibudaya.test/images/logo.png"></a>
+                        <a href="//simpenais.kemenag.go.id/senibudaya"><img class="light-logo" src="//simpenais.kemenag.go.id/senibudaya/images/logo.png"></a>
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-8">
@@ -44,9 +44,9 @@
                 <div class="col-lg-7 col-md-12">
                     <div class="copyright-left">
                         <ul class="mainmenu justify-content-start">
-                            <li><a class="hover-flip-item-wrapper" href="//senibudaya.test"><span data-text="Beranda">Beranda</span></a></li>
-                            <li><a class="hover-flip-item-wrapper" href="//senibudaya.test/foto"><span data-text="Galeri">Galeri</span></a></li>
-                            <li><a class="hover-flip-item-wrapper" href="//senibudaya.test/tentang-kami"><span data-text="Tentang Kami">Tentang Kami</span></a></li>
+                            <li><a class="hover-flip-item-wrapper" href="//simpenais.kemenag.go.id/senibudaya"><span data-text="Beranda">Beranda</span></a></li>
+                            <li><a class="hover-flip-item-wrapper" href="//simpenais.kemenag.go.id/senibudaya/foto"><span data-text="Galeri">Galeri</span></a></li>
+                            <li><a class="hover-flip-item-wrapper" href="//simpenais.kemenag.go.id/senibudaya/tentang-kami"><span data-text="Tentang Kami">Tentang Kami</span></a></li>
                         </ul>
                     </div>
                 </div>

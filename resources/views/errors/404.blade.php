@@ -10,15 +10,15 @@
         <meta name="keywords" content="Kemenag, Kementerian Agama, Kementerian Agama Republik Indonesia, Repositori Seni Budaya Islam" />
         <meta name="author" content="Kementerian Agama Republik Indonesia" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="//senibudaya.test/show-collection-detail/about-us" />
+        <meta property="og:url" content="//simpenais.kemenag.go.id/senibudaya/show-collection-detail/about-us" />
         <meta property="og:title" content="About Us — Repositori Seni Budaya" />
         <meta property="og:description" content="Prof. Dr. Phil. H. Kamaruddin Amin, MADirektur Jenderal Bimbingan Masyarakat Islam&amp;nbsp;Repositori Digital Seni Budaya Islam di Indonesia ini adalah inisiatif y" />
-        <meta property="og:image" content="//senibudaya.test/" />
+        <meta property="og:image" content="//simpenais.kemenag.go.id/senibudaya/" />
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="//senibudaya.test/show-collection-detail/about-us" />
+        <meta property="twitter:url" content="//simpenais.kemenag.go.id/senibudaya/show-collection-detail/about-us" />
         <meta property="twitter:title" content="About Us — Repositori Seni Budaya" />
         <meta property="twitter:description" content="Prof. Dr. Phil. H. Kamaruddin Amin, MADirektur Jenderal Bimbingan Masyarakat Islam&amp;nbsp;Repositori Digital Seni Budaya Islam di Indonesia ini adalah inisiatif y" />
-        <meta property="twitter:image" content="//senibudaya.test/" />
+        <meta property="twitter:image" content="//simpenais.kemenag.go.id/senibudaya/" />
         <meta name="csrf-token" content="pXwxwCd2Bry8OUPVv4sr3QpRxQA0CxYcsvZMYuTw" />
         <link rel="icon" href="https://kemenag.go.id/assets/imgs/theme/favicon.png" />
         <link rel="stylesheet" href="{{ asset('landing/css/plugins.css') }}">
@@ -1189,18 +1189,18 @@
                     </div>
                     <div class="offcanvas-body ms-lg-auto d-flex flex-column h-100">
                         <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link" href="https://senibudaya.test/">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="https://senibudaya.test/show-collection-detail/about-us">About Us</a></li>
-                            <li class="nav-item"><a class="nav-link" href="https://senibudaya.test/home#our-collections" data-scroll-to="#our-collections">Our Collections</a></li>
-                            <li class="nav-item"><a class="nav-link" href="https://senibudaya.test/form-pengajuan/create">Form Pengajuan</a></li>
-                            <li class="nav-item d-lg-none"><a class="nav-link" href="https://senibudaya.test/profile">Profile</a></li>
-                            <li class="nav-item d-lg-none"><a class="nav-link" href="https://senibudaya.test/my-pengajuan">List Pengajuan</a></li>
-                            <form method="GET" action="//senibudaya.test/logout">
+                            <li class="nav-item"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/show-collection-detail/about-us">About Us</a></li>
+                            <li class="nav-item"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/home#our-collections" data-scroll-to="#our-collections">Our Collections</a></li>
+                            <li class="nav-item"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/form-pengajuan/create">Form Pengajuan</a></li>
+                            <li class="nav-item d-lg-none"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/profile">Profile</a></li>
+                            <li class="nav-item d-lg-none"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/my-pengajuan">List Pengajuan</a></li>
+                            <form method="GET" action="//simpenais.kemenag.go.id/senibudaya/logout">
                                 <input type="hidden" name="_token" value="pXwxwCd2Bry8OUPVv4sr3QpRxQA0CxYcsvZMYuTw" />
                                 <li class="nav-item d-lg-none"><button type="submit" class="nav-link">Log Out</button></li>
                             </form>
                             <li class="nav-item d-lg-none">
-                                <form class="search-form" method="GET" action="//senibudaya.test/search"><input type="text" class="form-control" placeholder="Search" name="q" /></form>
+                                <form class="search-form" method="GET" action="//simpenais.kemenag.go.id/senibudaya/search"><input type="text" class="form-control" placeholder="Search" name="q" /></form>
                             </li>
                         </ul>
                         <div class="offcanvas-footer d-lg-none">
@@ -1221,9 +1221,9 @@
                         <li class="nav-item dropdown d-none d-md-block">
                             <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle page_speed_140896480">Administrator</a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="dropdown-item" href="https://senibudaya.test/profile">Profile</a></li>
-                                <li class="nav-item"><a class="dropdown-item" href="https://senibudaya.test/my-pengajuan">List Pengajuan</a></li>
-                                <form method="GET" action="//senibudaya.test/logout">
+                                <li class="nav-item"><a class="dropdown-item" href="https://simpenais.kemenag.go.id/senibudaya/profile">Profile</a></li>
+                                <li class="nav-item"><a class="dropdown-item" href="https://simpenais.kemenag.go.id/senibudaya/my-pengajuan">List Pengajuan</a></li>
+                                <form method="GET" action="//simpenais.kemenag.go.id/senibudaya/logout">
                                     <input type="hidden" name="_token" value="pXwxwCd2Bry8OUPVv4sr3QpRxQA0CxYcsvZMYuTw" />
                                     <li class="nav-item"><button type="submit" class="dropdown-item">Log Out</button></li>
                                 </form>
@@ -1251,18 +1251,18 @@
                             </div>
                             <div class="offcanvas-body ms-lg-auto d-flex flex-column h-100">
                                 <ul class="navbar-nav">
-                                    <li class="nav-item"><a class="nav-link" href="https://senibudaya.test/">Home</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="https://senibudaya.test/show-collection-detail/about-us">About Us</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="https://senibudaya.test/home#our-collections" data-scroll-to="#our-collections">Our Collections</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="https://senibudaya.test/form-pengajuan/create">Form Pengajuan</a></li>
-                                    <li class="nav-item d-lg-none"><a class="nav-link" href="https://senibudaya.test/profile">Profile</a></li>
-                                    <li class="nav-item d-lg-none"><a class="nav-link" href="https://senibudaya.test/my-pengajuan">List Pengajuan</a></li>
-                                    <form method="GET" action="//senibudaya.test/logout">
+                                    <li class="nav-item"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/">Home</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/show-collection-detail/about-us">About Us</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/home#our-collections" data-scroll-to="#our-collections">Our Collections</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/form-pengajuan/create">Form Pengajuan</a></li>
+                                    <li class="nav-item d-lg-none"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/profile">Profile</a></li>
+                                    <li class="nav-item d-lg-none"><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/my-pengajuan">List Pengajuan</a></li>
+                                    <form method="GET" action="//simpenais.kemenag.go.id/senibudaya/logout">
                                         <input type="hidden" name="_token" value="pXwxwCd2Bry8OUPVv4sr3QpRxQA0CxYcsvZMYuTw" />
                                         <li class="nav-item d-lg-none"><button type="submit" class="nav-link">Log Out</button></li>
                                     </form>
                                     <li class="nav-item d-lg-none">
-                                        <form class="search-form" method="GET" action="//senibudaya.test/search"><input type="text" class="form-control" placeholder="Search" name="q" /></form>
+                                        <form class="search-form" method="GET" action="//simpenais.kemenag.go.id/senibudaya/search"><input type="text" class="form-control" placeholder="Search" name="q" /></form>
                                     </li>
                                 </ul>
                                 <div class="offcanvas-footer d-lg-none">
@@ -1283,9 +1283,9 @@
                                 <li class="nav-item dropdown d-none d-md-block">
                                     <a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle page_speed_140896480">Administrator</a>
                                     <ul class="dropdown-menu">
-                                        <li class="nav-item"><a class="dropdown-item" href="https://senibudaya.test/profile">Profile</a></li>
-                                        <li class="nav-item"><a class="dropdown-item" href="https://senibudaya.test/my-pengajuan">List Pengajuan</a></li>
-                                        <form method="GET" action="//senibudaya.test/logout">
+                                        <li class="nav-item"><a class="dropdown-item" href="https://simpenais.kemenag.go.id/senibudaya/profile">Profile</a></li>
+                                        <li class="nav-item"><a class="dropdown-item" href="https://simpenais.kemenag.go.id/senibudaya/my-pengajuan">List Pengajuan</a></li>
+                                        <form method="GET" action="//simpenais.kemenag.go.id/senibudaya/logout">
                                             <input type="hidden" name="_token" value="pXwxwCd2Bry8OUPVv4sr3QpRxQA0CxYcsvZMYuTw" />
                                             <li class="nav-item"><button type="submit" class="dropdown-item">Log Out</button></li>
                                         </form>
@@ -1363,10 +1363,10 @@
                         <div class="widget">
                             <h4 class="widget-title text-white mb-3">Links</h4>
                             <ul class="list-unstyled mb-0">
-                                <li><a class="nav-link" href="https://senibudaya.test/home">Home</a></li>
-                                <li><a class="nav-link" href="https://senibudaya.test/home#about-us" data-scroll-to="#about-us">About Us</a></li>
-                                <li><a class="nav-link" href="https://senibudaya.test/home#our-collections" data-scroll-to="#our-collections">Our Collections</a></li>
-                                <li><a class="nav-link" href="https://senibudaya.test/form-pengajuan/create">Form Pengajuan</a></li>
+                                <li><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/home">Home</a></li>
+                                <li><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/home#about-us" data-scroll-to="#about-us">About Us</a></li>
+                                <li><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/home#our-collections" data-scroll-to="#our-collections">Our Collections</a></li>
+                                <li><a class="nav-link" href="https://simpenais.kemenag.go.id/senibudaya/form-pengajuan/create">Form Pengajuan</a></li>
                             </ul>
                         </div>
                     </div>
