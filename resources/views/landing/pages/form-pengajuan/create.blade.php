@@ -1,9 +1,9 @@
 @extends('landing.layouts.master')
 @section('title', 'Form Pengajuan')
 @section('stylesheet')
-    <link rel="stylesheet" href="{{ asset('cms/css/plugins/select2.min.css'); }}" />
-    <link href="{{ asset('froala_editor_4.2.1/css/froala_editor.pkgd.min.css'); }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('froala_editor_4.2.1/css/third_party/image_tui.min.css'); }}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('cms/css/plugins/select2.min.css') }}" />
+    <link href="{{ asset('froala_editor_4.2.1/css/froala_editor.pkgd.min.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('froala_editor_4.2.1/css/third_party/image_tui.min.css') }}" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
     <section class="wrapper bg-soft-primary">
@@ -76,7 +76,7 @@
                                         <span class="text-danger">{{ $errors->first('id_category') }}</span>
                                         @endif
                                     </div>
-                                    
+
                                     <div class="form-select-wrapper mb-4">
                                         <select name="sub_category" class="form-select select2" aria-label="Pilih Kategori" required>
                                             <option value="" selected disabled hidden>Pilih Sub Kategori</option>
@@ -96,7 +96,7 @@
                                         <span class="text-danger">{{ $errors->first('banner_path') }}</span>
                                         @endif
                                     </div>
-                                    
+
                                     <div class="form-floating mb-4">
                                         <input name="banner_source" id="sumber_pict" type="text" class="form-control" placeholder="Sumber gambar" value="{{ old('banner_source') }}" autocomplete="off" required>
                                         <label for="pencipta">Sumber gambar</label>
@@ -197,7 +197,7 @@
                 $("#kd_kabkota").html("<option value='' selected disabled hidden>Pilih Kabupaten/Kota</option>");
                 return;
             }
-            $.get("/get-kabkota/" + id, function(result) {
+            $.get("{{ url('get-kabkota') }}" + "/" + id, function(result) {
                 result = JSON.parse(result);
                 option = "<option value='' selected disabled hidden>Pilih Kabupaten/Kota</option>";
                 let oldValue = "{{ old('kd_kabkota') }}";
