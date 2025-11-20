@@ -86,7 +86,7 @@ Route::middleware(['auth'])
             Route::get('/monitoring-program/{id}', [MonitoringController::class, 'monitoring_hasil3'])->name('monitoring');
             Route::get('/get-pegawai/{id}', [MonitoringController::class, 'get_pegawai'])->name('monitoring');
         });
-        
+
 Route::middleware(['auth'])
         ->prefix('parameter')
         ->group(function () {
@@ -106,7 +106,7 @@ Route::middleware(['auth'])
             Route::post('/store', [MenuController::class, 'store']);
             Route::post('/destroy', [MenuController::class, 'destroy']);
         });
-        
+
 Route::middleware(['auth'])
         ->prefix('news')
         ->group(function () {
@@ -119,7 +119,7 @@ Route::middleware(['auth'])
             Route::get('/kabupaten', [NewsController::class, 'kabupaten']);
             Route::get('/check_slug', [NewsController::class, 'check_slug']);
         });
-        
+
 Route::middleware(['auth'])
         ->prefix('user')
         ->group(function () {
@@ -129,19 +129,22 @@ Route::middleware(['auth'])
             Route::post('/destroy', [UserController::class, 'destroy']);
             Route::post('/change', [UserController::class, 'change']);
         });
-        
+
 Route::middleware(['auth'])
         ->prefix('lembaga')
         ->group(function () {
             Route::get('/', [LembagaSeni::class, 'index'])->name('lembaga');
-            Route::get('/json', [LembagaSeni::class, 'json'])->name('lembaga');
-            Route::get('/detil/{id}', [LembagaSeni::class, 'detil'])->name('lembaga');
-            Route::get('/provinsi', [LembagaSeni::class, 'Provinsi'])->name('lembaga');
-            Route::get('/kabupaten/{id_provinsi}', [LembagaSeni::class, 'Kabupaten'])->name('lembaga');
-            Route::post('update', [LembagaSeni::class, 'Update'])->name('lembaga');
-            Route::post('delete', [LembagaSeni::class, 'Delete'])->name('lembaga');
+            Route::get('/json', [LembagaSeni::class, 'json'])->name('lembaga.json');
+            Route::get('/add', [LembagaSeni::class, 'add'])->name('lembaga.add');
+            Route::post('/create', [LembagaSeni::class, 'create'])->name('lembaga.create');
+            Route::get('/form/{id}', [LembagaSeni::class, 'form'])->name('lembaga.form');
+            Route::get('/detil/{id}', [LembagaSeni::class, 'detil'])->name('lembaga.detil');
+            Route::get('/provinsi', [LembagaSeni::class, 'provinsi'])->name('lembaga.provinsi');
+            Route::get('/kabupaten/{id_provinsi}', [LembagaSeni::class, 'kabupaten'])->name('lembaga.kabupaten');
+            Route::post('/update', [LembagaSeni::class, 'update'])->name('lembaga.update');
+            Route::post('/delete', [LembagaSeni::class, 'delete'])->name('lembaga.delete');
         });
-        
+
 Route::middleware(['auth'])
         ->prefix('seniman')
         ->group(function () {
@@ -152,7 +155,7 @@ Route::middleware(['auth'])
             Route::post('/update', [Seniman::class, 'Update'])->name('seniman');
             Route::post('/delete', [Seniman::class, 'Delete'])->name('seniman');
         });
-        
+
 Route::middleware(['auth'])
         ->prefix('program-seni')
         ->group(function () {
@@ -163,7 +166,7 @@ Route::middleware(['auth'])
             Route::post('/update', [ProgramSeni::class, 'Update'])->name('program-seni');
             Route::post('/delete', [ProgramSeni::class, 'Delete'])->name('program-seni');
         });
-        
+
 Route::middleware(['auth'])
         ->prefix('pegawai')
         ->group(function () {
@@ -174,12 +177,12 @@ Route::middleware(['auth'])
         });
 
 Route::group(['middleware' => ['auth']], function () {
-    
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
-    
+
     Route::get('my-pengajuan', [FormPengajuanController::class, 'index'])->name('form-pengajuan.index');
     Route::get('form-pengajuan/create', [FormPengajuanController::class, 'create'])->name('form-pengajuan.create');
     Route::post('form-pengajuan/store', [FormPengajuanController::class, 'store'])->name('form-pengajuan.store');
@@ -222,7 +225,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/contact', [ContactController::class, 'index']);
     Route::get('/contact/json', [ContactController::class, 'json']);
     Route::post('/contact/destroy', [ContactController::class, 'destroy']);
-    
+
 //group
     Route::get('/group', [GroupController::class, 'index']);
     Route::get('/group/json', [GroupController::class, 'json']);

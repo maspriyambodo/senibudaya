@@ -30,6 +30,13 @@
                     {{ searchFilter($filter) }}
                     @endif
                 </div>
+                <div class="col-6 text-right">
+                    @if($add ?? false)
+                    <a href="{{ url('lembaga/add') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Tambah Data
+                    </a>
+                    @endif
+                </div>
             </div>
             <div class="clear mt-4"></div>
             <div class="table-responsive">
@@ -60,7 +67,7 @@
     $(function() {
     Swal.fire({
         title: 'memuat data...',
-        html: '<img src="{{ asset("cms/images/loading.gif"); }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
+        html: '<img src="{{ asset("cms/images/loading.gif") }}" title="Sedang Diverifikasi" class="h-100px w-100px" alt="">',
         allowOutsideClick: false,
         showConfirmButton: false,
         onOpen: function() {
