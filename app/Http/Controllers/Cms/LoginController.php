@@ -33,10 +33,10 @@ class LoginController extends Controller {
         $param = explode(',', $decrypted);
         $id_user = $param[0];
         User::where('id', $id_user)
-                ->update(['status_user' => 't']);
+                ->update(['status_user' => 1]);
         return view('cms.user_activate', ['param' => Parameter::data(), 'page' => ' Account Activation']);
     }
-    
+
     public function auth_register(Request $request) {
         $cek_email = User::where('id_user', $request->username)->first();
         if (!is_null($cek_email)) {
@@ -48,7 +48,7 @@ class LoginController extends Controller {
                 'password_user' => Hash::make(md5($request->password)),
                 'nama_user' => $request->namatxt,
                 'email_user' => $request->username,
-                'status_user' => 't',
+                'status_user' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
@@ -72,7 +72,6 @@ class LoginController extends Controller {
                     'nama' => $request->namatxt,
                     'subject_title' => 'E-mail verification',
                     'views_file' => 'emails.mail_activate',
-                    'nama' => null
                 ];
 //                UserHelper::composeEmail($mail_data);
                 $response = ['stat' => true, 'msgtxt' => 'Account registration successful, please login to enter the system', 'url_direct' => url('login')];
@@ -185,9 +184,10 @@ class LoginController extends Controller {
 
         // Retrieve the user by username
         $user = User::where('id_user', $request->username)->first();
+
         $credentials = [
             'id_user' => $request->username,
-            'status_user' => 't',
+            'status_user' => 1,
             'password' => md5($request->password),
         ];
         // Check if user exists and verify password

@@ -4,36 +4,52 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\TrMonitoring;
-use App\Models\DtaLembagaSeni;
-use App\Models\DtaSeniman;
-use App\Models\DtaProgramSeni;
 
-class TrMonitoringHasil extends Model {
-
+class TrMonitoringHasil extends Model
+{
     use HasFactory;
 
     protected $table = 'tr_monitoring_hasil';
     protected $primaryKey = 'id';
     public $timestamps = true;
+
     protected $fillable = [
-        'id_monitoring', 'id_content', 'jenis', 'is_trash', 'created_at',
-        'created_by', 'updated_at', 'updated_by'
+        'id_monitoring',
+        'id_content',
+        'jenis',
+        'is_trash',
+        'created_by',
+        'updated_by'
     ];
 
-    public function monitoring() {
+    protected $casts = [
+        'id_monitoring' => 'integer',
+        'id_content' => 'integer',
+        'jenis' => 'integer',
+        'is_trash' => 'integer',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
+    public function monitoring()
+    {
         return $this->belongsTo(TrMonitoring::class, 'id_monitoring', 'id');
     }
 
-    public function lembagaSeni() {
-        return $this->belongsTo(DtaLembagaSeni::class, 'id_content', 'id');
+    public function content()
+    {
+        return $this->belongsTo(Content::class, 'id_content');
     }
 
-    public function seniman() {
-        return $this->belongsTo(DtaSeniman::class, 'id_content', 'id');
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function programSeni() {
-        return $this->belongsTo(DtaProgramSeni::class, 'id_content', 'id');
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

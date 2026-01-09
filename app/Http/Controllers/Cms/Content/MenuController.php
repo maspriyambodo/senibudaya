@@ -34,29 +34,29 @@ class MenuController extends AuthController {
 
     private function getOrderByRawClause() {
         return "concat(
-        length(case when dta_content.level_content = 1 then dta_content.urutan_content else 
+        length(case when dta_content.level_content = 1 then dta_content.urutan_content else
             case when dta_content.level_content = 2 then dta_induk.urutan_content else dta_parent.urutan_content end
         end),
-        case when dta_content.level_content = 1 then dta_content.urutan_content else 
+        case when dta_content.level_content = 1 then dta_content.urutan_content else
             case when dta_content.level_content = 2 then dta_induk.urutan_content else dta_parent.urutan_content end
         end,
-        length(case when dta_content.level_content = 1 then 0 else 
+        length(case when dta_content.level_content = 1 then 0 else
             case when dta_content.level_content = 2 then dta_content.urutan_content else dta_induk.urutan_content end
         end),
-        case when dta_content.level_content = 1 then 0 else 
+        case when dta_content.level_content = 1 then 0 else
             case when dta_content.level_content = 2 then dta_content.urutan_content else dta_induk.urutan_content end
         end,
-        length(case when dta_content.level_content = 1 then 0 else 
+        length(case when dta_content.level_content = 1 then 0 else
             case when dta_content.level_content = 2 then 0 else dta_content.urutan_content end
         end),
-        case when dta_content.level_content = 1 then 0 else 
+        case when dta_content.level_content = 1 then 0 else
             case when dta_content.level_content = 2 then 0 else dta_content.urutan_content end
         end
     )";
     }
 
     private function getDisplayBadge($status) {
-        return $status === "t" ? "<span class=\"badge badge-success w-100\">Aktif</span>" : "<span class=\"badge badge-light-dark w-100\">Tidak Aktif</span>";
+        return $status === 1 ? "<span class=\"badge badge-success w-100\">Aktif</span>" : "<span class=\"badge badge-light-dark w-100\">Tidak Aktif</span>";
     }
 
     private function getIndentedName($row) {
@@ -129,14 +129,14 @@ class MenuController extends AuthController {
             $content->induk_content = $request->id;
             $content->level_content = $level_content + 1;
             $content->urutan_content = Content::where('induk_content', $request->id)->max('urutan_content') + 1;
-            $content->status_content = 't';
+            $content->status_content = 1;
             $content->mode_content = 'Add Menu' . ($request->id > 0 ? ' - ' . Content::where('id', $request->id)->pluck('nama_content')[0] : '');
         } else {
             $content = Content::where('id', $request->id)->first();
             $content->mode_content = 'Edit Menu' . ($content->induk_content > 0 ? ' - ' . Content::where('id', $content->induk_content)->pluck('nama_content')[0] : '');
         }
 
-        $kategori = Kategori::where('status_kategori', 't')->get();
+        $kategori = Kategori::where('status_kategori', 1)->get();
 
         $data = array_merge(
                 ClassMenu::view($this->target),
@@ -216,14 +216,14 @@ class MenuController extends AuthController {
         $content->label_content = $request->label_content;
         $content->keterangan_content = $request->keterangan_content;
         $content->detail_content = $request->detail_content;
-        $content->redirect_content = $request->redirect_content == "on" ? "t" : "f";
-        $content->link_content = $request->link_content == "on" ? "t" : "f";
-        $content->hide_content = $request->hide_content == "on" ? "t" : "f";
+        $content->redirect_content = $request->redirect_content == "on" ? 1 : 0;
+        $content->link_content = $request->link_content == "on" ? 1 : 0;
+        $content->hide_content = $request->hide_content == "on" ? 1 : 0;
         $content->level_content = $request->level_content;
         $content->urutan_content = $request->urutan_content;
         $content->icon_content = $icon_content;
         $content->image_content = $image_content;
-        $content->status_content = $request->status_content == "on" ? "t" : "f";
+        $content->status_content = $request->status_content == "on" ? 1 : 0;
         if ($new) {
             $content->created_by = Session::get('uid');
         }

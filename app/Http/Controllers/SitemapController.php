@@ -43,12 +43,12 @@ class SitemapController extends Controller {
                 foreach ($m->detail_content as $d) {
                     if (isset($menu[$d->id]) && !$d->hide_content) {
                         foreach ($menu[$d->id] as $l) {
-                            if ($l->redirect_content <> 't') {
+                            if ($l->redirect_content <> 1) {
                                 $menu2[] = $l->target_content;
                             }
                         }
                     } else {
-                        if ($d->redirect_content != 't') {
+                        if ($d->redirect_content != 1) {
                             $menu3[] = $d->target_content;
                         }
                     }
@@ -66,7 +66,7 @@ class SitemapController extends Controller {
         $limit_posts_id = (int) ($page_id * 1000);
         $offset_posts_id = (int) ($limit_posts_id - 1000);
         $dt_berita = SitemapModel::get_posts($offset_posts_id);
-        
+
 //        print_r($offset_posts_id . ',' . 1000); query limit
         $data = [
             'url_berita' => $dt_berita

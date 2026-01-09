@@ -22,7 +22,7 @@ class BannerController extends AuthController
 
         return Datatables::of($banner)
         ->addColumn('display', function ($row) {
-            return $row->status_banner == "t" ?
+            return $row->status_banner == 1 ?
             "<span class=\"badge badge-success w-100\">Aktif</span>" :
             "<span class=\"badge badge-light-dark  w-100\">Tidak Aktif</span>";
         })
@@ -31,7 +31,7 @@ class BannerController extends AuthController
             if($this->edit || $this->delete) {
                 $button.= "<div class=\"btn-group dropright\">
 					<button class=\"btn btn-sm btn-icon btn-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
-						<i class=\"fas fa-ellipsis-v\"></i> 
+						<i class=\"fas fa-ellipsis-v\"></i>
 					</button>
 					<div class=\"dropdown-menu dropright\">";
                 if($this->edit) {
@@ -94,7 +94,7 @@ class BannerController extends AuthController
         if(!isset($banner)) {
             $banner = new Banner();
             $banner->id = 0;
-            $banner->status_banner = 't';
+            $banner->status_banner = 1;
             $banner->mode_banner = 'Add Banner';
         } else {
             $banner->mode_banner = 'Edit Banner';
@@ -133,7 +133,7 @@ class BannerController extends AuthController
             $image = $request->file('image_banner');
             $image_banner = 'img_'.round(microtime(true) * 1000).'.'.$image->getClientOriginalExtension();
             $path = public_path('images/banner/');
-			
+
 			$width = $height = 800;
             $img_file = Image::make($image->getRealPath());
 			$img_file->height() > $img_file->width() ? $width=null : $height=null;
@@ -146,7 +146,7 @@ class BannerController extends AuthController
         $banner->nama_banner = $request->nama_banner;
         $banner->keterangan_banner = $request->keterangan_banner;
         $banner->image_banner = $image_banner;
-        $banner->status_banner = $request->status_banner == "on" ? "t" : "f";
+        $banner->status_banner = $request->status_banner == "on" ? 1 : 0;
         if($new) {
             $banner->created_by = Session::get('uid');
         }

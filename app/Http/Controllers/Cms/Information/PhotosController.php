@@ -34,7 +34,7 @@ class PhotosController extends AuthController
             return "<strong>".$row->nama_foto."</strong><br>".$row->keterangan_foto;
         })
         ->addColumn('display', function ($row) {
-            return $row->status_foto == "t" ?
+            return $row->status_foto == 1 ?
             "<span class=\"badge badge-success w-100\">Aktif</span>" :
             "<span class=\"badge badge-light-dark  w-100\">Tidak Aktif</span>";
         })
@@ -43,7 +43,7 @@ class PhotosController extends AuthController
             if($this->edit || $this->delete) {
                 $button.= "<div class=\"btn-group dropright\">
 					<button class=\"btn btn-sm btn-icon btn-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
-						<i class=\"fas fa-ellipsis-v\"></i> 
+						<i class=\"fas fa-ellipsis-v\"></i>
 					</button>
 					<div class=\"dropdown-menu dropright\">";
                 if($this->edit) {
@@ -82,7 +82,7 @@ class PhotosController extends AuthController
 
     public function index()
     {
-        $kategori = Content::where('status_content', 't')->where('id_kategori', 5)->orderBy('induk_content', 'desc')->orderBy('urutan_content')->get();
+        $kategori = Content::where('status_content', 1)->where('id_kategori', 5)->orderBy('induk_content', 'desc')->orderBy('urutan_content')->get();
         $data = array_merge(ClassMenu::view($this->target), array('kategori' => $kategori), array('filter' => array()));
 
         $column = array(
@@ -110,7 +110,7 @@ class PhotosController extends AuthController
         if(!isset($foto)) {
             $foto = new Foto();
             $foto->id = 0;
-            $foto->status_foto = 't';
+            $foto->status_foto = 1;
             $foto->mode_foto = 'Add Foto';
         } else {
             $foto->mode_foto = 'Edit Foto';
@@ -149,7 +149,7 @@ class PhotosController extends AuthController
             $image = $request->file('image_foto');
             $image_foto = 'img_'.round(microtime(true) * 1000).'.'.$image->getClientOriginalExtension();
             $path = public_path('images/foto/');
-			
+
 			$width = $height = 800;
             $img_file = Image::make($image->getRealPath());
 			$img_file->height() > $img_file->width() ? $width=null : $height=null;
@@ -163,7 +163,7 @@ class PhotosController extends AuthController
         $foto->nama_foto = $request->nama_foto;
         $foto->keterangan_foto = $request->keterangan_foto;
         $foto->image_foto = $image_foto;
-        $foto->status_foto = $request->status_foto == "on" ? "t" : "f";
+        $foto->status_foto = $request->status_foto == "on" ? 1 : 0;
         if($new) {
             $foto->created_by = Session::get('uid');
         }

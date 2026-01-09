@@ -4,43 +4,63 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\TrMonitoringPetugas;
-use App\Models\TrMonitoringHasil;
-use App\Models\Provinsi;
-use App\Models\KabupatenKota;
 
-class TrMonitoring extends Model {
-
+class TrMonitoring extends Model
+{
     use HasFactory;
 
     protected $table = 'tr_monitoring';
     protected $primaryKey = 'id';
     public $timestamps = true;
+
     protected $fillable = [
-        'no_monitoring', 'tgl_monitoring', 'provinsi', 'kabupaten', 'is_trash', 'created_at', 'created_by', 'updated_at', 'updated_by'
+        'no_monitoring',
+        'tgl_monitoring',
+        'provinsi',
+        'kabupaten',
+        'is_trash',
+        'created_by',
+        'updated_by'
     ];
 
-    public function petugas() {
+    protected $casts = [
+        'provinsi' => 'integer',
+        'kabupaten' => 'integer',
+        'is_trash' => 'integer',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
+        'tgl_monitoring' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
+    public function petugas()
+    {
         return $this->hasMany(TrMonitoringPetugas::class, 'id_monitoring', 'id');
     }
 
-    public function hasil() {
+    public function hasil()
+    {
         return $this->hasMany(TrMonitoringHasil::class, 'id_monitoring', 'id');
     }
 
-    public function provinsi() {
-        return $this->belongsTo(Provinsi::class, 'provinsi', 'id_provinsi');
-    }
-    
-    public function provinsiLihat() {
+    public function provinsiRelation()
+    {
         return $this->belongsTo(Provinsi::class, 'provinsi', 'id_provinsi');
     }
 
-    public function kabupaten() {
+    public function kabupatenRelation()
+    {
         return $this->belongsTo(KabupatenKota::class, 'kabupaten', 'id_kabupaten');
     }
-    
-    public function kabupatenLihat() {
-        return $this->belongsTo(KabupatenKota::class, 'kabupaten', 'id_kabupaten');
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

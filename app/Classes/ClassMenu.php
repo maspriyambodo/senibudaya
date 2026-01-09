@@ -14,9 +14,9 @@ class ClassMenu {
         $status = ["view", "input", "edit", "delete"];
 
         // Fetch menus and access rights
-        $menu = Menu::where('status_menu', 't')->orderBy('induk_menu')->orderBy('urutan_menu')->get();
+        $menu = Menu::where('status_menu', 1)->orderBy('induk_menu')->orderBy('urutan_menu')->get();
         $akses = Akses::where('id_group', Session::get('group'))->orderBy('id_menu')->get();
-        
+
         // Organize access rights into an associative array
         $status_akses = [];
         foreach ($akses as $data) {
@@ -30,7 +30,7 @@ class ClassMenu {
         foreach ($menu as $data) {
             // Determine access rights for each menu item
             $akses_menu = array_combine($status, array_map(function ($s) use ($data, $status_akses) {
-                        return isset($status_akses[$data->id][$s]) && $status_akses[$data->id][$s] == "t";
+                        return isset($status_akses[$data->id][$s]) && $status_akses[$data->id][$s] == 1;
                     }, $status));
 
             $menuKey = empty($data->folder_menu) ? 'cms.' . $data->target_menu : 'cms.' . $data->folder_menu . '.' . $data->target_menu;
@@ -59,7 +59,7 @@ class ClassMenu {
                     'icon' => $data->icon_menu,
                         ], $akses_menu);
 
-                if (isset($status_akses[$data->id]['view']) && $status_akses[$data->id]['view'] == 't') {
+                if (isset($status_akses[$data->id]['view']) && $status_akses[$data->id]['view'] == 1) {
                     $child[$data->induk_menu][] = [
                         'id' => $data->id,
                         'nama_menu' => $data->nama_menu,
@@ -74,7 +74,7 @@ class ClassMenu {
         $appMenu = [];
         foreach ($top as $id => $data) {
             $count = isset($child[$id]) ? count($child[$id]) : 0;
-            if ((isset($status_akses[$id]['view']) && $status_akses[$id]['view'] == 't') || $count > 0) {
+            if ((isset($status_akses[$id]['view']) && $status_akses[$id]['view'] == 1) || $count > 0) {
                 $appMenu[$id] = $data;
                 $appMenu[$id]['count_menu'] = $count;
                 if ($count > 0) {
@@ -124,7 +124,7 @@ class ClassMenu {
             "delete" => false,
         );
         foreach ($akses as $data) {
-            $result[$data->nama_akses] = $data->status_akses == "t" ? true : false;
+            $result[$data->nama_akses] = $data->status_akses == 1 ? true : false;
         }
 
         $page = isset($segment[1]) ? $segment[1] : "index";

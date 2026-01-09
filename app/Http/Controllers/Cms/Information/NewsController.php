@@ -24,13 +24,10 @@ class NewsController extends AuthController {
     private $target = 'cms.information.news';
 
     public function json(Request $request) {
-        
+
         DB::enableQueryLog();
-        $exec = OurCollection::select('dta_our_collections.id', 'dta_our_collections.id_category', 'dta_our_collections.nama AS nama_berita', 'dta_our_collections.pencipta', 'dta_our_collections.status AS status_berita', 'dta_our_collections.status_approval', 'dta_our_collections.created_at', 'user_create.nama_user', 'user_approve.nama_user AS nama_approve', 'mt_provinsi.nama AS provinsi', 'mt_kabupaten.nama AS kabupaten')
-                ->leftJoin('app_user AS user_create', 'dta_our_collections.created_by', '=', 'user_create.id')
-                ->leftJoin('app_user AS user_approve', 'dta_our_collections.user_approval', '=', 'user_approve.id')
-                ->leftJoin('mt_provinsi', 'dta_our_collections.kd_prov', '=', 'mt_provinsi.id_provinsi')
-                ->leftJoin('mt_kabupaten', 'dta_our_collections.kd_kabkota', '=', 'mt_kabupaten.id_kabupaten');
+        $exec = OurCollection::with(['createdBy', 'approvedBy', 'provinsiRelation', 'kabupatenRelation'])
+                ->select('dta_our_collections.*');
 
         // Apply filters
         $this->applyFilters($exec, $request);
@@ -40,6 +37,11 @@ class NewsController extends AuthController {
         $query = end($query);
 //        ddd($query);
         return Datatables::of($berita)
+                        ->addColumn('nama_berita', fn($row) => $row->nama)
+                        ->addColumn('pencipta', fn($row) => $row->pencipta)
+                        ->addColumn('provinsi', fn($row) => $row->provinsiRelation->nama ?? '')
+                        ->addColumn('kabupaten', fn($row) => $row->kabupatenRelation->nama ?? '')
+                        ->addColumn('nama_user', fn($row) => $row->createdBy->nama_user ?? '')
                         ->editColumn('created_at', fn($row) => date('d/M/Y', strtotime($row->created_at)))
                         ->addColumn('status_berita', fn($row) => $row->status_berita == 1 ? "<span class=\"badge badge-success w-100\">Publish</span>" : "<span class=\"badge badge-light-dark w-100\">Draft</span>")
                         ->addColumn('status_approval', fn($row) => $this->getApprovalBadge($row->status_approval))
@@ -50,21 +52,27 @@ class NewsController extends AuthController {
 
     private function applyFilters($query, Request $request) {
         if ($request->filled('kategori')) {
-            $query->where('dta_our_collections.id_category', $request->kategori, false);
+            $query->where('id_category', $request->kategori);
         }
         if ($request->filled('subkategori')) {
-            $query->where('dta_our_collections.sub_category', $request->subkategori, false);
+            $query->where('sub_category', $request->subkategori);
         }
         if ($request->filled('approval')) {
-            $query->where('dta_our_collections.status_approval', $request->approval, false);
+            $query->where('status_approval', $request->approval);
         }
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
-                $q->where('dta_our_collections.nama', 'like', "%" . $request->keyword . "%")
-                        ->orWhere('dta_our_collections.pencipta', 'like', "%" . $request->keyword . "%")
-                        ->orWhere('user_create.nama_user', 'like', "%" . $request->keyword . "%")
-                        ->orWhere('mt_provinsi.nama', 'like', "%" . $request->keyword . "%")
-                        ->orWhere('mt_kabupaten.nama', 'like', "%" . $request->keyword . "%");
+                $q->where('nama', 'like', "%" . $request->keyword . "%")
+                        ->orWhere('pencipta', 'like', "%" . $request->keyword . "%")
+                        ->orWhereHas('createdBy', function($userQuery) use ($request) {
+                            $userQuery->where('nama_user', 'like', "%" . $request->keyword . "%");
+                        })
+                        ->orWhereHas('provinsiRelation', function($provQuery) use ($request) {
+                            $provQuery->where('nama', 'like', "%" . $request->keyword . "%");
+                        })
+                        ->orWhereHas('kabupatenRelation', function($kabQuery) use ($request) {
+                            $kabQuery->where('nama', 'like', "%" . $request->keyword . "%");
+                        });
             });
         }
     }

@@ -25,7 +25,7 @@ class GroupController extends AuthController
 
         return Datatables::of($group)
         ->addColumn('display', function ($row) {
-            return $row->status_group == "t" ?
+            return $row->status_group == 1 ?
             "<span class=\"badge badge-success w-100\">Aktif</span>" :
             "<span class=\"badge badge-light-dark  w-100\">Tidak Aktif</span>";
         })
@@ -34,7 +34,7 @@ class GroupController extends AuthController
             if($this->edit || $this->delete) {
                 $button.= "<div class=\"btn-group dropright\">
 					<button class=\"btn btn-sm btn-icon btn-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
-						<i class=\"fas fa-ellipsis-v\"></i> 
+						<i class=\"fas fa-ellipsis-v\"></i>
 					</button>
 					<div class=\"dropdown-menu dropright\">";
                 if($this->edit) {
@@ -82,10 +82,10 @@ class GroupController extends AuthController
             $menu[$data->nama_akses][$data->id_menu] = $data->status_akses;
         }
         if(count($menu) < 1) {
-            $akses = Menu::where('status_menu', 't')->orderBy('induk_menu')->orderBy('urutan_menu')->get();
+            $akses = Menu::where('status_menu', 1)->orderBy('induk_menu')->orderBy('urutan_menu')->get();
             foreach ($akses as $data) {
                 foreach ($this->status as $nama_akses) {
-                    $menu[$nama_akses][$data->id] = "f";
+                    $menu[$nama_akses][$data->id] = 0;
                 }
             }
         }
@@ -95,8 +95,9 @@ class GroupController extends AuthController
 
     public function index()
     {
-        $menu = Menu::where('status_menu', 't')->orderBy('induk_menu')->orderBy('urutan_menu')->get();
+        $menu = Menu::where('status_menu', 1)->orderBy('induk_menu')->orderBy('urutan_menu')->get();
         $status = Akses::where('id_group', Session::get('group'))->orderBy('id_menu')->get();
+        $status_akses = [];
         foreach ($status as $data) {
             $status_akses[$data->id_menu][$data->nama_akses] = $data->status_akses;
         }
@@ -107,7 +108,7 @@ class GroupController extends AuthController
             for($i=0; $i<$len; $i++) {
                 $akses['' .$this->status[$i]. '_menu'] = (
                     (isset($status_akses[$data->id][''.$this->status[$i].'']) &&
-                $status_akses[$data->id][''.$this->status[$i].''] == "t") ||
+                $status_akses[$data->id][''.$this->status[$i].''] == 1) ||
                 Session::get('user') == 'devel'
                 ) ? substr($data->akses_menu, $i, 1) : 0;
             }
@@ -122,7 +123,7 @@ class GroupController extends AuthController
         $menu = array();
         foreach ($top as $id => $data) {
             $count = isset($child[$id]) ? count($child[$id]) : 0;
-            if((isset($status_akses[$id]['view']) && $status_akses[$id]['view'] == 't') || Session::get('user') == 'devel' || $count > 0) {
+            if((isset($status_akses[$id]['view']) && $status_akses[$id]['view'] == 1) || Session::get('user') == 'devel' || $count > 0) {
                 $menu[$id] = $data;
                 $menu[$id]['count_menu'] = $count;
                 if($count > 0) {
@@ -174,7 +175,7 @@ class GroupController extends AuthController
         $group = $new ? new Group() : Group::find($request->id);
         $group->nama_group = $request->nama_group;
         $group->keterangan_group = $request->keterangan_group;
-        $group->status_group = $request->status_group == "on" ? "t" : "f";
+        $group->status_group = $request->status_group == "on" ? 1 : 0;
         if($new) {
             $group->created_by = Session::get('uid');
         }
@@ -188,10 +189,10 @@ class GroupController extends AuthController
 
         //set app_akses
         $id = $new ? $group->id : $request->id;
-        $menu = Menu::select('id')->where('status_menu', 't')->orderBy('induk_menu')->orderBy('urutan_menu')->get();
+        $menu = Menu::select('id')->where('status_menu', 1)->orderBy('induk_menu')->orderBy('urutan_menu')->get();
         foreach ($menu as $data) {
             foreach ($this->status as $nama_akses) {
-                $status_menu = isset($request->$nama_akses[$data->id]) ? "t" : "f";
+                $status_menu = isset($request->$nama_akses[$data->id]) ? 1 : 0;
                 $akses = Akses::where('id_group', $id)->where('id_menu', $data->id)->where('nama_akses', $nama_akses);
                 $new = empty(count($akses->get())) ? true : false;
 

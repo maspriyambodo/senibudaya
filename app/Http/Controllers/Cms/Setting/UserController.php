@@ -19,15 +19,14 @@ class UserController extends AuthController
 
     public function json()
     {
-        $user = User::select('app_user.*', 'app_group.nama_group')
-        ->join('app_group', 'app_group.id', '=', 'app_user.id_group')
+        $user = User::with('group')
         ->where(function ($query) {
             $query->whereRaw("id_user!='devel' or 'devel'='".Session::get('user')."'");
         });
 
         return Datatables::of($user)
         ->addColumn('display', function ($row) {
-            return $row->status_user == "t" ?
+            return $row->status_user == 1 ?
             "<span class=\"badge badge-success w-100\">Aktif</span>" :
             "<span class=\"badge badge-light-dark  w-100\">Tidak Aktif</span>";
         })
@@ -36,11 +35,11 @@ class UserController extends AuthController
             if($this->edit || $this->delete) {
                 $button.= "<div class=\"btn-group dropright\">
 					<button class=\"btn btn-sm btn-icon btn-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
-						<i class=\"fas fa-ellipsis-v\"></i> 
+						<i class=\"fas fa-ellipsis-v\"></i>
 					</button>
 					<div class=\"dropdown-menu dropright\">";
                 if($this->edit) {
-                    $button.= "<a id=\"update\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#change\" data-backdrop=\"static\"><i class=\"fas fa-unlock-alt\"></i> Ubah Password</a> 
+                    $button.= "<a id=\"update\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#change\" data-backdrop=\"static\"><i class=\"fas fa-unlock-alt\"></i> Ubah Password</a>
 					<a id=\"edit\" class=\"dropdown-item has-icon\" href=\"#\" data-toggle=\"modal\" data-target=\"#form\" data-backdrop=\"static\"><i class=\"fas fa-pencil-alt\"></i> Ubah Data</a>";
                 }
                 if($this->delete) {
@@ -67,7 +66,9 @@ class UserController extends AuthController
                     $query->where(function ($data) {
                         $data->where('id_user', 'like', "%" . request('keyword') . "%")
                         ->orWhere('nama_user', 'like', "%" . request('keyword') . "%")
-                        ->orWhere('nama_group', 'like', "%" . request('keyword') . "%");
+                        ->orWhereHas('group', function($q) {
+                            $q->where('nama_group', 'like', "%" . request('keyword') . "%");
+                        });
                     });
                 }
 
@@ -78,7 +79,9 @@ class UserController extends AuthController
                     $query->where('nama_user', 'like', "%" . request('keyword') . "%");
                 }
                 if(in_array("2", $filter)) {
-                    $query->where('nama_group', 'like', "%" . request('keyword') . "%");
+                    $query->whereHas('group', function($q) {
+                        $q->where('nama_group', 'like', "%" . request('keyword') . "%");
+                    });
                 }
             }
         })
@@ -88,7 +91,7 @@ class UserController extends AuthController
 
     public function index()
     {
-        $group = Group::where('status_group', 't')->where(function ($query) {
+        $group = Group::where('status_group', 1)->where(function ($query) {
             $query->where('nama_group', '!=', 'developer')->orwhereRaw("'devel'='".Session::get('user')."'");
         })->orderBy('nama_group')->get();
         $filter = array("Username", "Nama Lengkap", "Group");
@@ -124,11 +127,11 @@ class UserController extends AuthController
         $this->validate(
             $request,
             [
-				'id_user' => 'unique:app_user,id_user,'.$request->id, 
+				'id_user' => 'unique:app_user,id_user,'.$request->id,
 				'foto_user' => 'image|mimes:jpeg,png,jpg,gif,svg|max:12288'
 			],
             [
-				'id_user.unique' => 'Proses gagal, Username '.strtoupper($request->id_user).' sudah ada.', 
+				'id_user.unique' => 'Proses gagal, Username '.strtoupper($request->id_user).' sudah ada.',
 				'foto_user.image' => 'Proses gagal, File FOTO harus berupa gambar.',
 				'foto_user.max' => 'Proses gagal, Ukuran IMAGE tidak boleh lebih dari 12 MB.'
 			]
@@ -162,7 +165,7 @@ class UserController extends AuthController
         $user->nama_user = $request->nama_user;
         $user->email_user = $request->email_user;
         $user->foto_user = $foto_user;
-        $user->status_user = $request->status_user == "on" ? "t" : "f";
+        $user->status_user = $request->status_user == "on" ? 1 : 0;
         if($new) {
             $user->created_by = Session::get('uid');
         }

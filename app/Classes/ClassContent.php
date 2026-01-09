@@ -9,18 +9,18 @@ class ClassContent {
 
     public static function view($view, $title = '') {
         $sub = array();
-        foreach (Content::select('induk_content')->where('status_content', 't')->where('level_content', 3)->groupBy('induk_content')->get() as $data) {
+        foreach (Content::select('induk_content')->where('status_content', 1)->where('level_content', 3)->groupBy('induk_content')->get() as $data) {
             $sub[] = $data->induk_content;
         }
 
-        $content = Content::where('status_content', 't')->orderBy('induk_content')->orderBy('urutan_content')->get();
+        $content = Content::where('status_content', 1)->orderBy('induk_content')->orderBy('urutan_content')->get();
 
         $column = 0;
         foreach ($content as $data) {
-            $redirect = $data->redirect_content == 't' ? true : false;
-            $hide = $data->hide_content == 't' ? true : false;
+            $redirect = $data->redirect_content == 1 ? true : false;
+            $hide = $data->hide_content == 1 ? true : false;
 
-            $target = Content::where('induk_content', $data->id)->where('redirect_content', 'f')->orderBy('urutan_content')->pluck('nama_content')->first();
+            $target = Content::where('induk_content', $data->id)->where('redirect_content', 0)->orderBy('urutan_content')->pluck('nama_content')->first();
             if (empty($target))
                 $target = $data->nama_content;
             $target = $redirect ? strip_tags($data->detail_content) : str_replace("/", "-", str_replace(' ', '-', strtolower($target)));
@@ -60,7 +60,7 @@ class ClassContent {
                 );
             }
 
-            if ($data->link_content == 't') {
+            if ($data->link_content == 1) {
                 $tipe = $data->induk_content > 0 ? 'info' : 'menu';
                 $footer[$tipe][] = array(
                     'id' => $data->id,
@@ -81,7 +81,7 @@ class ClassContent {
                 $label .= $txt . ' ';
             }
             $label .= '</span>';
-            
+
             $menu[$target] = array(
                 'id' => $data->id,
                 'parent' => $data->induk_content > 0 ? $top[$data->induk_content]['nama_content'] : '',
@@ -94,7 +94,7 @@ class ClassContent {
                 'kategori' => $data->id_kategori,
             );
         }
-        
+
         foreach ($top as $id => $data) {
             $dta[$id] = $data;
             $count = isset($child[$id]) ? count($child[$id]) : 0;
@@ -115,7 +115,7 @@ class ClassContent {
         }
         $label .= '</span>';
         $dtb = array_values($dta);
-        
+
         return isset($menu[$view]) ?
                 array_merge($menu[$view], array(
                     'param' => Parameter::data(),

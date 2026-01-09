@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Exception;
 use DataTables;
 use Image;
 
@@ -146,7 +148,7 @@ class PegawaiController extends AuthController {
                     'mail' => $request->mailtxt,
                     'jabatan' => $request->pangtxt,
                     'stat' => 1,
-                    'created_by' => auth()->user()->id
+                    'created_by' => Session::get('uid')
                 ]);
             } elseif ($request->q == 'update') {
                 Pegawai::where('id', $request->e_id)
@@ -155,23 +157,24 @@ class PegawaiController extends AuthController {
                             'nip' => $request->niptxt2,
                             'mail' => $request->mailtxt2,
                             'jabatan' => $request->pangtxt2,
-                            'updated_by' => auth()->user()->id
+                            'updated_by' => Session::get('uid')
                 ]);
             } elseif ($request->q == 'delete') {
                 Pegawai::where('id', $request->d_id)
                         ->update([
                             'stat' => 0,
-                            'updated_by' => auth()->user()->id
+                            'updated_by' => Session::get('uid')
                 ]);
             }
             DB::commit(); // Commit transaction
             return redirect($this->page)->with('message', 'data pegawai berhasil disimpan!');
         } catch (Exception $exc) {
             DB::rollBack(); // Rollback transaction
-            Log::error('Failed to create or update user: ' . $e->getMessage(), [
-                'user_id' => auth()->user()->id,
+            Log::error('Failed to create or update pegawai: ' . $exc->getMessage(), [
+                'user_id' => Session::get('uid'),
                 'request_data' => $request->all(),
             ]);
+            return redirect($this->page)->with('message', 'Terjadi kesalahan saat menyimpan data pegawai!');
         }
     }
 }

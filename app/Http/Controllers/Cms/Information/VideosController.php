@@ -22,7 +22,7 @@ class VideosController extends AuthController
 
         return Datatables::of($video)
         ->addColumn('display', function ($row) {
-            return $row->status_video == "t" ?
+            return $row->status_video == 1 ?
             "<span class=\"badge badge-success w-100\">Aktif</span>" :
             "<span class=\"badge badge-light-dark  w-100\">Tidak Aktif</span>";
         })
@@ -31,7 +31,7 @@ class VideosController extends AuthController
             if($this->edit || $this->delete) {
                 $button.= "<div class=\"btn-group dropright\">
 					<button class=\"btn btn-sm btn-icon btn-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
-						<i class=\"fas fa-ellipsis-v\"></i> 
+						<i class=\"fas fa-ellipsis-v\"></i>
 					</button>
 					<div class=\"dropdown-menu dropright\">";
                 if($this->edit) {
@@ -70,7 +70,7 @@ class VideosController extends AuthController
 
     public function index()
     {
-        $kategori = Content::where('status_content', 't')->where('id_kategori', 6)->orderBy('induk_content')->orderBy('urutan_content')->get();
+        $kategori = Content::where('status_content', 1)->where('id_kategori', 6)->orderBy('induk_content')->orderBy('urutan_content')->get();
         $data = array_merge(ClassMenu::view($this->target), array('kategori' => $kategori), array('filter' => array()));
 
         $column = array(
@@ -98,7 +98,7 @@ class VideosController extends AuthController
         if(!isset($video)) {
             $video = new Video();
             $video->id = 0;
-            $video->status_video = 't';
+            $video->status_video = 1;
             $video->mode_video = 'Add Video';
         } else {
             $video->mode_video = 'Edit Video';
@@ -122,7 +122,7 @@ class VideosController extends AuthController
         $video->nama_video = $request->nama_video;
         $video->keterangan_video = $request->keterangan_video;
         $video->url_video = $request->url_video;
-        $video->status_video = $request->status_video == "on" ? "t" : "f";
+        $video->status_video = $request->status_video == "on" ? 1 : 0;
         if($new) {
             $video->created_by = Session::get('uid');
         }

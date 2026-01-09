@@ -180,7 +180,7 @@ class LembagaSeni extends AuthController {
         if(!isset($lemSeni)) {
             $lemSeni = new DtaLembagaSeni();
             $lemSeni->id = 0;
-            $lemSeni->stat = 't';
+            $lemSeni->stat = 1;
             $lemSeni->mode_foto = 'Add Lembaga Seni';
         } else {
             $lemSeni->mode_foto = 'Edit Lembaga Seni';
