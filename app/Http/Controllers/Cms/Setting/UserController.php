@@ -25,6 +25,9 @@ class UserController extends AuthController
         });
 
         return Datatables::of($user)
+        ->addColumn('nama_group', function ($row) {
+            return $row->group->nama_group ?? '';
+        })
         ->addColumn('display', function ($row) {
             return $row->status_user == 1 ?
             "<span class=\"badge badge-success w-100\">Aktif</span>" :
