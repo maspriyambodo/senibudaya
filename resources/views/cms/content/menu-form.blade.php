@@ -102,7 +102,7 @@
 									<div class="form-group row mb-2">
 										<label class="col-sm-5 col-form-label">Redirect</label>
 										<div class="col-sm-6 switch switch-success">
-											<input type="checkbox" id="redirect_content" name="redirect_content" onclick="$.fn.doc()" {{ $data->redirect_content == 't' ? 'checked' : '' }}  />
+											<input type="checkbox" id="redirect_content" name="redirect_content" onclick="$.fn.doc()" {{ $data->redirect_content == 1 ? 'checked' : '' }}  />
 											<label for="redirect_content" class="cr"></label>
 											<label for="redirect_content">Ya ?</label>
 										</div>
@@ -110,7 +110,7 @@
 									<div class="form-group row mb-2">
 										<label class="col-sm-5 col-form-label">Link Footer</label>
 										<div class="col-sm-6 switch switch-success">
-											<input type="checkbox" id="link_content" name="link_content" {{ $data->link_content == 't' ? 'checked' : '' }}  />
+											<input type="checkbox" id="link_content" name="link_content" {{ $data->link_content == 1 ? 'checked' : '' }}  />
 											<label for="link_content" class="cr"></label>
 											<label for="link_content">Ya ?</label>
 										</div>
@@ -118,7 +118,7 @@
 									<div class="form-group row mb-2">
 										<label class="col-sm-5 col-form-label">Hide Child</label>
 										<div class="col-sm-6 switch switch-success">
-											<input type="checkbox" id="hide_content" name="hide_content" {{ $data->hide_content == 't' ? 'checked' : '' }}  />
+											<input type="checkbox" id="hide_content" name="hide_content" {{ $data->hide_content == 1 ? 'checked' : '' }}  />
 											<label for="hide_content" class="cr"></label>
 											<label for="hide_content">Ya ?</label>
 										</div>
@@ -132,7 +132,7 @@
 									<div class="form-group row">
 										<label class="col-sm-5 col-form-label">Status</label>
 										<div class="col-sm-6 switch switch-success">
-											<input type="checkbox" id="status_content" name="status_content" {{ $data->status_content == 't' ? 'checked' : '' }}  />
+											<input type="checkbox" id="status_content" name="status_content" {{ $data->status_content == 1 ? 'checked' : '' }}  />
 											<label for="status_content" class="cr"></label>
 											<label for="status_content">Aktif ?</label>
 										</div>
