@@ -2,10 +2,10 @@ $(function() {
 	$.fn.del = function(id) {
 		$('#dt').val(id);
 	}
-	
+
 	$.fn.update = function(id) {
 		$(".text-validation").html('');
-		
+
 		$('#ch').val(id);
 		$('#password_change').val('');
 		$('#password_change').attr('type', 'password');
@@ -16,10 +16,10 @@ $(function() {
 		$('#hide-crepassword').addClass('d-none');
 		$('#show-crepassword').removeClass('d-none');
 	}
-	
+
 	$.fn.edit = function(data) {
 		$(".text-validation").html('');
-		
+
 		$('#id').val(data.id);
 		$('#id_user').val(data.id_user);
 		$('#id_group').val(data.id_group);
@@ -29,17 +29,17 @@ $(function() {
 		$('#repassword_user').val('*****');
 		$('#email_user').val(data.email_user);
 		$('#foto_user').val('');
-		$('#status_user').prop('checked', data.status_user == 't' ? true : false);
+		$('#status_user').prop('checked', data.status_user == 1 ? true : false);
 		$('#img_user').removeClass('d-none');
 		$('#img_user').attr('src', app_url + '/cms/images/user/' + (data.foto_user.length > 0 ? data.foto_user : 'default.png'));
 		$('#div_password').addClass('d-none');
 		$('#div_repassword').addClass('d-none');
 		$('.custom-file-label').html('Pilih foto');
 	}
-	
+
 	$.fn.input = function() {
 		$(".text-validation").html('');
-		
+
 		$('#id').val('');
 		$('#id_group').val('');
 		$("#id_group").trigger("change");
@@ -55,19 +55,19 @@ $(function() {
 		$("#div_repassword").removeClass('d-none');
 		$('.custom-file-label').html('Pilih foto');
 	}
-	
+
 	$('#foto_user').change(function() {
 		var file = $(this).val().split("\\");
 		$('.custom-file-label').html(file[file.length - 1].substring(0, 35));
-		
+
 		let reader = new FileReader();
-		reader.onload = (e) => { 
-		  $('#img_user').attr('src', e.target.result); 
+		reader.onload = (e) => {
+		  $('#img_user').attr('src', e.target.result);
 		}
 		reader.readAsDataURL(this.files[0]);
 		$('#img_user').removeClass('d-none');
 	});
-	
+
 	$('#password_user').keyup(function() {
 		$("#pass").html(
 			$("#password_user").val() == $("#repassword_user").val() ?
@@ -75,7 +75,7 @@ $(function() {
 			"<input id=\"ck\" type=\"text\" required=\"\" oninvalid=\"Password harus sama.\">"
 		);
 	});
-	
+
 	$('#repassword_user').keyup(function() {
 		$("#pass").html(
 			$("#password_user").val() == $("#repassword_user").val() ?
@@ -83,7 +83,7 @@ $(function() {
 			"<input id=\"ck\" type=\"text\" required=\"\" oninvalid=\"Password harus sama.\">"
 		);
 	});
-	
+
 	$('#password').click(function() {
 		if($("#password_user").attr('type')==='password'){
 			$("#password_user").attr('type', 'text');
@@ -96,7 +96,7 @@ $(function() {
 			$("#show-password").removeClass('d-none');
 		}
 	});
-	
+
 	$('#repassword').click(function() {
 		if($("#repassword_user").attr('type')==='password'){
 			$("#repassword_user").attr('type', 'text');
@@ -109,7 +109,7 @@ $(function() {
 			$("#show-repassword").removeClass('d-none');
 		}
 	});
-	
+
 	$('#password_change').keyup(function() {
 		$("#check").html(
 			$("#password_change").val() == $("#repassword_change").val() ?
@@ -117,7 +117,7 @@ $(function() {
 			"<input id=\"ck\" type=\"text\" required=\"\" oninvalid=\"Password harus sama.\">"
 		);
 	});
-	
+
 	$('#repassword_change').keyup(function() {
 		$("#check").html(
 			$("#password_change").val() == $("#repassword_change").val() ?
@@ -125,7 +125,7 @@ $(function() {
 			"<input id=\"ck\" type=\"text\" required=\"\" oninvalid=\"Password harus sama.\">"
 		);
 	});
-	
+
 	$('#cpassword').click(function() {
 		if($("#password_change").attr('type')==='password'){
 			$("#password_change").attr('type', 'text');
@@ -138,7 +138,7 @@ $(function() {
 			$("#show-cpassword").removeClass('d-none');
 		}
 	});
-	
+
 	$('#crepassword').click(function() {
 		if($("#repassword_change").attr('type')==='password'){
 			$("#repassword_change").attr('type', 'text');

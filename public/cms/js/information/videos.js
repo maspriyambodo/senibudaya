@@ -2,16 +2,16 @@ $(document).ready(function(){
 	$.fn.del = function(id) {
 		$('#dt').val(id);
 	}
-	
+
 	$.fn.edit = function(data) {
 		$('#id').val(data.id);
 		$('#id_content').val(data.id_content);
 		$('#nama_video').val(data.nama_video);
 		$('#keterangan_video').val(data.keterangan_video);
 		$('#url_video').val(data.url_video);
-		$('#status_video').prop('checked', data.status_video == 't' ? true : false);
+		$('#status_video').prop('checked', data.status_video == 1 ? true : false);
 	}
-	
+
 	$.fn.input = function() {
 		$('#id').val('');
 		$('#id_content').val($('#kategori').val());

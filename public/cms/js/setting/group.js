@@ -2,12 +2,12 @@ $(document).ready(function(){
 	$.fn.del = function(id) {
 		$('#dt').val(id);
 	}
-	
+
 	$.fn.edit = function(data) {
 		$('#id').val(data.id);
 		$('#nama_group').val(data.nama_group);
 		$('#keterangan_group').val(data.keterangan_group);
-		$('#status_group').prop('checked', data.status_group == 't' ? true : false);
+		$('#status_group').prop('checked', data.status_group == 1 ? true : false);
 		$('#view_all').prop('checked', false);
 		$('#input_all').prop('checked', false);
 		$('#edit_all').prop('checked', false);
@@ -16,12 +16,12 @@ $(document).ready(function(){
 			data = $.parseJSON(result);
 			$.each(data, function(idx) {
 				$.each(data[idx], function(i, v) {
-					$('#'+ idx + '_' + i).prop('checked', v == 't' ? true : false);
+					$('#'+ idx + '_' + i).prop('checked', v == 1 ? true : false);
 				});
 			});
 		}});
 	}
-	
+
 	$.fn.input = function() {
 		$('#id').val('');
 		$('#nama_group').val('');
@@ -35,12 +35,12 @@ $(document).ready(function(){
 			data = $.parseJSON(result);
 			$.each(data, function(idx) {
 				$.each(data[idx], function(i, v) {
-					$('#'+ idx + '_' + i).prop('checked', v == 't' ? true : false);
+					$('#'+ idx + '_' + i).prop('checked', v == 1 ? true : false);
 				});
 			});
 		}});
 	}
-	
+
 	$('#view_all').click(function() {
 		$.ajax({url: app_url + '/group/show/0', success: function(result){
 			data = $.parseJSON(result);
@@ -53,7 +53,7 @@ $(document).ready(function(){
 			});
 		}});
 	});
-	
+
 	$('#input_all').click(function() {
 		$.ajax({url: app_url + '/group/show/0', success: function(result){
 			data = $.parseJSON(result);
@@ -66,7 +66,7 @@ $(document).ready(function(){
 			});
 		}});
 	});
-	
+
 	$('#edit_all').click(function() {
 		$.ajax({url: app_url + '/group/show/0', success: function(result){
 			data = $.parseJSON(result);
@@ -79,7 +79,7 @@ $(document).ready(function(){
 			});
 		}});
 	});
-	
+
 	$('#delete_all').click(function() {
 		$.ajax({url: app_url + '/group/show/0', success: function(result){
 			data = $.parseJSON(result);
